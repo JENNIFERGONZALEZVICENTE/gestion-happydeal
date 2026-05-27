@@ -57,13 +57,15 @@ function _scheduleFlush() {
 // Guardar referencia al localStorage real antes de sobreescribirlo
 window._localStorage_real = window.localStorage;
 
+// Solo aplicar el proxy si estamos en la URL de Cloudflare Pages, no en local
+const _esNube = window.location.protocol !== 'file:';
+
 const _proxy = new Proxy({}, {
   get(_, prop) {
     if (prop === 'setItem') return (k, v) => {
       _cache[k] = String(v);
       try { window._localStorage_real.setItem(k, v); } catch(e){}
-      _pendingWrites[k] = String(v);
-      _scheduleFlush();
+      if (_esNube) { _pendingWrites[k] = String(v); _scheduleFlush(); }
     };
     if (prop === 'getItem') return (k) => _cache[k] !== undefined ? _cache[k] : window._localStorage_real.getItem(k);
     if (prop === 'removeItem') return (k) => { delete _cache[k]; try { window._localStorage_real.removeItem(k); } catch(e){} };
@@ -290,6 +292,8 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
         </div>
         <div class="nav-subsection-body" id="sub-colchones">
           <div class="nav-item" onclick="showPage('prov-colchones',this)"><i class="ti ti-bed"></i> Gestión pedidos</div>
+          <div class="nav-item" onclick="showPage('tarifas-nm',this)"><i class="ti ti-tag"></i> Tarifas NEW MATTRESS</div>
+          <div class="nav-item" onclick="showPage('tarifas-luso',this)"><i class="ti ti-tag"></i> Tarifas LUSOCOLCHAO</div>
         </div>
 
         <!-- POLIVAL -->
@@ -506,6 +510,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
         <div class="dict-item"><span class="dict-key">MARRÓN</span><span class="dict-val">ARGOS CUERO · Rejilla 3D MARRÓN</span></div>
         <div class="dict-item"><span class="dict-key">GRIS</span><span class="dict-val">ARGOS MARENGO (SPACE) / ARGOS POLAR (MAGNUM) · Rejilla 3D GRAFITO</span></div>
         <div class="dict-item"><span class="dict-key">NEGRO</span><span class="dict-val">ARGOS NEGRO · Rejilla 3D NEGRA</span></div>
+        <div class="dict-item"><span class="dict-key">PIEDRA</span><span class="dict-val">ARGOS PIEDRA · Rejilla 3D TIERRA</span></div>
       </div>
       <div class="section-label">Cabeceros</div>
       <div class="card" style="padding:0 24px">
@@ -554,6 +559,69 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
     </div>
 
     <!-- PROV COLCHONES -->
+    <!-- TARIFAS NEW MATTRESS -->
+    <div class="page" id="page-tarifas-nm">
+      <div class="page-header">
+        <h2>Tarifas · NEW MATTRESS</h2>
+        <p>Consulta y comparativa de tarifas de colchones BE ZEN.</p>
+      </div>
+
+      <!-- Selector de tarifa y comparativa -->
+      <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;align-items:center">
+        <div style="display:flex;gap:8px">
+          <button id="tnm-btn-actual" onclick="tnmSetVista('actual')"
+            style="padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;background:#3B4A2F;border:1px solid #3B4A2F;color:white">
+            <i class="ti ti-tag"></i> Tarifa actual (Mayo 2026)
+          </button>
+          <button id="tnm-btn-anterior" onclick="tnmSetVista('anterior')"
+            style="padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;background:white;border:1px solid #d1d5db;color:#6b7280">
+            <i class="ti ti-history"></i> Tarifa anterior (Abril 2026)
+          </button>
+          <button id="tnm-btn-comparativa" onclick="tnmSetVista('comparativa')"
+            style="padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;background:white;border:1px solid #d1d5db;color:#6b7280">
+            <i class="ti ti-arrows-diff"></i> Comparativa subidas
+          </button>
+        </div>
+        <select id="tnm-filtro-modelo" onchange="tnmRender()"
+          style="padding:7px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:12px;outline:none;background:white;cursor:pointer;min-width:180px">
+          <option value="">— Todos los modelos —</option>
+        </select>
+      </div>
+
+      <div id="tnm-content" style="overflow-x:auto"></div>
+    </div>
+
+    <!-- TARIFAS LUSOCOLCHAO -->
+    <div class="page" id="page-tarifas-luso">
+      <div class="page-header">
+        <h2>Tarifas · LUSOCOLCHAO</h2>
+        <p>Consulta y comparativa de tarifas de colchones POLIVAL / Global Happy Deal.</p>
+      </div>
+
+      <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;align-items:center">
+        <div style="display:flex;gap:8px">
+          <button id="tluso-btn-actual" onclick="tlusoSetVista('actual')"
+            style="padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;background:#3B4A2F;border:1px solid #3B4A2F;color:white">
+            <i class="ti ti-tag"></i> Tarifa actual (Abril 2026)
+          </button>
+          <button id="tluso-btn-anterior" onclick="tlusoSetVista('anterior')"
+            style="padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;background:white;border:1px solid #d1d5db;color:#6b7280">
+            <i class="ti ti-history"></i> Tarifa anterior (Marzo 2026)
+          </button>
+          <button id="tluso-btn-comparativa" onclick="tlusoSetVista('comparativa')"
+            style="padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;background:white;border:1px solid #d1d5db;color:#6b7280">
+            <i class="ti ti-arrows-diff"></i> Comparativa subidas
+          </button>
+        </div>
+        <select id="tluso-filtro-modelo" onchange="tlusoRender()"
+          style="padding:7px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:12px;outline:none;background:white;cursor:pointer;min-width:200px">
+          <option value="">— Todos los modelos —</option>
+        </select>
+      </div>
+
+      <div id="tluso-content" style="overflow-x:auto"></div>
+    </div>
+
     <div class="page" id="page-prov-colchones">
       <div class="page-header">
         <h2>Gestión pedidos · Colchones</h2>
@@ -686,6 +754,16 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
       </div>
       <div id="colchTab-pendientes" class="colch-panel" style="display:none">
         <div id="pend-stats" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px"></div>
+        <!-- Botón recalcular precios - solo Jennifer -->
+        <div id="pend-recalc-wrap" style="display:none;margin-bottom:12px">
+          <button onclick="nmRecalcularPrecios()" style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;background:#7c3aed;border:1px solid #6d28d9;color:white">
+            <i class="ti ti-refresh"></i> Rellenar precios de compra pendientes
+          </button>
+          <button onclick="nmRecalcularPrecios(true)" style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;background:#6d28d9;border:1px solid #5b21b6;color:white;margin-left:8px">
+            <i class="ti ti-refresh-alert"></i> Recalcular TODOS los precios
+          </button>
+          <span id="pend-recalc-msg" style="font-size:12px;color:#6b7280;margin-left:10px"></span>
+        </div>
         <!-- Selector de vista -->
         <div style="display:flex;gap:8px;margin-bottom:12px">
           <button id="pend-vista-pedidos" onclick="pendSetVista('pedidos')"
@@ -1627,6 +1705,501 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
 </div>
 
 <script>
+// ══ TARIFAS NEW MATTRESS (datos) ══
+let tnmVista = 'actual';
+let tlusoVista = 'actual';
+
+// ══ TARIFAS LUSOCOLCHAO (datos) ══
+// Tarifa actual (Abril 2026): pedidos desde 19/05/2026
+// Tarifa anterior (Marzo 2026): pedidos anteriores al 19/05/2026
+
+const LUSO_TARIFA_ACTUAL = {
+  nombre: 'Abril 2026',
+  modelos: ["4D", "BAMBOO DELUXE", "BELLAGIO DELUXE", "ERGO RELAX", "FITNESS SPORT", "GENERACI\u00d3N Z", "LATEX GEL", "MURANO", "ORIGIN ZEN", "PARIS MUELLE ENSAC", "PHARMATHERAPY SOJA", "PHARMATHERAPY SOJA SLIM", "SPRING ZEN", "SUPREME ZEN", "TOSCANA DELUXE", "ZEN MANDALA", "ZEN NATURAL", "ZEN NIRVANA"],
+  precios: {
+    '180X080': [69.04,44.76,54.63,58.74,57.83,63.66,53.09,75.33,89.05,77.87,45.72,39.31,141.82,111.48,52.77,85.91,97.11,80.87],
+    '190X080': [69.04,44.76,54.63,58.74,57.83,63.66,53.09,75.33,89.05,77.87,45.72,39.31,141.82,111.48,52.77,85.91,97.11,80.87],
+    '200X080': [71.92,46.63,56.9,61.19,60.24,66.32,55.3,78.46,92.75,81.11,47.62,40.95,147.73,116.12,54.97,89.49,101.16,84.24],
+    '210X080': [77.78,50.42,61.55,66.18,65.14,71.73,59.81,84.85,100.31,87.73,51.5,44.29,159.78,125.58,59.44,96.79,109.4,91.11],
+    '180X090': [71.17,46.15,56.32,60.55,59.62,65.62,54.73,77.66,91.8,80.27,47.14,40.54,146.21,114.92,54.4,88.57,100.12,83.37],
+    '190X090': [71.17,46.15,56.32,60.55,59.62,65.62,54.73,77.66,91.8,80.27,47.14,40.54,146.21,114.92,54.4,88.57,100.12,83.37],
+    '200X090': [74.14,48.07,58.66,63.07,62.11,68.36,57.0,80.89,95.62,83.62,49.1,42.23,152.3,119.71,56.66,92.25,104.29,86.85],
+    '210X090': [80.18,51.99,63.45,68.21,67.17,73.93,61.64,87.48,103.41,90.44,53.11,45.67,164.71,129.47,61.28,99.77,112.78,93.92],
+    '180X105': [82.01,53.19,64.95,69.85,68.75,75.7,63.2,89.48,105.82,91.56,54.34,46.7,166.9,131.04,62.54,100.91,114.35,95.03],
+    '190X105': [82.01,53.19,64.95,69.85,68.75,75.7,63.2,89.48,105.82,91.56,54.34,46.7,166.9,131.04,62.54,100.91,114.35,95.03],
+    '200X105': [85.43,55.4,67.66,72.77,71.61,78.86,65.82,93.21,110.23,95.37,56.61,48.64,173.85,136.5,65.14,105.11,119.11,98.98],
+    '210X105': [92.39,59.91,73.17,78.69,77.45,85.28,71.19,100.82,119.22,103.14,61.22,52.6,188.01,147.63,70.45,113.67,128.82,107.05],
+    '180X110': [85.91,55.72,68.05,73.17,72.03,79.31,66.21,93.74,110.86,95.92,56.93,48.92,174.85,137.28,65.52,105.71,119.79,99.55],
+    '190X110': [85.91,55.72,68.05,73.17,72.03,79.31,66.21,93.74,110.86,95.92,56.93,48.92,174.85,137.28,65.52,105.71,119.79,99.55],
+    '200X110': [89.48,58.04,70.88,76.22,75.03,82.61,68.97,97.65,115.48,99.92,59.3,50.95,182.13,143.0,68.24,110.12,124.78,103.7],
+    '210X110': [96.78,62.77,76.66,82.43,81.15,89.34,74.59,105.6,124.89,108.07,64.13,55.11,196.98,154.65,73.81,119.1,134.96,112.15],
+    '180X120': [93.72,60.78,74.23,79.83,78.57,86.52,72.23,102.27,120.93,104.63,62.1,53.36,190.74,149.76,71.47,115.32,130.68,108.6],
+    '190X120': [93.72,60.78,74.23,79.83,78.57,86.52,72.23,102.27,120.93,104.63,62.1,53.36,190.74,149.76,71.47,115.32,130.68,108.6],
+    '200X120': [97.63,63.3,77.32,83.15,81.85,90.12,75.24,106.52,125.97,108.99,64.68,55.58,198.69,156.0,74.45,120.13,136.13,113.13],
+    '210X120': [105.58,68.46,83.62,89.93,88.52,97.47,81.37,115.2,136.24,117.87,69.95,60.12,214.88,168.71,80.52,129.92,147.23,122.35],
+    '180X135': [103.45,67.1,82.06,88.22,86.9,95.71,79.86,112.86,133.6,113.98,68.59,58.91,208.0,163.17,78.6,125.42,142.64,118.07],
+    '190X135': [103.45,67.1,82.06,88.22,86.9,95.71,79.86,112.86,133.6,113.98,68.59,58.91,208.0,163.17,78.6,125.42,142.64,118.07],
+    '200X135': [107.77,69.89,85.48,91.89,90.52,99.7,83.19,117.57,139.16,118.72,71.45,61.36,216.67,169.97,81.87,130.65,148.59,123.0],
+    '210X135': [116.55,75.59,92.44,99.39,97.9,107.82,89.97,127.15,150.5,128.4,77.26,66.36,234.33,183.82,88.55,141.3,160.69,133.02],
+    '180X140': [107.28,69.59,85.1,91.49,90.12,99.26,82.82,117.04,138.55,118.2,71.13,61.08,215.71,169.22,81.51,130.06,147.92,122.44],
+    '190X140': [107.28,69.59,85.1,91.49,90.12,99.26,82.82,117.04,138.55,118.2,71.13,61.08,215.71,169.22,81.51,130.06,147.92,122.44],
+    '200X140': [111.75,72.49,88.64,95.3,93.87,103.39,86.27,121.91,144.32,123.12,74.08,63.62,224.7,176.27,84.91,135.48,154.09,127.54],
+    '210X140': [120.86,78.4,95.87,103.07,101.53,111.83,93.3,131.85,156.08,133.16,80.12,68.81,243.01,190.64,91.83,146.53,166.65,137.94],
+    '180X150': [114.13,73.98,90.59,97.3,95.87,105.63,88.17,124.47,147.34,125.16,75.57,64.95,228.43,179.18,86.57,137.66,156.77,129.57],
+    '190X150': [114.13,73.98,90.59,97.3,95.87,105.63,88.17,124.47,147.34,125.16,75.57,64.95,228.43,179.18,86.57,137.66,156.77,129.57],
+    '200X150': [118.88,77.06,94.36,101.35,99.86,110.03,91.84,129.65,153.48,130.38,78.72,67.66,237.94,186.65,90.18,143.39,163.3,134.97],
+    '210X150': [128.57,83.34,102.05,109.62,108.0,119.0,99.32,140.22,165.99,141.0,85.13,73.17,257.33,201.86,97.53,155.07,176.6,145.97],
+    '180X160': [121.74,78.9,96.62,103.78,102.26,112.68,94.04,132.76,157.17,133.51,80.61,69.29,243.65,191.13,92.35,146.83,167.21,138.21],
+    '190X160': [121.74,78.9,96.62,103.78,102.26,112.68,94.04,132.76,157.17,133.51,80.61,69.29,243.65,191.13,92.35,146.83,167.21,138.21],
+    '200X160': [126.81,82.19,100.65,108.11,106.51,117.37,97.95,138.29,163.71,139.07,83.96,72.17,253.81,199.09,96.2,152.95,174.18,143.97],
+    '210X160': [137.15,88.89,108.86,116.92,115.19,126.93,105.94,149.57,177.06,150.4,90.81,78.06,274.49,215.31,104.04,165.42,188.38,155.69],
+    '180X180': [136.95,88.77,108.7,116.75,115.04,126.76,105.8,149.36,176.81,150.19,90.68,77.95,274.11,215.02,103.88,165.19,188.12,155.48],
+    '190X180': [136.95,88.77,108.7,116.75,115.04,126.76,105.8,149.36,176.81,150.19,90.68,77.95,274.11,215.02,103.88,165.19,188.12,155.48],
+    '200X180': [142.66,92.47,113.23,121.62,119.83,132.04,110.21,155.58,184.18,156.45,94.47,81.19,285.54,223.98,108.22,172.07,195.96,161.96],
+    '210X180': [154.29,100.0,122.46,131.53,129.6,142.8,119.2,168.27,199.2,169.2,102.17,87.81,308.81,242.22,117.04,186.1,211.93,175.16],
+    '200X190': [150.59,97.6,119.53,128.37,126.49,139.38,116.34,164.23,194.41,165.14,99.72,85.7,301.4,236.42,114.23,181.63,206.85,170.96],
+    '200X200': [158.51,102.74,125.82,135.12,133.14,146.71,122.45,172.88,204.64,173.84,104.96,90.21,317.27,248.86,120.24,191.19,217.74,179.96],
+    '210X200': [171.42,111.11,136.07,146.14,143.99,158.67,132.43,186.97,221.32,188.0,113.52,97.56,343.13,269.15,130.04,206.78,235.48,194.63]
+  }
+};
+
+const LUSO_TARIFA_ANTERIOR = {
+  nombre: 'Marzo 2026',
+  modelos: ["4D", "BAMBOO DELUXE", "BELLAGIO DELUXE", "ERGO RELAX", "FITNESS SPORT", "GENERACI\u00d3N Z", "LATEX GEL", "MURANO", "ORIGIN ZEN", "PARIS MUELLE ENSAC", "PHARMATHERAPY SOJA", "PHARMATHERAPY SOJA SLIM", "SPRING ZEN", "SUPREME ZEN", "TOSCANA DELUXE", "ZEN MANDALA", "ZEN NATURAL", "ZEN NIRVANA"],
+  precios: {
+    '180X080': [62.76,40.69,49.66,53.4,52.57,60.63,48.26,68.48,80.95,74.16,41.56,35.74,135.07,106.17,47.97,81.82,92.49,77.02],
+    '190X080': [62.76,40.69,49.66,53.4,52.57,60.63,48.26,68.48,80.95,74.16,41.56,35.74,135.07,106.17,47.97,81.82,92.49,77.02],
+    '200X080': [65.38,42.39,51.73,55.63,54.76,63.16,50.27,71.33,84.32,77.25,43.29,37.23,140.7,110.59,49.97,85.23,96.34,80.23],
+    '210X080': [70.71,45.84,55.95,60.16,59.22,68.31,54.37,77.14,91.19,83.55,46.82,40.26,152.17,119.6,54.04,92.18,104.19,86.77],
+    '180X090': [64.7,41.95,51.2,55.05,54.2,62.5,49.75,70.6,83.45,76.45,42.85,36.85,139.25,109.45,49.45,84.35,95.35,79.4],
+    '190X090': [64.7,41.95,51.2,55.05,54.2,62.5,49.75,70.6,83.45,76.45,42.85,36.85,139.25,109.45,49.45,84.35,95.35,79.4],
+    '200X090': [67.4,43.7,53.33,57.34,56.46,65.1,51.82,73.54,86.93,79.64,44.64,38.39,145.05,114.01,51.51,87.86,99.32,82.71],
+    '210X090': [72.89,47.26,57.68,62.01,61.06,70.41,56.04,79.53,94.01,86.13,48.28,41.52,156.87,123.3,55.71,95.02,107.41,89.45],
+    '180X105': [74.55,48.35,59.05,63.5,62.5,72.1,57.45,81.35,96.2,87.2,49.4,42.45,158.95,124.8,56.85,96.1,108.9,90.5],
+    '190X105': [74.55,48.35,59.05,63.5,62.5,72.1,57.45,81.35,96.2,87.2,49.4,42.45,158.95,124.8,56.85,96.1,108.9,90.5],
+    '200X105': [77.66,50.36,61.51,66.15,65.1,75.1,59.84,84.74,100.21,90.83,51.46,44.22,165.57,130.0,59.22,100.1,113.44,94.27],
+    '210X105': [83.99,54.46,66.52,71.54,70.41,81.22,64.72,91.65,108.38,98.23,55.65,47.82,179.06,140.6,64.05,108.26,122.69,101.95],
+    '180X110': [78.1,50.65,61.86,66.52,65.48,75.53,60.19,85.22,100.78,91.35,51.75,44.47,166.52,130.74,59.56,100.68,114.09,94.81],
+    '190X110': [78.1,50.65,61.86,66.52,65.48,75.53,60.19,85.22,100.78,91.35,51.75,44.47,166.52,130.74,59.56,100.68,114.09,94.81],
+    '200X110': [81.35,52.76,64.44,69.29,68.21,78.68,62.7,88.77,104.98,95.16,53.91,46.32,173.46,136.19,62.04,104.88,118.84,98.76],
+    '210X110': [87.98,57.06,69.69,74.94,73.77,85.09,67.81,96.0,113.54,102.92,58.3,50.1,187.6,147.29,67.1,113.43,128.53,106.81],
+    '180X120': [85.2,55.25,67.48,72.57,71.43,82.4,65.66,92.97,109.94,99.65,56.45,48.51,181.66,142.63,64.97,109.83,124.46,103.43],
+    '190X120': [85.2,55.25,67.48,72.57,71.43,82.4,65.66,92.97,109.94,99.65,56.45,48.51,181.66,142.63,64.97,109.83,124.46,103.43],
+    '200X120': [88.75,57.55,70.29,75.59,74.41,85.83,68.4,96.84,114.52,103.8,58.8,50.53,189.23,148.57,67.68,114.41,129.65,107.74],
+    '210X120': [95.98,62.24,76.02,81.75,80.47,92.83,73.97,104.73,123.85,112.26,63.59,54.65,204.65,160.68,73.2,123.73,140.22,116.52],
+    '180X135': [94.05,61.0,74.6,80.2,79.0,91.15,72.6,102.6,121.45,108.55,62.35,53.55,198.1,155.4,71.45,119.45,135.85,112.45],
+    '190X135': [94.05,61.0,74.6,80.2,79.0,91.15,72.6,102.6,121.45,108.55,62.35,53.55,198.1,155.4,71.45,119.45,135.85,112.45],
+    '200X135': [97.97,63.54,77.71,83.54,82.29,94.95,75.63,106.88,126.51,113.07,64.95,55.78,206.35,161.88,74.43,124.43,141.51,117.14],
+    '210X135': [105.95,68.72,84.04,90.35,89.0,102.69,81.79,115.59,136.82,122.29,70.24,60.33,223.17,175.07,80.5,134.57,153.04,126.69],
+    '180X140': [97.53,63.26,77.36,83.17,81.93,94.53,75.29,106.4,125.95,112.57,64.66,55.53,205.44,161.16,74.1,123.87,140.88,116.61],
+    '190X140': [97.53,63.26,77.36,83.17,81.93,94.53,75.29,106.4,125.95,112.57,64.66,55.53,205.44,161.16,74.1,123.87,140.88,116.61],
+    '200X140': [101.59,65.9,80.58,86.64,85.34,98.47,78.43,110.83,131.2,117.26,67.35,57.84,214.0,167.88,77.19,129.03,146.75,121.47],
+    '210X140': [109.87,71.27,87.15,93.7,92.3,106.5,84.82,119.86,141.89,126.82,72.84,62.55,231.44,181.56,83.48,139.55,158.71,131.37],
+    '180X150': [103.75,67.25,82.35,88.45,87.15,100.6,80.15,113.15,133.95,119.2,68.7,59.05,217.55,170.65,78.7,131.1,149.3,123.4],
+    '190X150': [103.75,67.25,82.35,88.45,87.15,100.6,80.15,113.15,133.95,119.2,68.7,59.05,217.55,170.65,78.7,131.1,149.3,123.4],
+    '200X150': [108.07,70.05,85.78,92.14,90.78,104.79,83.49,117.86,139.53,124.17,71.56,61.51,226.61,177.76,81.98,136.56,155.52,128.54],
+    '210X150': [116.88,75.76,92.77,99.65,98.18,113.33,90.29,127.47,150.9,134.29,77.39,66.52,245.08,192.25,88.66,147.69,168.19,139.02],
+    '180X160': [110.67,71.73,87.84,94.35,92.96,107.31,85.49,120.69,142.88,127.15,73.28,62.99,232.05,182.03,83.95,139.84,159.25,131.63],
+    '190X160': [110.67,71.73,87.84,94.35,92.96,107.31,85.49,120.69,142.88,127.15,73.28,62.99,232.05,182.03,83.95,139.84,159.25,131.63],
+    '200X160': [115.28,74.72,91.5,98.28,96.83,111.78,89.05,125.72,148.83,132.45,76.33,65.61,241.72,189.61,87.45,145.67,165.89,137.11],
+    '210X160': [124.68,80.81,98.96,106.29,104.72,120.89,96.31,135.97,160.96,143.24,82.55,70.96,261.42,205.06,94.58,157.54,179.41,148.28],
+    '180X180': [124.5,80.7,98.82,106.14,104.58,120.72,96.18,135.78,160.74,143.04,82.44,70.86,261.06,204.78,94.44,157.32,179.16,148.08],
+    '190X180': [124.5,80.7,98.82,106.14,104.58,120.72,96.18,135.78,160.74,143.04,82.44,70.86,261.06,204.78,94.44,157.32,179.16,148.08],
+    '200X180': [129.69,84.06,102.94,110.56,108.94,125.75,100.19,141.44,167.44,149.0,85.88,73.81,271.94,213.31,98.38,163.88,186.63,154.25],
+    '210X180': [140.26,90.91,111.33,119.57,117.82,136.0,108.36,152.97,181.09,161.14,92.88,79.83,294.1,230.69,106.4,177.24,201.84,166.82],
+    '200X190': [136.9,88.73,108.66,116.7,114.99,132.74,105.76,149.3,176.74,157.28,90.65,77.91,287.05,225.16,103.85,172.98,197.0,162.82],
+    '200X200': [144.1,93.4,114.38,122.84,121.04,139.72,111.32,157.16,186.04,165.56,95.42,82.01,302.16,237.01,109.31,182.09,207.37,171.39],
+    '210X200': [155.84,101.01,123.7,132.85,130.9,151.11,120.39,169.97,201.2,179.05,103.2,88.69,326.79,256.33,118.22,196.93,224.27,185.36]
+  }
+};
+
+
+// Mapa modelo SKU → nombre en tarifa LUSO (mismos nombres en ambas tarifas)
+const LUSO_MODELO_MAP = {
+  '4D': '4D',
+  'BAMBOO DELUXE': 'BAMBOO DELUXE',
+  'BELLAGIO DELUXE': 'BELLAGIO DELUXE',
+  'ERGO RELAX': 'ERGO RELAX',
+  'FITNESS SPORT': 'FITNESS SPORT',
+  'GENERACION Z': 'GENERACIÓN Z',
+  'GENERACIÓN Z': 'GENERACIÓN Z',
+  'LATEX GEL': 'LATEX GEL',
+  'MURANO': 'MURANO',
+  'ORIGIN ZEN': 'ORIGIN ZEN',
+  'PARIS': 'PARIS MUELLE ENSAC',
+  'PARÍS': 'PARIS MUELLE ENSAC',
+  'PARIS MUELLE ENSAC': 'PARIS MUELLE ENSAC',
+  'PHARMATHERAPY SOJA': 'PHARMATHERAPY SOJA',
+  'PHARMATHERAPY SOJA SLIM': 'PHARMATHERAPY SOJA SLIM',
+  'SPRING ZEN': 'SPRING ZEN',
+  'SUPREME ZEN': 'SUPREME ZEN',
+  'TOSCANA DELUXE': 'TOSCANA DELUXE',
+  'ZEN MANDALA': 'ZEN MANDALA',
+  'ZEN NATURAL': 'ZEN NATURAL',
+  'ZEN NIRVANA': 'ZEN NIRVANA',
+};
+
+function lusoGetPrecioConFecha(modelo, medida, fechaStr) {
+  // Antes del 19/05/2026 → tarifa Marzo; desde el 19/05/2026 → tarifa Abril
+  const fechaCambio = new Date(2026, 4, 18); // 18 de Mayo 2026 (inclusive)
+  const fechaPedido = nmParseFechaPedido(fechaStr); // reutilizamos la misma función
+  const usarAnterior = fechaPedido && fechaPedido < fechaCambio;
+
+  const modeloNorm = (modelo||'').toUpperCase().trim()
+    .replace('París', 'PARIS')
+    .replace('GENERACIÓN', 'GENERACION');
+  const colNombre = LUSO_MODELO_MAP[modeloNorm] || LUSO_MODELO_MAP[modelo.toUpperCase().trim()] || modeloNorm;
+  const tarifa = usarAnterior ? LUSO_TARIFA_ANTERIOR : LUSO_TARIFA_ACTUAL;
+  const colIdx = tarifa.modelos.indexOf(colNombre);
+  if (colIdx === -1) return null;
+
+  const partes = (medida||'').toUpperCase().replace(/\s/g,'').split('X');
+  if (partes.length !== 2) return null;
+  const n1 = parseInt(partes[0]), n2 = parseInt(partes[1]);
+  if (isNaN(n1) || isNaN(n2)) return null;
+  const claves = [
+    n1+'X'+String(n2).padStart(3,'0'), n2+'X'+String(n1).padStart(3,'0'),
+    n1+'X'+n2, n2+'X'+n1,
+    String(n1).padStart(3,'0')+'X'+String(n2).padStart(3,'0'),
+    String(n2).padStart(3,'0')+'X'+String(n1).padStart(3,'0'),
+    n1+'x'+n2, n2+'x'+n1,
+  ];
+  for (const clave of claves) {
+    const fila = tarifa.precios[clave];
+    if (fila && fila[colIdx] != null) return { precio: fila[colIdx], tarifa: tarifa.nombre };
+  }
+  return null;
+}
+
+// ══════════════════════════════════════════════════════════════
+// TARIFAS LUSOCOLCHAO - Renderizado
+// ══════════════════════════════════════════════════════════════
+
+window.tlusoSetVista = function tlusoSetVista(v) {
+  tlusoVista = v;
+  ['actual','anterior','comparativa'].forEach(x => {
+    const btn = document.getElementById('tluso-btn-'+x);
+    if(btn){ btn.style.background=x===v?'#3B4A2F':'white'; btn.style.borderColor=x===v?'#3B4A2F':'#d1d5db'; btn.style.color=x===v?'white':'#6b7280'; }
+  });
+  tlusoRender();
+}
+
+window.tlusoInicializarFiltros = function tlusoInicializarFiltros() {
+  const sel = document.getElementById('tluso-filtro-modelo');
+  if(!sel) return;
+  sel.innerHTML = '<option value="">— Todos los modelos —</option>';
+  LUSO_TARIFA_ACTUAL.modelos.forEach(m => { sel.innerHTML += `<option value="${m}">${m}</option>`; });
+}
+
+window.tlusoRender = function tlusoRender() {
+  const cont = document.getElementById('tluso-content');
+  if(!cont) return;
+  const filtro = document.getElementById('tluso-filtro-modelo')?.value || '';
+  if(tlusoVista === 'actual') tlusoRenderTarifa(cont, LUSO_TARIFA_ACTUAL, filtro);
+  else if(tlusoVista === 'anterior') tlusoRenderTarifa(cont, LUSO_TARIFA_ANTERIOR, filtro);
+  else tlusoRenderComparativa(cont, filtro);
+}
+
+function tlusoRenderTarifa(cont, tarifa, filtro) {
+  const modelos = filtro ? tarifa.modelos.filter(m=>m===filtro) : tarifa.modelos;
+  const idxs = modelos.map(m => tarifa.modelos.indexOf(m));
+  const medidas = Object.keys(tarifa.precios);
+  let html = `<div style="font-size:12px;color:#6b7280;margin-bottom:10px">Tarifa <strong>${tarifa.nombre}</strong> · ${medidas.length} medidas · ${tarifa.modelos.length} modelos</div>`;
+  html += `<table style="width:100%;border-collapse:collapse;font-size:11px">
+    <thead><tr style="background:#3B4A2F;color:white">
+      <th style="padding:8px 12px;text-align:left;white-space:nowrap">Medida</th>
+      ${modelos.map(m=>`<th style="padding:8px 12px;text-align:right;white-space:nowrap">${m}</th>`).join('')}
+    </tr></thead><tbody>`;
+  medidas.forEach((med, i) => {
+    const row = tarifa.precios[med];
+    html += `<tr style="background:${i%2===0?'white':'#f9fafb'}">
+      <td style="padding:7px 12px;font-weight:600;color:#3B4A2F;white-space:nowrap">${med}</td>
+      ${idxs.map(idx => { const p=row[idx]; return `<td style="padding:7px 12px;text-align:right;color:${p?'#1a1a1a':'#d1d5db'}">${p?p.toFixed(2)+' €':'—'}</td>`; }).join('')}
+    </tr>`;
+  });
+  html += '</tbody></table>';
+  cont.innerHTML = html;
+}
+
+function tlusoRenderComparativa(cont, filtro) {
+  const modelos = filtro ? [filtro] : LUSO_TARIFA_ACTUAL.modelos;
+  const medidas = Object.keys(LUSO_TARIFA_ACTUAL.precios);
+  let html = `<div style="font-size:12px;color:#6b7280;margin-bottom:10px">Comparativa <strong>Marzo 2026 → Abril 2026</strong> · 🟢 sin cambio · 🔴 subida</div>`;
+  html += `<table style="width:100%;border-collapse:collapse;font-size:11px">
+    <thead><tr style="background:#1e40af;color:white">
+      <th style="padding:8px 12px;text-align:left">Medida</th>
+      ${modelos.map(m=>`<th style="padding:8px 12px;text-align:right" colspan="3">${m}</th>`).join('')}
+    </tr>
+    <tr style="background:#3730A3;color:white">
+      <th style="padding:4px 12px"></th>
+      ${modelos.map(()=>`<th style="padding:4px 8px;text-align:right;font-weight:400;font-size:10px">Ant.</th><th style="padding:4px 8px;text-align:right;font-weight:400;font-size:10px">Act.</th><th style="padding:4px 8px;text-align:right;font-weight:400;font-size:10px">%</th>`).join('')}
+    </tr></thead><tbody>`;
+  medidas.forEach((med, i) => {
+    const rowAct = LUSO_TARIFA_ACTUAL.precios[med] || [];
+    const rowAnt = LUSO_TARIFA_ANTERIOR.precios[med] || [];
+    html += `<tr style="background:${i%2===0?'white':'#f9fafb'}"><td style="padding:6px 12px;font-weight:600;color:#3B4A2F;white-space:nowrap">${med}</td>`;
+    modelos.forEach(m => {
+      const idxAct = LUSO_TARIFA_ACTUAL.modelos.indexOf(m);
+      const idxAnt = LUSO_TARIFA_ANTERIOR.modelos.indexOf(m);
+      const pAct = idxAct>=0 ? rowAct[idxAct] : null;
+      const pAnt = idxAnt>=0 ? rowAnt[idxAnt] : null;
+      const diff = pAct&&pAnt ? ((pAct-pAnt)/pAnt*100) : null;
+      const color = diff===null?'#9ca3af':diff===0?'#166534':'#991b1b';
+      html += `<td style="padding:6px 8px;text-align:right;color:#6b7280">${pAnt?pAnt.toFixed(2)+'€':'—'}</td>
+        <td style="padding:6px 8px;text-align:right;font-weight:600;color:${color}">${pAct?pAct.toFixed(2)+'€':'—'}</td>
+        <td style="padding:6px 8px;text-align:right;color:${color};font-weight:700">${diff!==null?(diff===0?'=':(diff>0?'+':'')+diff.toFixed(1)+'%'):'—'}</td>`;
+    });
+    html += '</tr>';
+  });
+  html += '</tbody></table>';
+  cont.innerHTML = html;
+}
+
+// ══════════════════════════════════════════════════════════════
+// TARIFAS NEW MATTRESS
+// ══════════════════════════════════════════════════════════════
+
+// Obtener precio de compra NM para un modelo y medida
+function nmGetPrecio(modelo, medida) {
+  const modeloNorm = (modelo||'').toUpperCase().trim();
+  const colNombre = NM_MODELO_MAP[modeloNorm] || modeloNorm;
+  const colIdx = NM_TARIFA_ACTUAL.modelos.indexOf(colNombre);
+  if (colIdx === -1) return null;
+  // Normalizar medida: puede venir como 90x190, 90X190, 190x090, etc.
+  const partes = (medida||'').toUpperCase().replace(/\s/g,'').split('X');
+  if (partes.length !== 2) return null;
+  const n1 = parseInt(partes[0]), n2 = parseInt(partes[1]);
+  if (isNaN(n1) || isNaN(n2)) return null;
+  // Probar todas las combinaciones posibles de formato
+  const claves = [
+    n1+'X'+String(n2).padStart(3,'0'),
+    n2+'X'+String(n1).padStart(3,'0'),
+    n1+'X'+n2,
+    n2+'X'+n1,
+    String(n1).padStart(3,'0')+'X'+String(n2).padStart(3,'0'),
+    String(n2).padStart(3,'0')+'X'+String(n1).padStart(3,'0'),
+  ];
+  for (const clave of claves) {
+    const fila = NM_TARIFA_ACTUAL.precios[clave];
+    if (fila && fila[colIdx] != null) return fila[colIdx];
+  }
+  return null;
+}
+
+// Vista actual de tarifas
+
+window.tnmSetVista = function tnmSetVista(v) {
+  tnmVista = v;
+  ['actual','anterior','comparativa'].forEach(x => {
+    const btn = document.getElementById('tnm-btn-'+x);
+    if (btn) {
+      btn.style.background = x===v ? '#3B4A2F' : 'white';
+      btn.style.borderColor = x===v ? '#3B4A2F' : '#d1d5db';
+      btn.style.color = x===v ? 'white' : '#6b7280';
+    }
+  });
+  tnmRender();
+}
+
+window.tnmRender = function tnmRender() {
+  const cont = document.getElementById('tnm-content');
+  if (!cont) return;
+  const filtroModelo = document.getElementById('tnm-filtro-modelo')?.value || '';
+
+  if (tnmVista === 'actual') tnmRenderTarifa(cont, NM_TARIFA_ACTUAL, filtroModelo);
+  else if (tnmVista === 'anterior') tnmRenderTarifa(cont, NM_TARIFA_ANTERIOR, filtroModelo);
+  else tnmRenderComparativa(cont, filtroModelo);
+}
+
+function tnmRenderTarifa(cont, tarifa, filtroModelo) {
+  const modelos = filtroModelo ? tarifa.modelos.filter(m=>m===filtroModelo) : tarifa.modelos;
+  const idxs = modelos.map(m => tarifa.modelos.indexOf(m));
+  const medidas = Object.keys(tarifa.precios);
+
+  let html = `<div style="font-size:12px;color:#6b7280;margin-bottom:10px">Tarifa <strong>${tarifa.nombre}</strong> · ${medidas.length} medidas · ${tarifa.modelos.length} modelos</div>`;
+  html += `<table style="width:100%;border-collapse:collapse;font-size:12px">
+    <thead><tr style="background:#3B4A2F;color:white">
+      <th style="padding:8px 12px;text-align:left;white-space:nowrap">Medida</th>
+      ${modelos.map(m=>`<th style="padding:8px 12px;text-align:right;white-space:nowrap">${m}</th>`).join('')}
+    </tr></thead><tbody>`;
+
+  medidas.forEach((med, i) => {
+    const row = tarifa.precios[med];
+    html += `<tr style="background:${i%2===0?'white':'#f9fafb'}">
+      <td style="padding:7px 12px;font-weight:600;color:#3B4A2F;white-space:nowrap">${med}</td>
+      ${idxs.map(idx => {
+        const p = row[idx];
+        return `<td style="padding:7px 12px;text-align:right;color:${p?'#1a1a1a':'#d1d5db'}">${p?p.toFixed(2)+' €':'—'}</td>`;
+      }).join('')}
+    </tr>`;
+  });
+  html += '</tbody></table>';
+  cont.innerHTML = html;
+}
+
+function tnmRenderComparativa(cont, filtroModelo) {
+  // Modelos comunes entre ambas tarifas (normalizados)
+  const modelosMap = {
+    '4D': ['4D','4D'],
+    'BAMBOO DELUXE': ['BAMBOO DELUXE 2026','BAMBOO DELUXE'],
+    'BELLAGIO DELUXE': ['BELLAGIO DELUXE','BELLAGIO DELUXE'],
+    'ERGO RELAX': ['ERGO RELAX','ERGO RELAX'],
+    'FITNESS SPORT': ['FITNESS SPORT','FITNESS SPORT'],
+    'MURANO': ['MURANO 2026','MURANO'],
+    'PHARMATHERAPY': ['PHARMATHERAPY','PHARMATHERAPY'],
+    'PHARMA SLIM': ['PHARMATERAPY SLIM','PHARMA SLIM'],
+  };
+
+  const modelos = filtroModelo
+    ? Object.keys(modelosMap).filter(m => modelosMap[m][0]===filtroModelo || m===filtroModelo)
+    : Object.keys(modelosMap);
+
+  const medidas = Object.keys(NM_TARIFA_ACTUAL.precios);
+  let html = `<div style="font-size:12px;color:#6b7280;margin-bottom:10px">Comparativa <strong>Abril 2026 → Mayo 2026</strong> · 🟢 sin cambio · 🔴 subida</div>`;
+  html += `<table style="width:100%;border-collapse:collapse;font-size:11px">
+    <thead><tr style="background:#1e40af;color:white">
+      <th style="padding:8px 12px;text-align:left">Medida</th>
+      ${modelos.map(m=>`<th style="padding:8px 12px;text-align:right" colspan="3">${m}</th>`).join('')}
+    </tr>
+    <tr style="background:#3730A3;color:white">
+      <th style="padding:4px 12px"></th>
+      ${modelos.map(()=>`<th style="padding:4px 8px;text-align:right;font-weight:400;font-size:10px">Ant.</th><th style="padding:4px 8px;text-align:right;font-weight:400;font-size:10px">Act.</th><th style="padding:4px 8px;text-align:right;font-weight:400;font-size:10px">%</th>`).join('')}
+    </tr></thead><tbody>`;
+
+  medidas.forEach((med, i) => {
+    const rowAct = NM_TARIFA_ACTUAL.precios[med] || [];
+    const rowAnt = NM_TARIFA_ANTERIOR.precios[med] || [];
+    html += `<tr style="background:${i%2===0?'white':'#f9fafb'}">
+      <td style="padding:6px 12px;font-weight:600;color:#3B4A2F;white-space:nowrap">${med}</td>`;
+
+    modelos.forEach(m => {
+      const [nomAct, nomAnt] = modelosMap[m];
+      const idxAct = NM_TARIFA_ACTUAL.modelos.indexOf(nomAct);
+      const idxAnt = NM_TARIFA_ANTERIOR.modelos.indexOf(nomAnt);
+      const pAct = idxAct>=0 ? rowAct[idxAct] : null;
+      const pAnt = idxAnt>=0 ? rowAnt[idxAnt] : null;
+      const diff = pAct && pAnt ? ((pAct-pAnt)/pAnt*100) : null;
+      const color = diff===null ? '#9ca3af' : diff===0 ? '#166534' : '#991b1b';
+      html += `<td style="padding:6px 8px;text-align:right;color:#6b7280">${pAnt?pAnt.toFixed(2)+'€':'—'}</td>
+        <td style="padding:6px 8px;text-align:right;font-weight:600;color:${color}">${pAct?pAct.toFixed(2)+'€':'—'}</td>
+        <td style="padding:6px 8px;text-align:right;color:${color};font-weight:700">${diff!==null?(diff===0?'=':(diff>0?'+':'')+diff.toFixed(1)+'%'):'—'}</td>`;
+    });
+    html += '</tr>';
+  });
+  html += '</tbody></table>';
+  cont.innerHTML = html;
+}
+
+// Inicializar filtro de modelos
+window.tnmInicializarFiltros = function tnmInicializarFiltros() {
+  const sel = document.getElementById('tnm-filtro-modelo');
+  if (!sel) return;
+  sel.innerHTML = '<option value="">— Todos los modelos —</option>';
+  NM_TARIFA_ACTUAL.modelos.forEach(m => {
+    sel.innerHTML += `<option value="${m}">${m}</option>`;
+  });
+}
+
+const NM_TARIFA_ACTUAL = {
+  nombre: 'Mayo 2026',
+  modelos: ['4D','BAMBOO DELUXE 2026','BELLAGIO DELUXE','ERGO RELAX','FITNESS SPORT','LATEX GEL','MURANO 2026','PHARMATHERAPY','PHARMATERAPY SLIM'],
+  precios: {
+    '180X080': [74.70,46.70,61.60,68.99,70.22,58.35,88.59,53.42,50.74],
+    '190X080': [74.70,46.70,61.60,68.99,70.22,58.35,88.59,53.42,50.74],
+    '200X080': [79.30,47.94,63.50,71.12,72.35,60.26,91.39,54.99,52.30],
+    '180X090': [80.98,49.17,64.85,72.69,73.92,61.49,93.30,56.22,44.58],
+    '190X090': [80.98,49.17,64.85,72.69,73.92,61.49,93.30,56.22,44.58],
+    '200X090': [87.02,52.86,69.78,78.18,79.52,66.08,100.35,60.48,47.82],
+    '180X105': [92.74,56.78,74.14,84.00,84.67,70.11,107.41,64.18,50.74],
+    '190X105': [92.74,56.78,74.14,84.00,84.67,70.11,107.41,64.18,50.74],
+    '200X105': [99.68,61.04,79.74,90.27,91.06,75.38,114.35,68.99,54.54],
+    '180X120': [104.94,64.29,84.00,95.09,95.87,79.52,120.40,72.69,57.46],
+    '190X120': [104.94,64.29,84.00,95.09,95.87,79.52,120.40,72.69,57.46],
+    '200X120': [110.43,67.54,88.37,100.02,100.80,84.56,126.78,76.50,60.48],
+    '180X135': [113.79,69.89,91.62,102.93,104.83,87.02,132.83,79.52,62.72],
+    '190X135': [113.79,69.89,91.62,102.93,104.83,87.02,132.83,79.52,62.72],
+    '200X135': [118.50,72.80,95.42,107.30,109.20,91.62,138.43,82.88,65.41],
+    '190X140': [122.08,75.15,98.34,109.76,111.89,93.41,144.26,85.46,67.42],
+    '200X140': [126.00,76.16,99.68,110.99,112.78,94.42,145.60,87.14,68.32],
+    '180X150': [130.70,76.72,100.69,111.78,113.68,95.42,147.06,87.70,68.88],
+    '190X150': [130.70,76.72,100.69,111.78,113.68,95.42,147.06,87.70,68.88],
+    '200X150': [140.56,82.54,108.19,120.18,122.08,102.59,158.14,94.30,74.14],
+    '190X160': [144.93,85.12,111.55,123.87,125.89,105.73,163.07,97.22,76.50],
+    '200X160': [152.54,89.60,117.49,130.37,132.50,111.22,171.70,102.37,80.53],
+    '190X180': [164.08,96.32,126.34,140.11,142.46,119.62,184.58,110.10,86.58],
+    '200X180': [172.70,101.36,132.94,147.39,150.53,125.89,194.32,115.92,91.17],
+    '200X200': [187.71,110.21,144.48,160.16,163.18,136.86,211.23,126.00,99.12],
+  }
+};
+
+const NM_TARIFA_ANTERIOR = {
+  nombre: 'Abril 2026',
+  modelos: ['4D','BAMBOO DELUXE','BELLAGIO DELUXE','ERGO RELAX','FITNESS SPORT','MURANO','PHARMATHERAPY','PHARMA SLIM'],
+  precios: {
+    '180X080': [66.70,41.70,55.00,61.60,62.70,79.10,47.70,45.30],
+    '190X080': [66.70,41.70,55.00,61.60,62.70,79.10,47.70,45.30],
+    '200X080': [70.80,42.80,56.70,63.50,64.60,81.60,49.10,46.70],
+    '180X090': [72.30,43.90,57.90,64.90,66.00,83.30,50.20,39.80],
+    '190X090': [72.30,43.90,57.90,64.90,66.00,83.30,50.20,39.80],
+    '200X090': [77.70,47.20,62.30,69.80,71.00,89.60,54.00,42.70],
+    '180X105': [82.80,50.70,66.20,75.00,75.60,95.90,57.30,45.30],
+    '190X105': [82.80,50.70,66.20,75.00,75.60,95.90,57.30,45.30],
+    '200X105': [89.00,54.50,71.20,80.60,81.30,102.10,61.60,48.70],
+    '180X120': [93.70,57.40,75.00,84.90,85.60,107.50,64.90,51.30],
+    '190X120': [93.70,57.40,75.00,84.90,85.60,107.50,64.90,51.30],
+    '200X120': [98.60,60.30,78.90,89.30,90.00,113.20,68.30,54.00],
+    '180X135': [101.60,62.40,81.80,91.90,93.60,118.60,71.00,56.00],
+    '190X135': [101.60,62.40,81.80,91.90,93.60,118.60,71.00,56.00],
+    '200X135': [105.80,65.00,85.20,95.80,97.50,123.60,74.00,58.40],
+    '190X140': [109.00,67.10,87.80,98.00,99.90,128.80,76.30,60.20],
+    '200X140': [112.50,68.00,89.00,99.10,100.70,130.00,77.80,61.00],
+    '180X150': [116.70,68.50,89.90,99.80,101.50,131.30,78.30,61.50],
+    '190X150': [116.70,68.50,89.90,99.80,101.50,131.30,78.30,61.50],
+    '200X150': [125.50,73.70,96.60,107.30,109.00,141.20,84.20,66.20],
+    '190X160': [129.40,76.00,99.60,110.60,112.40,145.60,86.80,68.30],
+    '200X160': [136.20,80.00,104.90,116.40,118.30,153.30,91.40,71.90],
+    '190X180': [146.50,86.00,112.80,125.10,127.20,164.80,98.30,77.30],
+    '200X180': [154.20,90.50,118.70,131.60,134.40,173.50,103.50,81.40],
+    '200X200': [167.60,98.40,129.00,143.00,145.70,188.60,112.50,88.50],
+  }
+};
+
+// Mapeo modelo SKU → columna tarifa actual
+const NM_MODELO_MAP = {
+  'PHARMATHERAPY': 'PHARMATHERAPY',
+  'PHARMATHERAPY SOJA': 'PHARMATHERAPY',
+  'PHARMATHERAPY SOJA SLIM': 'PHARMATERAPY SLIM',
+  'PHARMA SLIM': 'PHARMATERAPY SLIM',
+  'PHARMATERAPY SLIM': 'PHARMATERAPY SLIM',
+  '4D': '4D',
+  'BAMBOO DELUXE': 'BAMBOO DELUXE 2026',
+  'BAMBOO DELUXE 2026': 'BAMBOO DELUXE 2026',
+  'BELLAGIO DELUXE': 'BELLAGIO DELUXE',
+  'ERGO RELAX': 'ERGO RELAX',
+  'FITNESS SPORT': 'FITNESS SPORT',
+  'LATEX GEL': 'LATEX GEL',
+  'MURANO': 'MURANO 2026',
+  'MURANO 2026': 'MURANO 2026',
+};
+
+// Mapa para tarifa ANTERIOR (Abril 2026) - nombres diferentes
+const NM_MODELO_MAP_ANT = {
+  'PHARMATHERAPY': 'PHARMATHERAPY',
+  'PHARMATHERAPY SOJA': 'PHARMATHERAPY',
+  'PHARMATHERAPY SOJA SLIM': 'PHARMA SLIM',
+  'PHARMA SLIM': 'PHARMA SLIM',
+  'PHARMATERAPY SLIM': 'PHARMA SLIM',
+  '4D': '4D',
+  'BAMBOO DELUXE': 'BAMBOO DELUXE',
+  'BAMBOO DELUXE 2026': 'BAMBOO DELUXE',
+  'BELLAGIO DELUXE': 'BELLAGIO DELUXE',
+  'ERGO RELAX': 'ERGO RELAX',
+  'FITNESS SPORT': 'FITNESS SPORT',
+  'MURANO': 'MURANO',
+  'MURANO 2026': 'MURANO',
+};
+
+
 // ─── SISTEMA DE USUARIOS Y PERMISOS ──────────────────────────
 const AUTH_USUARIOS_DEFAULT={
   'JENNIFER':{password:'happy2024',rol:'admin',nombre:'Jennifer',acceso:'todo',edicion:true},
@@ -1640,6 +2213,7 @@ const AUTH_SECCIONES_RESTRINGIDAS=['prov-colchones'];
 const AUTH_TABS_RESTRINGIDAS=['pendientes','pedidosclientes'];
 
 let authUsuarioActual=null;
+function authGetUsuarioActual(){ return (authUsuarioActual?.nombre||'').toUpperCase(); }
 
 function loginGetUsuarios(){
   const guardados=localStorage.getItem('auth_usuarios');
@@ -2191,8 +2765,8 @@ function adminLimpiarLog(){
 // ─────────────────────────────────────────────────────────────
 
 const TELAS={'CACAO':['DUNA COCOA','REJILLA 3D WENGUE'],'BEIGE':['DUNA LINO','REJILLA 3D TIERRA'],'GRIS ANTRACITA':['DUNA ONIX','REJILLA 3D NEGRA'],'GRIS NIEBLA':['DUNA KOALA','REJILLA 3D GRAFITO'],'NIEBLA':['DUNA KOALA','REJILLA 3D GRAFITO'],'OLIVA':['DUNA OLIVA','REJILLA 3D NEGRA'],'MENTA':['DUNA SALVIA','REJILLA 3D NEGRA'],'OCEANIC':['DUNA TULUM','REJILLA 3D NEGRA'],'MAGENTA':['DUNA MAGENTA','REJILLA 3D NEGRA'],'ROSA':['DUNA FLAMINGO','REJILLA 3D NEGRA'],'LAVANDA':['DUNA MORADO','REJILLA 3D NEGRA'],'STAR':['DUNA DIJON','REJILLA 3D NEGRA']};
-const ARGOS={'BLANCO':['ARGOS BLANCO','REJILLA 3D BLANCA'],'BEIGE':['ARGOS HIELO','REJILLA 3D BEIGE'],'MARRON':['ARGOS CUERO','REJILLA 3D MARRON'],'GRIS':['ARGOS MARENGO','REJILLA 3D GRAFITO'],'NEGRO':['ARGOS NEGRO','REJILLA 3D NEGRA']};
-const ARGOS_MAGNUM={'BLANCO':['ARGOS BLANCO','ARGOS BLANCO + REJILLA 3D BLANCA'],'BEIGE':['ARGOS HIELO','ARGOS HIELO + REJILLA 3D BEIGE'],'MARRON':['ARGOS CUERO','ARGOS CUERO + REJILLA 3D MARRON'],'GRIS':['ARGOS POLAR','ARGOS POLAR + REJILLA 3D GRAFITO'],'NEGRO':['ARGOS NEGRO','ARGOS NEGRO + REJILLA 3D NEGRA']};
+const ARGOS={'BLANCO':['ARGOS BLANCO','REJILLA 3D BLANCA'],'BEIGE':['ARGOS HIELO','REJILLA 3D BEIGE'],'MARRON':['ARGOS CUERO','REJILLA 3D MARRON'],'GRIS':['ARGOS MARENGO','REJILLA 3D GRAFITO'],'NEGRO':['ARGOS NEGRO','REJILLA 3D NEGRA'],'PIEDRA':['ARGOS PIEDRA','REJILLA 3D TIERRA']};
+const ARGOS_MAGNUM={'BLANCO':['ARGOS BLANCO','ARGOS BLANCO + REJILLA 3D BLANCA'],'BEIGE':['ARGOS HIELO','ARGOS HIELO + REJILLA 3D BEIGE'],'MARRON':['ARGOS CUERO','ARGOS CUERO + REJILLA 3D MARRON'],'GRIS':['ARGOS POLAR','ARGOS POLAR + REJILLA 3D GRAFITO'],'NEGRO':['ARGOS NEGRO','ARGOS NEGRO + REJILLA 3D NEGRA'],'PIEDRA':['ARGOS PIEDRA','ARGOS PIEDRA + REJILLA 3D TIERRA']};
 const REJILLA_MADERA={'BLANCO':'REJILLA 3D BLANCA','ROBLE':'REJILLA 3D BEIGE','CEREZO':'REJILLA MARRON','WENGUE':'REJILLA WENGUE','NORDICO':'REJILLA GRAFITO','GRIS':'REJILLA GRAFITO'};
 const ALMOHADAS={'ALMANTI':'ALMOHADA COPITOS','ALMNOR':'ALMOHADA NORDIC','ALMLAT':'ALMOHADA LATEX','ALMZEN':'ALMOHADA NUBE','ALMSEA':'ALMOHADA SEA FOAM'};
 const PROTECTORES={'PROBRU':'PROTECTOR BACTERBRIL','PROPRO':'PROTECTOR POLIURETANO'};
@@ -2203,7 +2777,7 @@ const potencia=t=>{const m=t.match(/(\d{3,4}NW)/i);return m?m[1]:''};
 const udTexto=t=>{const m=t.match(/\((\d+)\s*UD\)/i);return m?parseInt(m[1]):1};
 const udStr=u=>u>1?` (${u}UD)`:'';
 const colorMadera=t=>{const u=N(t);if(u.includes('ROBLE'))return'ROBLE';if(u.includes('CEREZO'))return'CEREZO';if(u.includes('WENGUE')||u.includes('WENGUÉ'))return'WENGUE';if(u.includes('NORDICO')||u.includes('NÓRDICO')||u.includes('GRIS'))return'NORDICO';return'BLANCO'};
-const colorPoli=t=>{const u=N(t);for(const c of['NEGRO','MARRON','BEIGE','GRIS','BLANCO'])if(u.includes(c))return c;return'BLANCO'};
+const colorPoli=t=>{const u=N(t);for(const c of['NEGRO','MARRON','BEIGE','GRIS','PIEDRA','BLANCO'])if(u.includes(c))return c;return'BLANCO'};
 const DUNA_A_COLOR={"DUNA COCOA":"CACAO","DUNA LINO":"BEIGE","DUNA ONIX":"GRIS ANTRACITA","DUNA KOALA":"GRIS NIEBLA","DUNA OLIVA":"OLIVA","DUNA SALVIA":"MENTA","DUNA TULUM":"OCEANIC","DUNA MAGENTA":"MAGENTA","DUNA FLAMINGO":"ROSA","DUNA MORADO":"LAVANDA","DUNA DIJON":"STAR"};
 const colorTela=t=>{const u=N(t);for(const k of["GRIS ANTRACITA","GRIS NIEBLA","NIEBLA","CACAO","OLIVA","MENTA","OCEANIC","MAGENTA","ROSA","LAVANDA","STAR","BEIGE"])if(u.includes(k))return k;for(const[duna,color]of Object.entries(DUNA_A_COLOR))if(u.includes(N(duna)))return color;return null};
 const extrasTapa=t=>{const u=N(t),ex=[];if(u.includes('PARTIDA'))ex.push('TAPA PARTIDA');if(u.includes('REFORZADA')||u.includes('REFORAZDA'))ex.push('TAPA REFORZADA');return ex};
@@ -2834,7 +3408,18 @@ function colchGuardarPedido(){
   const pedidosCreados=[];
   const {fecha,contador}=colchGenerarId(fechaInput&&fechaInput.value?fechaInput.value:null);
   proveedores.forEach((prov,i)=>{
-    const lineasProv=colchLineasActuales.filter(l=>l.prov===prov).map(l=>({...l,recibido:0}));
+    const lineasProv=colchLineasActuales.filter(l=>l.prov===prov).map(l=>{
+      const linea = {...l, recibido:0};
+      // Añadir precio de compra (solo visible para JENNIFER)
+      if(prov==='NEW MATTRESS') {
+        const resultado = nmGetPrecioConFecha(l.modelo, l.medida, today);
+        if(resultado) { linea.precioCompra = resultado.precio; linea.tarifaAplicada = resultado.tarifa; }
+      } else if(prov==='LUSOCOLCHAO') {
+        const resultado = lusoGetPrecioConFecha(l.modelo, l.medida, today);
+        if(resultado) { linea.precioCompra = resultado.precio; linea.tarifaAplicada = resultado.tarifa; }
+      }
+      return linea;
+    });
     if(!lineasProv.length)return;
     const numStr=String(contador+i).padStart(3,'0');
     const pedido={id:`${fecha}${numStr}`,fecha:today,ts:Date.now()+i,proveedor:prov,lineas:lineasProv,estado:'PENDIENTE'};
@@ -3000,7 +3585,74 @@ function pendLimpiarFiltros(){
   colchRenderPendientes();
 }
 
+function nmParseFechaPedido(fechaStr) {
+  // Fecha en formato DD/MM/YYYY
+  if (!fechaStr) return null;
+  const p = fechaStr.split('/');
+  if (p.length !== 3) return null;
+  return new Date(parseInt(p[2]), parseInt(p[1])-1, parseInt(p[0]));
+}
+
+function nmGetPrecioConFecha(modelo, medida, fechaStr) {
+  // Antes del 25/05/2026 → tarifa Abril; desde el 25/05/2026 → tarifa Mayo
+  const fechaCambio = new Date(2026, 4, 25); // 25 de Mayo 2026
+  const fechaPedido = nmParseFechaPedido(fechaStr);
+  const usarAnterior = fechaPedido && fechaPedido < fechaCambio;
+
+  const modeloNorm = (modelo||'').toUpperCase().trim();
+
+  // Seleccionar tarifa y mapa de modelos correcto según fecha
+  const tarifa = usarAnterior ? NM_TARIFA_ANTERIOR : NM_TARIFA_ACTUAL;
+  const mapa = usarAnterior ? NM_MODELO_MAP_ANT : NM_MODELO_MAP;
+  const colNombre = mapa[modeloNorm] || modeloNorm;
+  const colIdx = tarifa.modelos.indexOf(colNombre) !== -1
+    ? tarifa.modelos.indexOf(colNombre)
+    : tarifa.modelos.indexOf(modeloNorm);
+  if (colIdx === -1) return null;
+
+  const partes = (medida||'').toUpperCase().replace(/\s/g,'').split('X');
+  if (partes.length !== 2) return null;
+  const n1 = parseInt(partes[0]), n2 = parseInt(partes[1]);
+  if (isNaN(n1) || isNaN(n2)) return null;
+  const claves = [
+    n1+'X'+String(n2).padStart(3,'0'), n2+'X'+String(n1).padStart(3,'0'),
+    n1+'X'+n2, n2+'X'+n1,
+    String(n1).padStart(3,'0')+'X'+String(n2).padStart(3,'0'),
+    String(n2).padStart(3,'0')+'X'+String(n1).padStart(3,'0'),
+  ];
+  for (const clave of claves) {
+    const fila = tarifa.precios[clave];
+    if (fila && fila[colIdx] != null) return { precio: fila[colIdx], tarifa: tarifa.nombre };
+  }
+  return null;
+}
+
+function nmRecalcularPrecios(forzar=false) {
+  const pedidos = JSON.parse(localStorage.getItem('colch_pedidos') || '[]');
+  let actualizados = 0;
+  pedidos.forEach(p => {
+    p.lineas.forEach(l => {
+      if (!forzar && l.precioCompra) return;
+      let resultado = null;
+      if (p.proveedor === 'NEW MATTRESS') {
+        resultado = nmGetPrecioConFecha(l.modelo, l.medida, p.fecha);
+      } else if (p.proveedor === 'LUSOCOLCHAO') {
+        resultado = lusoGetPrecioConFecha(l.modelo, l.medida, p.fecha);
+      }
+      if (resultado) { l.precioCompra = resultado.precio; l.tarifaAplicada = resultado.tarifa; actualizados++; }
+    });
+  });
+  localStorage.setItem('colch_pedidos', JSON.stringify(pedidos));
+  colchPedidos = pedidos;
+  const msg = document.getElementById('pend-recalc-msg');
+  if (msg) msg.textContent = actualizados > 0 ? `✓ ${actualizados} precio${actualizados > 1 ? 's' : ''} actualizado${actualizados > 1 ? 's' : ''}` : 'No hay precios pendientes de rellenar';
+  colchRenderPendientes();
+}
+
 function colchRenderPendientes(){
+  // Mostrar botón recalcular solo para Jennifer
+  const recalcWrap = document.getElementById('pend-recalc-wrap');
+  if (recalcWrap) recalcWrap.style.display = authGetUsuarioActual() === 'JENNIFER' ? 'block' : 'none';
   const pedsPend=colchPedidos.filter(p=>p.lineas.some(l=>l.recibido<l.cantidad));
   const statsEl=document.getElementById('pend-stats');
   const contentEl=document.getElementById('pend-content');
@@ -3108,6 +3760,8 @@ function pendRenderPorPedido(pedsPendOrig,contentEl,pedsCompletos=[]){let pedsPe
           <div style="width:150px;text-align:center;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#065F46">Stock rest. camión tras ventas</div>
           <div style="width:120px;text-align:center;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#1d4ed8">Previsión entrega</div>
           <div style="width:90px;text-align:center;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#6b7280">Recibido</div>
+          ${authGetUsuarioActual()==='JENNIFER'?'<div style="width:90px;text-align:right;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#7c3aed">P. Compra</div>':''}
+          ${authGetUsuarioActual()==='JENNIFER'?'<div style="width:90px;text-align:right;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#5b21b6">Subtotal</div>':''}
         </div>
         ${lineasPend.map(l=>{
           const key=`${l.modelo}||${l.medida}`;
@@ -3146,8 +3800,22 @@ function pendRenderPorPedido(pedsPendOrig,contentEl,pedsCompletos=[]){let pedsPe
             <div style="width:90px;text-align:center">${l.recibido>0?`<div><span class="badge-recibido">${l.recibido}</span>${l.fechaRecepcion?`<div style="font-size:9px;color:#6b7280;margin-top:2px">${l.fechaRecepcion}</div>`:''}</div>`:''}</div>
             <div style="width:36px;text-align:center">${l.recibido>0?`<button onclick="pendEditarRecibido('${p.id}','${l.modelo.replace(/'/g,'&apos;')}','${l.medida}')" title="Corregir cantidad recibida" style="background:none;border:none;cursor:pointer;color:#9ca3af;font-size:15px;padding:2px" onmouseover="this.style.color='#3B4A2F'" onmouseout="this.style.color='#9ca3af'"><i class='ti ti-edit'></i></button>`:''}
             </div>
+            ${authGetUsuarioActual()==='JENNIFER'&&(l.prov==='NEW MATTRESS'||l.prov==='LUSOCOLCHAO')?`<div style="width:90px;text-align:right;padding-right:8px">${l.precioCompra?`<span style="font-size:11px;font-weight:700;color:#7c3aed">${l.precioCompra.toFixed(2)} €</span>`:`<span style="font-size:10px;color:#d1d5db">—</span>`}</div>`:''}
+            ${authGetUsuarioActual()==='JENNIFER'&&(l.prov==='NEW MATTRESS'||l.prov==='LUSOCOLCHAO')?`<div style="width:90px;text-align:right;padding-right:8px">${l.precioCompra?`<span style="font-size:11px;font-weight:700;color:#5b21b6">${(l.precioCompra*(l.cantidad-l.recibido)).toFixed(2)} €</span>`:`<span style="font-size:10px;color:#d1d5db">—</span>`}</div>`:''}
           </div>`;
         }).join('')}
+        ${authGetUsuarioActual()==='JENNIFER'?(()=>{
+          const lineasConPrecio = lineasPend.filter(l=>l.precioCompra&&(l.prov==='NEW MATTRESS'||l.prov==='LUSOCOLCHAO'));
+          if(!lineasConPrecio.length) return '';
+          const total = lineasConPrecio.reduce((sum,l)=>sum+(l.precioCompra*(l.cantidad-l.recibido)),0);
+          const totalUds = lineasConPrecio.reduce((sum,l)=>sum+(l.cantidad-l.recibido),0);
+          return `<div style="display:flex;justify-content:flex-end;padding:10px 14px;background:#F5F3FF;border-top:1px solid #e2e6dc;border-radius:0 0 10px 10px">
+            <div style="font-size:12px;color:#5b21b6;font-weight:700">
+              <span style="color:#6b7280;font-weight:400;margin-right:8px">${totalUds} ud${totalUds!==1?'s':''} · Total pedido:</span>
+              ${total.toFixed(2)} €
+            </div>
+          </div>`;
+        })():''}
       </div>
     </div>`;
   }).join('');
@@ -3913,7 +4581,7 @@ function cerrarVistaPrevia(){
   mostrarPreview(pedidosActuales);
 }
 // Cerrar modal al clicar fuera del contenido
-document.getElementById('modal-preview').addEventListener('click',function(e){if(e.target===this)cerrarVistaPrevia();});
+(document.getElementById('modal-preview')||{addEventListener:()=>{}}).addEventListener('click',function(e){if(e.target===this)cerrarVistaPrevia();});
 
 // ─── PEDIDO MANUAL ───────────────────────────────────────────
 let manualFilas=[];
@@ -6449,7 +7117,7 @@ function albNMConfirmar(){
   st.style.display='block';
 }
 
-document.getElementById('modal-alb-nm').addEventListener('click',function(e){if(e.target===this)albNMCerrar();});
+(document.getElementById('modal-alb-nm')||{addEventListener:()=>{}}).addEventListener('click',function(e){if(e.target===this)albNMCerrar();});
 // ─────────────────────────────────────────────────────────────
 // Mapa: nombre en factura LUSOCOLCHÃO → nombre en catálogo app
 const LUSO_NOMBRE_MAP={
@@ -6733,7 +7401,7 @@ function pdfRevConfirmar(){
   prevInterpretar();
 }
 
-document.getElementById('modal-pdf-revision').addEventListener('click',function(e){if(e.target===this)pdfRevCerrar();});
+(document.getElementById('modal-pdf-revision')||{addEventListener:()=>{}}).addEventListener('click',function(e){if(e.target===this)pdfRevCerrar();});
 
 // ─── PREVISUALIZACIÓN Y ENVÍO PEDIDOS COLCHONES ──────────────
 const COLCH_EMAILS={
@@ -6827,7 +7495,7 @@ function colchDescargarWordProv(pedId){
   if(ped) colchDescargarWord([ped]);
 }
 
-document.getElementById('modal-colch-preview').addEventListener('click',function(e){if(e.target===this)colchCerrarPreview();});
+(document.getElementById('modal-colch-preview')||{addEventListener:()=>{}}).addEventListener('click',function(e){if(e.target===this)colchCerrarPreview();});
 // ─────────────────────────────────────────────────────────────
 
 function prevFechaSinConfirmar(){
@@ -7004,7 +7672,7 @@ function prevEliminarItem(id){
   prevRenderHistorial();
 }
 
-document.getElementById('modal-prev-revision').addEventListener('click',function(e){if(e.target===this)prevCerrarRevision();});
+(document.getElementById('modal-prev-revision')||{addEventListener:()=>{}}).addEventListener('click',function(e){if(e.target===this)prevCerrarRevision();});
 // ─────────────────────────────────────────────────────────────
 
 function navToggle(id,header){
@@ -7233,6 +7901,8 @@ const _origShowPage=showPage;
 window.showPage=function(id,el){
   if(id!=='passwords'&&pwCryptoKey){pwBloquear();}
   _origShowPage(id,el);
+  if(id==='tarifas-nm'){ tnmInicializarFiltros(); tnmRender(); }
+  if(id==='tarifas-luso'){ tlusoInicializarFiltros(); tlusoRender(); }
   // Abrir sección y subsección del item clicado en el acordeón
   if(el){
     const subBody=el.closest('.nav-subsection-body');
@@ -7249,8 +7919,8 @@ window.showPage=function(id,el){
     }
   }
 };
-document.getElementById('modal-colch-edit').addEventListener('click',function(e){if(e.target===this)colchEditCerrar();});
-document.getElementById('modal-pw').addEventListener('click',function(e){if(e.target===this)pwCerrarModal();});
+(document.getElementById('modal-colch-edit')||{addEventListener:()=>{}}).addEventListener('click',function(e){if(e.target===this)colchEditCerrar();});
+(document.getElementById('modal-pw')||{addEventListener:()=>{}}).addEventListener('click',function(e){if(e.target===this)pwCerrarModal();});
 // ─────────────────────────────────────────────────────────────
 
 let histBuscarTimer=null;
@@ -7311,8 +7981,8 @@ function cerrarModalRef(){
   document.getElementById('modal-ref').style.display='none';
   document.body.style.overflow='';
 }
-document.getElementById('modal-ref').addEventListener('click',function(e){if(e.target===this)cerrarModalRef();});
-document.getElementById('modal-nacex-email').addEventListener('click',function(e){if(e.target===this)nacexCerrarModal();});
+(document.getElementById('modal-ref')||{addEventListener:()=>{}}).addEventListener('click',function(e){if(e.target===this)cerrarModalRef();});
+(document.getElementById('modal-nacex-email')||{addEventListener:()=>{}}).addEventListener('click',function(e){if(e.target===this)nacexCerrarModal();});
 // ─────────────────────────────────────────────────────────────
 // ─────────────────────────────────────────────────────────────
 
@@ -7418,9 +8088,19 @@ function backupActualizarUltima(){
   if(el) el.textContent=ultima?`Última copia: ${ultima}`:'Nunca se ha hecho una copia';
 }
 
-document.getElementById('modal-backup').addEventListener('click',function(e){if(e.target===this)backupCerrar();});
+document.addEventListener('DOMContentLoaded', function() {
+  const modalBackup = document.getElementById('modal-backup');
+  if(modalBackup) modalBackup.addEventListener('click',function(e){if(e.target===this)backupCerrar();});
+});
 backupActualizarUltima();
+
+
+
+// Inicializar cuando se muestra la página
+
+
 </script>
+
 
 
 
