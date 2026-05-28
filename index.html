@@ -80,12 +80,23 @@ const _proxy = new Proxy({}, {
 Object.defineProperty(window, 'localStorage', { get: () => _proxy, configurable: true });
 
 async function _cargarDesdeLaNube() {
+  // Solo cargar desde la nube si estamos en la URL de Cloudflare
+  if (!_esNube) {
+    for (let i = 0; i < window._localStorage_real.length; i++) {
+      const k = window._localStorage_real.key(i);
+      if (k) _cache[k] = window._localStorage_real.getItem(k);
+    }
+    return;
+  }
   try {
     const res = await fetch(`${WORKER_URL}/api/export`);
     if (!res.ok) throw new Error('Sin respuesta');
     const datos = await res.json();
     Object.entries(datos).forEach(([k,v]) => {
-      if (v !== null) { _cache[k] = v; try { window._localStorage_real.setItem(k, v); } catch(e){} }
+      if (v !== null) {
+        _cache[k] = v;
+        try { window._localStorage_real.setItem(k, v); } catch(e){}
+      }
     });
     console.log(`✅ ${Object.keys(datos).length} claves cargadas desde la nube`);
   } catch(e) {
@@ -122,8 +133,21 @@ function _iniciarSyncPeriodico() {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
+  // Mostrar pantalla de carga si estamos en la nube
+  if (_esNube) {
+    const loading = document.getElementById('_loading_screen');
+    if (loading) loading.style.display = 'flex';
+  }
   await _cargarDesdeLaNube();
+  // Ocultar pantalla de carga
+  const loading = document.getElementById('_loading_screen');
+  if (loading) loading.style.display = 'none';
   _iniciarSyncPeriodico();
+  // Mostrar pantalla de login ahora que los datos están listos
+  const loginScreen = document.getElementById('login-screen');
+  if (loginScreen) loginScreen.style.display = 'flex';
+  // Disparar evento para que la app se inicialice con los datos ya cargados
+  document.dispatchEvent(new Event('datosListos'));
 });
 </script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -235,7 +259,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
 <body>
 
 <!-- PANTALLA DE LOGIN -->
-<div id="login-screen" style="display:flex;position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,#3B4A2F 0%,#2a3520 100%);align-items:center;justify-content:center">
+<div id="login-screen" style="display:none;position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,#3B4A2F 0%,#2a3520 100%);align-items:center;justify-content:center">
   <div style="background:white;border-radius:20px;padding:40px 36px;width:360px;box-shadow:0 32px 80px rgba(0,0,0,0.4)">
     <div style="text-align:center;margin-bottom:28px">
       <div style="font-size:28px;margin-bottom:8px">🌿</div>
@@ -268,6 +292,12 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
       <button onclick="loginResetUsuarios()" style="background:none;border:none;font-size:11px;color:#9ca3af;cursor:pointer;text-decoration:underline">Problemas para entrar</button>
     </div>
   </div>
+</div>
+
+<!-- PANTALLA DE CARGA -->
+<div id="_loading_screen" style="display:none;position:fixed;inset:0;z-index:99999;background:#F2F4F0;align-items:center;justify-content:center;flex-direction:column;gap:16px">
+  <div style="width:48px;height:48px;border:4px solid #dde3d4;border-top-color:#3B4A2F;border-radius:50%;animation:spin 0.8s linear infinite"></div>
+  <div style="font-size:14px;color:#3B4A2F;font-weight:600">Cargando datos...</div>
 </div>
 
 <div class="app" id="main-app" style="display:none">
