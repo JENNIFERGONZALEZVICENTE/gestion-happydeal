@@ -322,8 +322,8 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
         </div>
         <div class="nav-subsection-body" id="sub-colchones">
           <div class="nav-item" onclick="showPage('prov-colchones',this)"><i class="ti ti-bed"></i> Gestión pedidos</div>
-          <div class="nav-item" onclick="showPage('tarifas-nm',this)"><i class="ti ti-tag"></i> Tarifas NEW MATTRESS</div>
-          <div class="nav-item" onclick="showPage('tarifas-luso',this)"><i class="ti ti-tag"></i> Tarifas LUSOCOLCHAO</div>
+          <div class="nav-item jennifer-only" onclick="showPage('tarifas-nm',this)"><i class="ti ti-tag"></i> Tarifas NEW MATTRESS</div>
+          <div class="nav-item jennifer-only" onclick="showPage('tarifas-luso',this)"><i class="ti ti-tag"></i> Tarifas LUSOCOLCHAO</div>
         </div>
 
         <!-- POLIVAL -->
@@ -2323,6 +2323,12 @@ function loginCerrarSesion(){
 }
 
 function authAplicarRestricciones(){
+  // Ocultar elementos exclusivos de Jennifer para el resto de usuarios
+  const esJennifer = authGetUsuarioActual() === 'JENNIFER';
+  document.querySelectorAll('.jennifer-only').forEach(el => {
+    el.style.display = esJennifer ? '' : 'none';
+  });
+
   const esRestringido=authUsuarioActual?.acceso==='restringido';
   if(!esRestringido) return;
 
@@ -7939,8 +7945,8 @@ const _origShowPage=showPage;
 window.showPage=function(id,el){
   if(id!=='passwords'&&pwCryptoKey){pwBloquear();}
   _origShowPage(id,el);
-  if(id==='tarifas-nm'){ tnmInicializarFiltros(); tnmRender(); }
-  if(id==='tarifas-luso'){ tlusoInicializarFiltros(); tlusoRender(); }
+  if(id==='tarifas-nm'){ if(authGetUsuarioActual()!=='JENNIFER') return; tnmInicializarFiltros(); tnmRender(); }
+  if(id==='tarifas-luso'){ if(authGetUsuarioActual()!=='JENNIFER') return; tlusoInicializarFiltros(); tlusoRender(); }
   // Abrir sección y subsección del item clicado en el acordeón
   if(el){
     const subBody=el.closest('.nav-subsection-body');
