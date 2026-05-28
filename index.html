@@ -2302,6 +2302,14 @@ function loginMostrarApp(){
   if(navAdmin) navAdmin.style.display=authUsuarioActual.rol==='admin'?'block':'none';
   authAplicarRestricciones();
   authRegistrarAccion('Inicio de sesión');
+  // Si estamos en la nube, recargar datos para asegurar que están actualizados
+  if(typeof _esNube !== 'undefined' && _esNube) {
+    _cargarDesdeLaNube().then(() => {
+      // Refrescar la vista actual
+      const activeItem = document.querySelector('.nav-item.active');
+      if(activeItem) activeItem.click();
+    });
+  }
 }
 
 function loginCerrarSesion(){
