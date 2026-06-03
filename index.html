@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
+<!-- saved from url=(0048)file:///C:/Users/Usuario/Downloads/index_61.html -->
+<html lang="es"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gestión Trabajo Jennifer</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.6.0/dist/tabler-icons.min.css">
+<link rel="stylesheet" href="./index_files/tabler-icons.min.css">
 <script>
 // ══════════════════════════════════════════════════════════════
 // CAPA DE SINCRONIZACIÓN EN LA NUBE - Happy Deal SL
@@ -148,10 +148,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (loginScreen) loginScreen.style.display = 'flex';
   // Disparar evento para que la app se inicialice con los datos ya cargados
   document.dispatchEvent(new Event('datosListos'));
+  // Reparar fechas corruptas en albaranes si las hay
+  setTimeout(pcRepararFechasAlbaranes, 500);
 });
 </script>
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js"></script>
+<script src="./index_files/xlsx.full.min.js.descargar"></script>
+<script src="./index_files/index.umd.js.descargar"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1a;min-height:100vh}
@@ -256,10 +258,10 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
 .badge-recibido{background:#ECFDF5;color:#065f46;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600}
 </style>
 </head>
-<body>
+<body style="">
 
 <!-- PANTALLA DE LOGIN -->
-<div id="login-screen" style="display:none;position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,#3B4A2F 0%,#2a3520 100%);align-items:center;justify-content:center">
+<div id="login-screen" style="display: none; position: fixed; inset: 0px; z-index: 9999; background: linear-gradient(135deg, rgb(59, 74, 47) 0%, rgb(42, 53, 32) 100%); align-items: center; justify-content: center;">
   <div style="background:white;border-radius:20px;padding:40px 36px;width:360px;box-shadow:0 32px 80px rgba(0,0,0,0.4)">
     <div style="text-align:center;margin-bottom:28px">
       <div style="font-size:28px;margin-bottom:8px">🌿</div>
@@ -268,8 +270,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
     </div>
     <div style="margin-bottom:14px">
       <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:5px">Usuario</label>
-      <select id="login-usuario" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;outline:none;background:white"
-        onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
+      <select id="login-usuario" style="width: 100%; padding: 10px 12px; border: 1px solid rgb(209, 213, 219); border-radius: 8px; font-size: 14px; outline: none; background: white;" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
         <option value="">— Selecciona usuario —</option>
         <option value="JENNIFER">Jennifer</option>
         <option value="ARIADNA">Ariadna</option>
@@ -279,10 +280,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
     </div>
     <div style="margin-bottom:20px">
       <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:5px">Contraseña</label>
-      <input type="password" id="login-password" placeholder="••••••••"
-        style="width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;outline:none"
-        onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'"
-        onkeydown="if(event.key==='Enter')loginEntrar()">
+      <input type="password" id="login-password" placeholder="••••••••" style="width: 100%; padding: 10px 12px; border: 1px solid rgb(209, 213, 219); border-radius: 8px; font-size: 14px; outline: none;" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;" onkeydown="if(event.key===&#39;Enter&#39;)loginEntrar()">
     </div>
     <div id="login-error" style="display:none;background:#FEE2E2;color:#991b1b;font-size:12px;padding:8px 12px;border-radius:6px;margin-bottom:14px"></div>
     <button onclick="loginEntrar()" style="width:100%;padding:12px;background:#3B4A2F;color:white;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer">
@@ -300,7 +298,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
   <div style="font-size:14px;color:#3B4A2F;font-weight:600">Cargando datos...</div>
 </div>
 
-<div class="app" id="main-app" style="display:none">
+<div class="app" id="main-app" style="display: grid;">
   <div class="sidebar">
     <div class="sidebar-logo">
       <h1>Gestión Trabajo<br>Jennifer</h1>
@@ -308,76 +306,80 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
     </div>
     <nav class="sidebar-nav">
 
+      <!-- STOCK -->
+      <div class="nav-group-label">Almacén</div>
+      <div class="nav-item active" onclick="showPage(&#39;stock&#39;,this)" style="padding-left:20px"><i class="ti ti-stack-2"></i> Stock <span id="badgeStock" class="badge" style="background: rgb(238, 242, 255); color: rgb(55, 48, 163); margin-left: 4px; display: inline-block;">64</span></div>
+
       <!-- GESTIÓN PROVEEDORES -->
-      <div class="nav-section-header" onclick="navToggle('sec-proveedores',this)">
+      <div class="nav-section-header" onclick="navToggle(&#39;sec-proveedores&#39;,this)">
         <span>Gestión Proveedores</span>
         <i class="ti ti-chevron-down chevron"></i>
       </div>
       <div class="nav-section-body" id="sec-proveedores">
 
         <!-- Colchones -->
-        <div class="nav-subsection-header" onclick="navToggle('sub-colchones',this)">
+        <div class="nav-subsection-header" onclick="navToggle(&#39;sub-colchones&#39;,this)">
           <span>Colchones</span>
           <i class="ti ti-chevron-down chevron"></i>
         </div>
         <div class="nav-subsection-body" id="sub-colchones">
-          <div class="nav-item" onclick="showPage('prov-colchones',this)"><i class="ti ti-bed"></i> Gestión pedidos</div>
-          <div class="nav-item jennifer-only" onclick="showPage('tarifas-nm',this)"><i class="ti ti-tag"></i> Tarifas NEW MATTRESS</div>
-          <div class="nav-item jennifer-only" onclick="showPage('tarifas-luso',this)"><i class="ti ti-tag"></i> Tarifas LUSOCOLCHAO</div>
+          <div class="nav-item" onclick="showPage(&#39;prov-colchones&#39;,this)"><i class="ti ti-bed"></i> Gestión pedidos</div>
+          <div class="nav-item jennifer-only" onclick="showPage(&#39;tarifas-nm&#39;,this)"><i class="ti ti-tag"></i> Tarifas NEW MATTRESS</div>
+          <div class="nav-item jennifer-only" onclick="showPage(&#39;tarifas-luso&#39;,this)"><i class="ti ti-tag"></i> Tarifas LUSOCOLCHAO</div>
         </div>
 
         <!-- POLIVAL -->
-        <div class="nav-subsection-header" onclick="navToggle('sub-polival',this)">
+        <div class="nav-subsection-header" onclick="navToggle(&#39;sub-polival&#39;,this)">
           <span>POLIVAL · Tapicería</span>
           <i class="ti ti-chevron-down chevron"></i>
         </div>
         <div class="nav-subsection-body" id="sub-polival">
-          <div class="nav-item" onclick="showPage('prov-polival',this)"><i class="ti ti-building-factory-2"></i> Ficha proveedor</div>
-          <div class="nav-item" onclick="showPage('generar',this)"><i class="ti ti-file-plus"></i> Generar pedido</div>
-          <div class="nav-item" onclick="showPage('historial',this)"><i class="ti ti-history"></i> Historial</div>
-          <div class="nav-item" onclick="showPage('diccionario',this)"><i class="ti ti-book"></i> Diccionario</div>
+          <div class="nav-item" onclick="showPage(&#39;prov-polival&#39;,this)"><i class="ti ti-building-factory-2"></i> Ficha proveedor</div>
+          <div class="nav-item" onclick="showPage(&#39;generar&#39;,this)"><i class="ti ti-file-plus"></i> Generar pedido</div>
+          <div class="nav-item" onclick="showPage(&#39;historial&#39;,this)"><i class="ti ti-history"></i> Historial</div>
+          <div class="nav-item" onclick="showPage(&#39;diccionario&#39;,this)"><i class="ti ti-book"></i> Diccionario</div>
         </div>
 
       </div>
 
       <!-- TRANSPORTES -->
-      <div class="nav-section-header" onclick="navToggle('sec-transportes',this)">
+      <div class="nav-section-header" onclick="navToggle(&#39;sec-transportes&#39;,this)">
         <span>Transportes</span>
         <i class="ti ti-chevron-down chevron"></i>
       </div>
       <div class="nav-section-body" id="sec-transportes">
 
         <!-- NACEX -->
-        <div class="nav-subsection-header" onclick="navToggle('sub-nacex',this)">
+        <div class="nav-subsection-header" onclick="navToggle(&#39;sub-nacex&#39;,this)">
           <span>NACEX</span>
           <i class="ti ti-chevron-down chevron"></i>
         </div>
         <div class="nav-subsection-body" id="sub-nacex">
-          <div class="nav-item" onclick="showPage('nacex',this)"><i class="ti ti-truck-delivery"></i> Solicitud envíos</div>
-          <div class="nav-item" onclick="showPage('nacex-export',this)"><i class="ti ti-file-download"></i> Exportar listado envíos</div>
+          <div class="nav-item" onclick="showPage(&#39;nacex&#39;,this)"><i class="ti ti-truck-delivery"></i> Solicitud envíos</div>
+          <div class="nav-item" onclick="showPage(&#39;nacex-export&#39;,this)"><i class="ti ti-file-download"></i> Exportar listado envíos</div>
         </div>
 
       </div>
 
       <!-- SEGURIDAD -->
-      <div class="nav-section-header" onclick="navToggle('sec-seguridad',this)">
+      <div class="nav-section-header" onclick="navToggle(&#39;sec-seguridad&#39;,this)">
         <span>Seguridad</span>
         <i class="ti ti-chevron-down chevron"></i>
       </div>
       <div class="nav-section-body" id="sec-seguridad">
-        <div class="nav-item" onclick="showPage('passwords',this)"><i class="ti ti-lock"></i> Gestor de contraseñas</div>
+        <div class="nav-item" onclick="showPage(&#39;passwords&#39;,this)"><i class="ti ti-lock"></i> Gestor de contraseñas</div>
       </div>
 
       <!-- ADMINISTRACIÓN (solo admin) -->
-      <div id="nav-admin-section" style="display:none">
-        <div class="nav-section-header" onclick="navToggle('sec-admin',this)">
+      <div id="nav-admin-section" style="display: block;">
+        <div class="nav-section-header" onclick="navToggle(&#39;sec-admin&#39;,this)">
           <span>Administración</span>
           <i class="ti ti-chevron-down chevron"></i>
         </div>
         <div class="nav-section-body" id="sec-admin">
-          <div class="nav-item" onclick="showPage('admin-usuarios',this)"><i class="ti ti-users"></i> Usuarios y permisos</div>
-          <div class="nav-item" onclick="showPage('admin-log',this)"><i class="ti ti-list-details"></i> Registro de actividad</div>
-          <div class="nav-item" onclick="showPage('admin-mantenimiento',this)"><i class="ti ti-tools"></i> Mantenimiento</div>
+          <div class="nav-item" onclick="showPage(&#39;admin-usuarios&#39;,this)"><i class="ti ti-users"></i> Usuarios y permisos</div>
+          <div class="nav-item" onclick="showPage(&#39;admin-log&#39;,this)"><i class="ti ti-list-details"></i> Registro de actividad</div>
+          <div class="nav-item" onclick="showPage(&#39;admin-mantenimiento&#39;,this)"><i class="ti ti-tools"></i> Mantenimiento</div>
         </div>
       </div>
 
@@ -385,19 +387,16 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
     <div style="padding:12px 16px;border-top:1px solid rgba(255,255,255,0.1);margin-top:auto">
       <div style="display:flex;align-items:center;justify-content:space-between">
         <div>
-          <div style="font-size:11px;font-weight:600;color:white" id="sidebar-usuario-nombre">—</div>
-          <div style="font-size:9px;color:rgba(255,255,255,0.4)" id="sidebar-usuario-rol">—</div>
+          <div style="font-size:11px;font-weight:600;color:white" id="sidebar-usuario-nombre">Jennifer</div>
+          <div style="font-size:9px;color:rgba(255,255,255,0.4)" id="sidebar-usuario-rol">Administrador · Editor</div>
         </div>
-        <button onclick="loginCerrarSesion()" title="Cerrar sesión"
-          style="background:rgba(255,255,255,0.1);border:none;border-radius:6px;padding:5px 8px;cursor:pointer;color:rgba(255,255,255,0.6);font-size:12px"
-          onmouseover="this.style.background='rgba(255,255,255,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">
+        <button onclick="loginCerrarSesion()" title="Cerrar sesión" style="background:rgba(255,255,255,0.1);border:none;border-radius:6px;padding:5px 8px;cursor:pointer;color:rgba(255,255,255,0.6);font-size:12px" onmouseover="this.style.background=&#39;rgba(255,255,255,0.2)&#39;" onmouseout="this.style.background=&#39;rgba(255,255,255,0.1)&#39;">
           <i class="ti ti-logout"></i>
         </button>
       </div>
     </div>
     <div style="padding:10px 12px;border-top:1px solid rgba(255,255,255,0.1)">
-      <button onclick="backupAbrir()" style="width:100%;display:flex;align-items:center;gap:8px;padding:9px 12px;background:rgba(168,192,122,0.15);border:1px solid rgba(168,192,122,0.35);border-radius:8px;color:#A8C07A;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.15s"
-        onmouseover="this.style.background='rgba(168,192,122,0.28)'" onmouseout="this.style.background='rgba(168,192,122,0.15)'">
+      <button onclick="backupAbrir()" style="width:100%;display:flex;align-items:center;gap:8px;padding:9px 12px;background:rgba(168,192,122,0.15);border:1px solid rgba(168,192,122,0.35);border-radius:8px;color:#A8C07A;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.15s" onmouseover="this.style.background=&#39;rgba(168,192,122,0.28)&#39;" onmouseout="this.style.background=&#39;rgba(168,192,122,0.15)&#39;">
         <i class="ti ti-cloud-download" style="font-size:15px"></i> Copia de seguridad
       </button>
     </div>
@@ -407,13 +406,13 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
       </div>
       v2.0 · Happy Deal SL
     </div>
-    <div id="_notif_sync" style="display:none;position:fixed;bottom:20px;right:20px;z-index:9999;background:#1e40af;color:white;padding:10px 16px;border-radius:10px;font-size:13px;font-weight:500;box-shadow:0 4px 16px rgba(0,0,0,0.2)"></div>
+    <div id="_notif_sync" style="display: none; position: fixed; bottom: 20px; right: 20px; z-index: 9999; background: rgb(30, 64, 175); color: white; padding: 10px 16px; border-radius: 10px; font-size: 13px; font-weight: 500; box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 16px;">🔄 2 cambios de otros usuarios</div>
   </div>
 
   <div class="main">
 
     <!-- GENERAR -->
-    <div class="page active" id="page-generar">
+    <div class="page" id="page-generar">
       <div class="page-header">
         <h2>Generar pedido diario</h2>
         <p>Sube el Excel de Ariadna o introduce manualmente las líneas del pedido.</p>
@@ -424,7 +423,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
         <div style="width:28px;height:28px;background:#3B4A2F;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><span style="color:white;font-size:12px;font-weight:700">1</span></div>
         <div style="font-size:14px;font-weight:600;color:#3B4A2F">Desde Excel de Ariadna</div>
       </div>
-      <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
+      <div class="upload-zone" id="uploadZone" onclick="document.getElementById(&#39;fileInput&#39;).click()">
         <i class="ti ti-file-spreadsheet"></i>
         <p>Haz clic o arrastra el Excel aquí</p>
         <span>CUADERNO_TAPICERÍA_ACTUAL.xlsx</span>
@@ -493,7 +492,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
         <div style="display:flex;align-items:center;gap:10px">
           <i class="ti ti-search" style="color:#9ca3af;font-size:16px;flex-shrink:0"></i>
           <input type="text" id="histBuscador" placeholder="Buscar por referencia (ej: 12345-A)…" oninput="histBuscarRef(this.value)" style="flex:1;border:none;outline:none;font-size:13px;color:#1a1a1a;background:transparent">
-          <button onclick="document.getElementById('histBuscador').value='';histRender()" style="background:none;border:none;cursor:pointer;color:#9ca3af;font-size:18px;line-height:1">✕</button>
+          <button onclick="document.getElementById(&#39;histBuscador&#39;).value=&#39;&#39;;histRender()" style="background:none;border:none;cursor:pointer;color:#9ca3af;font-size:18px;line-height:1">✕</button>
         </div>
       </div>
       <div id="historialContent">
@@ -579,11 +578,11 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
           <div style="font-size:15px;font-weight:700;color:#3B4A2F">POLIVAL</div>
           <div style="font-size:12px;color:#6b7280;margin-top:2px">Proveedor de tapicería · canapés, bases, cabeceros, almohadas</div>
         </div>
-        <button class="btn btn-primary" onclick="showPageByName('generar')"><i class="ti ti-file-plus"></i> Ir a generar pedido</button>
+        <button class="btn btn-primary" onclick="showPageByName(&#39;generar&#39;)"><i class="ti ti-file-plus"></i> Ir a generar pedido</button>
       </div>
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:4px">
-        <div class="stat-card"><div class="label">Pedidos generados</div><div class="value" id="polivalTotal">0</div></div>
-        <div class="stat-card"><div class="label">Último pedido</div><div class="value" style="font-size:14px;padding-top:6px" id="polivalUltimo">—</div></div>
+        <div class="stat-card"><div class="label">Pedidos generados</div><div class="value" id="polivalTotal">8</div></div>
+        <div class="stat-card"><div class="label">Último pedido</div><div class="value" style="font-size:14px;padding-top:6px" id="polivalUltimo">02/06/2026</div></div>
         <div class="stat-card"><div class="label">Tipo</div><div class="value" style="font-size:13px;padding-top:6px">Tapicería</div></div>
       </div>
     </div>
@@ -599,21 +598,17 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
       <!-- Selector de tarifa y comparativa -->
       <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;align-items:center">
         <div style="display:flex;gap:8px">
-          <button id="tnm-btn-actual" onclick="tnmSetVista('actual')"
-            style="padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;background:#3B4A2F;border:1px solid #3B4A2F;color:white">
+          <button id="tnm-btn-actual" onclick="tnmSetVista(&#39;actual&#39;)" style="padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;background:#3B4A2F;border:1px solid #3B4A2F;color:white">
             <i class="ti ti-tag"></i> Tarifa actual (Mayo 2026)
           </button>
-          <button id="tnm-btn-anterior" onclick="tnmSetVista('anterior')"
-            style="padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;background:white;border:1px solid #d1d5db;color:#6b7280">
+          <button id="tnm-btn-anterior" onclick="tnmSetVista(&#39;anterior&#39;)" style="padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;background:white;border:1px solid #d1d5db;color:#6b7280">
             <i class="ti ti-history"></i> Tarifa anterior (Abril 2026)
           </button>
-          <button id="tnm-btn-comparativa" onclick="tnmSetVista('comparativa')"
-            style="padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;background:white;border:1px solid #d1d5db;color:#6b7280">
+          <button id="tnm-btn-comparativa" onclick="tnmSetVista(&#39;comparativa&#39;)" style="padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;background:white;border:1px solid #d1d5db;color:#6b7280">
             <i class="ti ti-arrows-diff"></i> Comparativa subidas
           </button>
         </div>
-        <select id="tnm-filtro-modelo" onchange="tnmRender()"
-          style="padding:7px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:12px;outline:none;background:white;cursor:pointer;min-width:180px">
+        <select id="tnm-filtro-modelo" onchange="tnmRender()" style="padding:7px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:12px;outline:none;background:white;cursor:pointer;min-width:180px">
           <option value="">— Todos los modelos —</option>
         </select>
       </div>
@@ -630,21 +625,17 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
 
       <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;align-items:center">
         <div style="display:flex;gap:8px">
-          <button id="tluso-btn-actual" onclick="tlusoSetVista('actual')"
-            style="padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;background:#3B4A2F;border:1px solid #3B4A2F;color:white">
+          <button id="tluso-btn-actual" onclick="tlusoSetVista(&#39;actual&#39;)" style="padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;background:#3B4A2F;border:1px solid #3B4A2F;color:white">
             <i class="ti ti-tag"></i> Tarifa actual (Abril 2026)
           </button>
-          <button id="tluso-btn-anterior" onclick="tlusoSetVista('anterior')"
-            style="padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;background:white;border:1px solid #d1d5db;color:#6b7280">
+          <button id="tluso-btn-anterior" onclick="tlusoSetVista(&#39;anterior&#39;)" style="padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;background:white;border:1px solid #d1d5db;color:#6b7280">
             <i class="ti ti-history"></i> Tarifa anterior (Marzo 2026)
           </button>
-          <button id="tluso-btn-comparativa" onclick="tlusoSetVista('comparativa')"
-            style="padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;background:white;border:1px solid #d1d5db;color:#6b7280">
+          <button id="tluso-btn-comparativa" onclick="tlusoSetVista(&#39;comparativa&#39;)" style="padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;background:white;border:1px solid #d1d5db;color:#6b7280">
             <i class="ti ti-arrows-diff"></i> Comparativa subidas
           </button>
         </div>
-        <select id="tluso-filtro-modelo" onchange="tlusoRender()"
-          style="padding:7px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:12px;outline:none;background:white;cursor:pointer;min-width:200px">
+        <select id="tluso-filtro-modelo" onchange="tlusoRender()" style="padding:7px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:12px;outline:none;background:white;cursor:pointer;min-width:200px">
           <option value="">— Todos los modelos —</option>
         </select>
       </div>
@@ -664,27 +655,28 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
         <div style="margin-bottom:6px">
           <div style="font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:0.8px;padding:0 4px;margin-bottom:4px">Gestión pedido proveedor</div>
           <div style="display:flex;gap:0;border-bottom:2px solid #3B4A2F">
-            <button class="colch-tab active" onclick="colchTab('nuevo')"><i class="ti ti-plus"></i> Nuevo pedido</button>
-            <button class="colch-tab" onclick="colchTab('pendientes')"><i class="ti ti-clock"></i> Mercancía pendiente de recibir <span id="badgePendientes" class="badge" style="background:#FEF3C7;color:#92400e;margin-left:4px">0</span></button>
-            <button class="colch-tab" onclick="colchTab('prevision')"><i class="ti ti-truck"></i> Previsión de entrega</button>
-            <button class="colch-tab" onclick="colchTab('albaran')"><i class="ti ti-file-check"></i> Subir albarán</button>
+            <button class="colch-tab active" onclick="colchTab(&#39;nuevo&#39;)"><i class="ti ti-plus"></i> Nuevo pedido</button>
+            <button class="colch-tab" onclick="colchTab(&#39;pendientes&#39;)"><i class="ti ti-clock"></i> Mercancía pendiente de recibir <span id="badgePendientes" class="badge" style="background:#FEF3C7;color:#92400e;margin-left:4px">2</span></button>
+            <button class="colch-tab" onclick="colchTab(&#39;prevision&#39;)"><i class="ti ti-truck"></i> Previsión de entrega</button>
+            <button class="colch-tab" onclick="colchTab(&#39;albaran&#39;)"><i class="ti ti-file-check"></i> Subir albarán</button>
           </div>
         </div>
         <!-- Grupo 2: Gestión pedidos clientes -->
         <div style="margin-bottom:6px">
           <div style="font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:0.8px;padding:0 4px;margin-bottom:4px">Gestión pedidos clientes</div>
           <div style="display:flex;gap:0;border-bottom:2px solid #3730A3">
-            <button class="colch-tab" onclick="colchTab('vendidos')" style="--tab-active:#3730A3"><i class="ti ti-shopping-cart"></i> Vendidos</button>
-            <button class="colch-tab" onclick="colchTab('pedidosclientes')" style="--tab-active:#3730A3"><i class="ti ti-clipboard-list"></i> Pedidos clientes <span id="badgePedidosClientes" class="badge" style="background:#EEF2FF;color:#3730A3;margin-left:4px">0</span></button>
-            <button class="colch-tab" id="tab-btn-servir" onclick="colchTab('sepuedenservir')" style="--tab-active:#3730A3;position:relative"><i class="ti ti-truck-delivery"></i> Se pueden servir <span id="badgeSePuedenServir" class="badge" style="background:#FEF3C7;color:#92400e;margin-left:4px;display:none">0</span></button>
-            <button class="colch-tab" onclick="colchTab('stocksobrante')" style="--tab-active:#3730A3"><i class="ti ti-package"></i> Stock sobrante</button>
+            <button class="colch-tab" onclick="colchTab(&#39;vendidos&#39;)" style="--tab-active:#3730A3"><i class="ti ti-shopping-cart"></i> Vendidos</button>
+            <button class="colch-tab" onclick="colchTab(&#39;pedidosclientes&#39;)" style="--tab-active:#3730A3"><i class="ti ti-clipboard-list"></i> Pedidos clientes <span id="badgePedidosClientes" class="badge" style="background:#EEF2FF;color:#3730A3;margin-left:4px">123</span></button>
+            <button class="colch-tab" id="tab-btn-servir" onclick="colchTab(&#39;sepuedenservir&#39;)" style="--tab-active:#3730A3;position:relative"><i class="ti ti-truck-delivery"></i> Se pueden servir <span id="badgeSePuedenServir" class="badge" style="background:#FEF3C7;color:#92400e;margin-left:4px;display:none">0</span></button>
+            <button class="colch-tab" onclick="colchTab(&#39;stocksobrante&#39;)" style="--tab-active:#3730A3"><i class="ti ti-package"></i> Stock sobrante</button>
           </div>
         </div>
         <!-- Grupo 3: Historial -->
         <div>
           <div style="display:flex;gap:0;border-bottom:2px solid #e5e7eb">
-            <button class="colch-tab" onclick="colchTab('historial')"><i class="ti ti-history"></i> Historial</button>
-            <button class="colch-tab" onclick="colchTab('auditoria')"><i class="ti ti-shield-check"></i> Auditoría</button>
+            <button class="colch-tab" onclick="colchTab(&#39;historial&#39;)"><i class="ti ti-history"></i> Historial</button>
+            <button class="colch-tab" onclick="colchTab(&#39;albaranes-recibidos&#39;)"><i class="ti ti-file-invoice"></i> Albaranes recibidos</button>
+            <button class="colch-tab" onclick="colchTab(&#39;auditoria&#39;)"><i class="ti ti-shield-check"></i> Auditoría</button>
           </div>
         </div>
       </div>
@@ -693,10 +685,12 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
         <div class="card" style="margin-bottom:16px">
           <div style="font-size:13px;font-weight:600;color:#3B4A2F;margin-bottom:4px"><i class="ti ti-clipboard-text" style="font-size:15px;vertical-align:-2px;margin-right:6px"></i>Pega los SKUs y los interpreto automáticamente</div>
           <div style="font-size:12px;color:#6b7280;margin-bottom:12px">Una línea por colchón. Ejemplo: <span style="font-family:monospace;background:#f3f4f6;padding:1px 6px;border-radius:4px">COLZNAT90X190</span></div>
-          <textarea id="sku-input" rows="5" placeholder="COLZNAT90X190&#10;COLTOSD150X200&#10;COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;font-family:monospace;resize:vertical;line-height:1.7"></textarea>
+          <textarea id="sku-input" rows="5" placeholder="COLZNAT90X190
+COLTOSD150X200
+COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;font-family:monospace;resize:vertical;line-height:1.7"></textarea>
           <div style="display:flex;gap:10px;margin-top:10px">
             <button class="btn btn-primary" onclick="colchInterpretarSKUs()"><i class="ti ti-wand"></i> Interpretar SKUs</button>
-            <button class="btn" onclick="document.getElementById('sku-input').value=''"><i class="ti ti-eraser"></i> Limpiar</button>
+            <button class="btn" onclick="document.getElementById(&#39;sku-input&#39;).value=&#39;&#39;"><i class="ti ti-eraser"></i> Limpiar</button>
           </div>
           <div class="status-box" id="sku-status" style="margin-top:10px"></div>
         </div>
@@ -706,8 +700,8 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
             <div style="font-size:15px;font-weight:700;color:#1a1a1a;margin-bottom:6px">¿A qué proveedor lo pides?</div>
             <div style="font-size:13px;color:#6b7280;margin-bottom:20px" id="modal-prov-desc"></div>
             <div style="display:flex;flex-direction:column;gap:10px">
-              <button class="btn btn-primary" style="justify-content:center" onclick="colchModalElegir('LUSOCOLCHAO')"><i class="ti ti-building-factory-2"></i> LUSOCOLCHAO</button>
-              <button class="btn" style="justify-content:center;border-color:#3B4A2F;color:#3B4A2F" onclick="colchModalElegir('NEW MATTRESS')"><i class="ti ti-building-factory-2"></i> NEW MATTRESS</button>
+              <button class="btn btn-primary" style="justify-content:center" onclick="colchModalElegir(&#39;LUSOCOLCHAO&#39;)"><i class="ti ti-building-factory-2"></i> LUSOCOLCHAO</button>
+              <button class="btn" style="justify-content:center;border-color:#3B4A2F;color:#3B4A2F" onclick="colchModalElegir(&#39;NEW MATTRESS&#39;)"><i class="ti ti-building-factory-2"></i> NEW MATTRESS</button>
               <button class="btn" style="color:#991b1b;border-color:#fecaca;justify-content:center;margin-top:4px" onclick="colchModalSaltar()"><i class="ti ti-x"></i> Saltar esta línea</button>
             </div>
           </div>
@@ -766,8 +760,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
             <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap">
               <div style="display:flex;align-items:center;gap:8px">
                 <label style="font-size:12px;font-weight:600;color:#6b7280;white-space:nowrap">Fecha del pedido:</label>
-                <input type="date" id="np-fecha" style="padding:7px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none"
-                  onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
+                <input type="date" id="np-fecha" style="padding:7px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
               </div>
               <span style="font-size:11px;color:#9ca3af">Por defecto hoy. Cámbiala si el pedido es de otra fecha.</span>
             </div>
@@ -796,38 +789,28 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
         </div>
         <!-- Selector de vista -->
         <div style="display:flex;gap:8px;margin-bottom:12px">
-          <button id="pend-vista-pedidos" onclick="pendSetVista('pedidos')"
-            style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;background:#3B4A2F;border:1px solid #3B4A2F;color:white">
+          <button id="pend-vista-pedidos" onclick="pendSetVista(&#39;pedidos&#39;)" style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;background:#3B4A2F;border:1px solid #3B4A2F;color:white">
             <i class="ti ti-layout-list"></i> Por pedido y fecha
           </button>
-          <button id="pend-vista-modelo" onclick="pendSetVista('modelo')"
-            style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;background:white;border:1px solid #d1d5db;color:#6b7280">
+          <button id="pend-vista-modelo" onclick="pendSetVista(&#39;modelo&#39;)" style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;background:white;border:1px solid #d1d5db;color:#6b7280">
             <i class="ti ti-table"></i> Por modelo y medida
           </button>
         </div>
         <!-- Filtros (solo visibles en vista modelo) -->
         <div id="pend-filtros" style="display:none;gap:10px;margin-bottom:14px;flex-wrap:wrap">
-          <select id="pend-filtro-modelo" onchange="colchRenderPendientes()"
-            style="padding:7px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;min-width:200px;flex:1;background:white;cursor:pointer"
-            onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
+          <select id="pend-filtro-modelo" onchange="colchRenderPendientes()" style="padding:7px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;min-width:200px;flex:1;background:white;cursor:pointer" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
             <option value="">— Todos los modelos —</option>
           </select>
-          <select id="pend-filtro-medida" onchange="colchRenderPendientes()"
-            style="padding:7px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;min-width:160px;flex:1;background:white;cursor:pointer"
-            onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
+          <select id="pend-filtro-medida" onchange="colchRenderPendientes()" style="padding:7px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;min-width:160px;flex:1;background:white;cursor:pointer" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
             <option value="">— Todas las medidas —</option>
           </select>
-          <select id="pend-filtro-prov" onchange="colchRenderPendientes()"
-            style="padding:7px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;min-width:160px;flex:1;background:white;cursor:pointer"
-            onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
+          <select id="pend-filtro-prov" onchange="colchRenderPendientes()" style="padding:7px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;min-width:160px;flex:1;background:white;cursor:pointer" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
             <option value="">— Ambos proveedores —</option>
             <option value="LUSOCOLCHAO">LUSOCOLCHAO</option>
             <option value="NEW MATTRESS">NEW MATTRESS</option>
           </select>
           <div style="position:relative;min-width:220px;flex:1" id="pend-camion-wrap">
-            <button onclick="pendToggleCamionDrop()" id="pend-camion-btn"
-              style="width:100%;padding:7px 32px 7px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;background:white;cursor:pointer;text-align:left;position:relative;color:#6b7280"
-              onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
+            <button onclick="pendToggleCamionDrop()" id="pend-camion-btn" style="width:100%;padding:7px 32px 7px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;background:white;cursor:pointer;text-align:left;position:relative;color:#6b7280" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
               — Todos los camiones —
               <i class="ti ti-chevron-down" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:13px"></i>
             </button>
@@ -840,14 +823,10 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
         </div>
         <!-- Filtros vista por pedido -->
         <div id="pend-filtros-pedido" style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap">
-          <select id="pend-fp-modelo" onchange="colchRenderPendientes()"
-            style="padding:7px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;min-width:200px;flex:1;background:white;cursor:pointer"
-            onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
+          <select id="pend-fp-modelo" onchange="colchRenderPendientes()" style="padding:7px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;min-width:200px;flex:1;background:white;cursor:pointer" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
             <option value="">— Todos los modelos —</option>
           </select>
-          <select id="pend-fp-medida" onchange="colchRenderPendientes()"
-            style="padding:7px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;min-width:160px;flex:1;background:white;cursor:pointer"
-            onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
+          <select id="pend-fp-medida" onchange="colchRenderPendientes()" style="padding:7px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;min-width:160px;flex:1;background:white;cursor:pointer" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
             <option value="">— Todas las medidas —</option>
           </select>
           <button onclick="pendLimpiarFiltrosPedido()" style="padding:7px 12px;border-radius:8px;font-size:12px;cursor:pointer;background:white;border:1px solid #d1d5db;color:#9ca3af;white-space:nowrap">✕ Limpiar</button>
@@ -890,16 +869,12 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
           <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;align-items:center">
             <div style="display:flex;align-items:center;gap:6px">
               <label style="font-size:12px;color:#6b7280;white-space:nowrap">Fecha camión:</label>
-              <input type="date" id="ss-filtro-fecha" onchange="ssRender()"
-                style="padding:6px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:12px;outline:none"
-                onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
-              <button onclick="document.getElementById('ss-filtro-fecha').value='';ssRender()"
-                style="background:none;border:none;cursor:pointer;color:#9ca3af;font-size:13px" title="Limpiar">✕</button>
+              <input type="date" id="ss-filtro-fecha" onchange="ssRender()" style="padding:6px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:12px;outline:none" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
+              <button onclick="document.getElementById(&#39;ss-filtro-fecha&#39;).value=&#39;&#39;;ssRender()" style="background:none;border:none;cursor:pointer;color:#9ca3af;font-size:13px" title="Limpiar">✕</button>
             </div>
             <div style="display:flex;align-items:center;gap:6px">
               <label style="font-size:12px;color:#6b7280;white-space:nowrap">Proveedor:</label>
-              <select id="ss-filtro-prov" onchange="ssRender()"
-                style="padding:6px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:12px;outline:none">
+              <select id="ss-filtro-prov" onchange="ssRender()" style="padding:6px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:12px;outline:none">
                 <option value="">Todos</option>
                 <option value="LUSOCOLCHAO">LUSOCOLCHÃO</option>
                 <option value="NEW MATTRESS">NEW MATTRESS</option>
@@ -907,8 +882,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
             </div>
             <div style="display:flex;align-items:center;gap:6px">
               <label style="font-size:12px;color:#6b7280;white-space:nowrap">Estado:</label>
-              <select id="ss-filtro-estado" onchange="ssRender()"
-                style="padding:6px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:12px;outline:none">
+              <select id="ss-filtro-estado" onchange="ssRender()" style="padding:6px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:12px;outline:none">
                 <option value="PENDIENTE">Pendiente de alta</option>
                 <option value="CONFIRMADO">Dados de alta</option>
                 <option value="TODOS">Todos</option>
@@ -934,24 +908,18 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
         <div class="card" style="margin-bottom:16px">
           <div style="font-size:13px;font-weight:600;color:#3B4A2F;margin-bottom:4px"><i class="ti ti-shopping-cart" style="font-size:14px;vertical-align:-2px;margin-right:6px"></i>Registrar ventas</div>
           <div style="font-size:12px;color:#6b7280;margin-bottom:14px">Pega las líneas del Excel de Ariadna o SKUs sueltos (uno por línea). La app extrae el modelo y la cantidad automáticamente.</div>
-          <textarea id="vend-textarea" rows="8" placeholder="Pega aquí las filas del Excel de Ariadna o los SKUs directamente…" spellcheck="false"
-            style="width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;font-family:monospace;line-height:1.8;resize:vertical;outline:none"
-            onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'"></textarea>
+          <textarea id="vend-textarea" rows="8" placeholder="Pega aquí las filas del Excel de Ariadna o los SKUs directamente…" spellcheck="false" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;font-family:monospace;line-height:1.8;resize:vertical;outline:none" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;"></textarea>
           <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
             <button onclick="vendInterpretar()" class="btn btn-primary" style="font-size:12px;padding:7px 16px"><i class="ti ti-list-check"></i> Interpretar SKUs</button>
-            <button onclick="document.getElementById('vend-textarea').value=''" class="btn" style="font-size:12px;padding:7px 12px;color:#991b1b;border-color:#fecaca"><i class="ti ti-trash"></i> Limpiar</button>
+            <button onclick="document.getElementById(&#39;vend-textarea&#39;).value=&#39;&#39;" class="btn" style="font-size:12px;padding:7px 12px;color:#991b1b;border-color:#fecaca"><i class="ti ti-trash"></i> Limpiar</button>
           </div>
           <div class="status-box" id="vend-status" style="margin-top:12px"></div>
         </div>
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px">
           <div style="font-size:13px;font-weight:600;color:#3B4A2F">Ventas registradas</div>
           <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
-            <input type="text" id="vend-filtro-texto" placeholder="Buscar cliente, ref, modelo..."
-              style="padding:7px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:12px;width:200px;outline:none"
-              oninput="vendRenderHistorial()" onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
-            <select id="vend-filtro-stock" onchange="vendRenderHistorial()"
-              style="padding:7px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:12px;outline:none;background:white;cursor:pointer"
-              onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
+            <input type="text" id="vend-filtro-texto" placeholder="Buscar cliente, ref, modelo..." style="padding:7px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:12px;width:200px;outline:none" oninput="vendRenderHistorial()" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
+            <select id="vend-filtro-stock" onchange="vendRenderHistorial()" style="padding:7px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:12px;outline:none;background:white;cursor:pointer" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
               <option value="">— Todos —</option>
               <option value="OK">✓ OK (cubiertos)</option>
               <option value="PEDIR">⚠ Pedir</option>
@@ -972,11 +940,8 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
               <div style="font-size:12px;color:#6b7280;margin-top:2px">Todos los pedidos de clientes introducidos en el sistema</div>
             </div>
             <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
-              <input type="text" id="pc-filtro" placeholder="Buscar cliente, modelo, ref..."
-                style="padding:7px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:12px;width:200px"
-                oninput="pcRender()" onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
-              <select id="pc-filtro-estado" onchange="pcRender()"
-                style="padding:7px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:12px;outline:none">
+              <input type="text" id="pc-filtro" placeholder="Buscar cliente, modelo, ref..." style="padding:7px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:12px;width:200px" oninput="pcRender()" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
+              <select id="pc-filtro-estado" onchange="pcRender()" style="padding:7px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:12px;outline:none">
                 <option value="PENDIENTE">Pendientes de envío (incl. en espera)</option>
                 <option value="EN ESPERA">En espera</option>
                 <option value="SERVIDO">Servidos</option>
@@ -985,11 +950,8 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
               </select>
               <div id="pc-filtro-fecha-wrap" style="display:none;align-items:center;gap:6px">
                 <label style="font-size:12px;color:#6b7280;white-space:nowrap">Servido el:</label>
-                <input type="date" id="pc-filtro-fecha-servido" onchange="pcRender()"
-                  style="padding:6px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:12px;outline:none"
-                  onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
-                <button onclick="document.getElementById('pc-filtro-fecha-servido').value='';pcRender()"
-                  style="background:none;border:none;cursor:pointer;color:#9ca3af;font-size:13px" title="Limpiar fecha">✕</button>
+                <input type="date" id="pc-filtro-fecha-servido" onchange="pcRender()" style="padding:6px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:12px;outline:none" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
+                <button onclick="document.getElementById(&#39;pc-filtro-fecha-servido&#39;).value=&#39;&#39;;pcRender()" style="background:none;border:none;cursor:pointer;color:#9ca3af;font-size:13px" title="Limpiar fecha">✕</button>
               </div>
               <button class="btn" style="background:#1d4ed8;color:white;border-color:#1d4ed8" onclick="pcExportarAriadna()"><i class="ti ti-file-spreadsheet"></i> Exportar Ariadna (SEUR)</button>
               <button class="btn" style="background:#3B4A2F;color:white;border-color:#3B4A2F" onclick="pcExportarAlmacen()"><i class="ti ti-packages"></i> Exportar almacén</button>
@@ -1010,7 +972,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
             <div>
               <div class="section-label" style="margin-top:0">Proveedor</div>
-              <select id="prev-proveedor" style="width:100%;padding:8px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;background:white;outline:none" onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
+              <select id="prev-proveedor" style="width:100%;padding:8px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;background:white;outline:none" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
                 <option value="">— Selecciona proveedor —</option>
                 <option value="LUSOCOLCHAO">LUSOCOLCHAO</option>
                 <option value="NEW MATTRESS">NEW MATTRESS</option>
@@ -1019,11 +981,8 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
             <div>
               <div class="section-label" style="margin-top:0">Fecha estimada de entrega</div>
               <div style="display:flex;gap:8px;align-items:center">
-                <input type="date" id="prev-fecha"
-                  style="flex:1;padding:8px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none"
-                  onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
-                <button onclick="prevFechaSinConfirmar()" title="Fecha sin confirmar"
-                  style="padding:7px 10px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer;background:#F4F6F1;border:1px solid #dde3d4;color:#6b7280;white-space:nowrap">
+                <input type="date" id="prev-fecha" style="flex:1;padding:8px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
+                <button onclick="prevFechaSinConfirmar()" title="Fecha sin confirmar" style="padding:7px 10px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer;background:#F4F6F1;border:1px solid #dde3d4;color:#6b7280;white-space:nowrap">
                   Sin confirmar
                 </button>
               </div>
@@ -1034,9 +993,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
           <!-- Textarea SKUs -->
           <div class="section-label" style="margin-top:0">SKUs y cantidades</div>
           <div style="font-size:12px;color:#6b7280;margin-bottom:8px">Pega los SKUs uno por línea. Igual que en vendidos.</div>
-          <textarea id="prev-textarea" rows="7" placeholder="Pega aquí los SKUs…" spellcheck="false"
-            style="width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;font-family:monospace;line-height:1.8;resize:vertical;outline:none"
-            onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'"></textarea>
+          <textarea id="prev-textarea" rows="7" placeholder="Pega aquí los SKUs…" spellcheck="false" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;font-family:monospace;line-height:1.8;resize:vertical;outline:none" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;"></textarea>
 
           <!-- Separador o -->
           <div style="display:flex;align-items:center;gap:12px;margin:14px 0">
@@ -1046,9 +1003,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
           </div>
 
           <!-- Zona subida PDF -->
-          <div id="prev-pdf-zone" onclick="document.getElementById('prev-pdf-input').click()"
-            style="border:2px dashed #A5B4FC;border-radius:8px;padding:16px;text-align:center;cursor:pointer;background:#EEF2FF;transition:background 0.15s"
-            onmouseover="this.style.background='#E0E7FF'" onmouseout="this.style.background='#EEF2FF'">
+          <div id="prev-pdf-zone" onclick="document.getElementById(&#39;prev-pdf-input&#39;).click()" style="border:2px dashed #A5B4FC;border-radius:8px;padding:16px;text-align:center;cursor:pointer;background:#EEF2FF;transition:background 0.15s" onmouseover="this.style.background=&#39;#E0E7FF&#39;" onmouseout="this.style.background=&#39;#EEF2FF&#39;">
             <i class="ti ti-file-type-pdf" style="font-size:24px;color:#3730A3;display:block;margin-bottom:6px"></i>
             <div style="font-size:13px;font-weight:600;color:#3730A3">Haz clic para subir el PDF</div>
             <div style="font-size:11px;color:#6b7280;margin-top:2px">El PDF de NEW MATTRESS con la lista de colchones</div>
@@ -1058,7 +1013,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
 
           <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
             <button onclick="prevInterpretar()" class="btn btn-primary" style="font-size:12px;padding:7px 16px"><i class="ti ti-list-check"></i> Interpretar SKUs</button>
-            <button onclick="document.getElementById('prev-textarea').value='';prevResetFecha()" class="btn" style="font-size:12px;padding:7px 12px;color:#991b1b;border-color:#fecaca"><i class="ti ti-trash"></i> Limpiar</button>
+            <button onclick="document.getElementById(&#39;prev-textarea&#39;).value=&#39;&#39;;prevResetFecha()" class="btn" style="font-size:12px;padding:7px 12px;color:#991b1b;border-color:#fecaca"><i class="ti ti-trash"></i> Limpiar</button>
           </div>
           <div class="status-box" id="prev-status" style="margin-top:12px"></div>
         </div>
@@ -1184,9 +1139,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
         </div>
         <div class="card" style="margin-bottom:16px">
           <div class="section-label" style="margin-top:0">Selecciona el camión</div>
-          <select id="camion-selector" onchange="camionPreview()"
-            style="width:100%;padding:9px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;background:white;outline:none;margin-bottom:16px"
-            onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
+          <select id="camion-selector" onchange="camionPreview()" style="width:100%;padding:9px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;background:white;outline:none;margin-bottom:16px" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
             <option value="">— Selecciona un camión —</option>
           </select>
           <div class="status-box" id="camion-status"></div>
@@ -1219,6 +1172,34 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
         </div>
         <div id="hist-content"><div class="empty-state"><i class="ti ti-history"></i><p>Aún no hay pedidos registrados.</p></div></div>
       </div>
+      <div id="colchTab-albaranes-recibidos" class="colch-panel" style="display:none">
+        <!-- Filtros -->
+        <div class="card" style="margin-bottom:16px">
+          <div style="font-size:13px;font-weight:600;color:#3B4A2F;margin-bottom:12px"><i class="ti ti-filter"></i> Buscar albaranes recibidos</div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end">
+            <div>
+              <label style="font-size:11px;font-weight:600;color:#6b7280;display:block;margin-bottom:4px">Fecha recepción</label>
+              <input type="date" id="albhist-filtro-fecha" style="padding:7px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;" onchange="albHistRender()">
+            </div>
+            <div>
+              <label style="font-size:11px;font-weight:600;color:#6b7280;display:block;margin-bottom:4px">Proveedor</label>
+              <select id="albhist-filtro-prov" onchange="albHistRender()" style="padding:7px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;background:white">
+                <option value="">Todos</option>
+                <option value="LUSOCOLCHAO">LUSOCOLCHÃO</option>
+                <option value="NEW MATTRESS">NEW MATTRESS</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size:11px;font-weight:600;color:#6b7280;display:block;margin-bottom:4px">Nº albarán</label>
+              <input type="text" id="albhist-filtro-ref" placeholder="Buscar por nº…" style="padding:7px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;width:160px;outline:none" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;" oninput="albHistRender()">
+            </div>
+            <button onclick="albHistLimpiarFiltros()" class="btn" style="margin-bottom:0"><i class="ti ti-x"></i> Limpiar filtros</button>
+          </div>
+        </div>
+        <!-- Resultados -->
+        <div id="albhist-stats" class="stats-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:12px"></div>
+        <div id="albhist-content"><div class="empty-state"><i class="ti ti-file-invoice"></i><p>Aquí aparecerán todos los albaranes registrados.</p></div></div>
+      </div>
       <div id="colchTab-auditoria" class="colch-panel" style="display:none">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
           <div style="font-size:14px;font-weight:700;color:#3B4A2F"><i class="ti ti-shield-check"></i> Registro de cambios en ventas</div>
@@ -1233,17 +1214,13 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
 
           <!-- Zonas subida PDF -->
           <div style="display:flex;gap:10px;margin-bottom:10px;flex-wrap:wrap">
-            <div id="alb-pdf-zone" onclick="document.getElementById('alb-pdf-input').click()"
-              style="flex:1;min-width:180px;border:2px dashed #3B4A2F;border-radius:8px;padding:10px 14px;text-align:center;cursor:pointer;background:#F4F6F1;transition:background 0.15s"
-              onmouseover="this.style.background='#E8EDE3'" onmouseout="this.style.background='#F4F6F1'">
+            <div id="alb-pdf-zone" onclick="document.getElementById(&#39;alb-pdf-input&#39;).click()" style="flex:1;min-width:180px;border:2px dashed #3B4A2F;border-radius:8px;padding:10px 14px;text-align:center;cursor:pointer;background:#F4F6F1;transition:background 0.15s" onmouseover="this.style.background=&#39;#E8EDE3&#39;" onmouseout="this.style.background=&#39;#F4F6F1&#39;">
               <i class="ti ti-file-upload" style="font-size:18px;color:#3B4A2F;vertical-align:-3px;margin-right:6px"></i>
               <span style="font-size:12px;font-weight:600;color:#3B4A2F">Albarán LUSOCOLCHÃO</span>
             </div>
             <input type="file" id="alb-pdf-input" accept=".pdf" style="display:none" onchange="albLeerPDF(this)">
 
-            <div id="alb-nm-pdf-zone" onclick="document.getElementById('alb-nm-pdf-input').click()"
-              style="flex:1;min-width:180px;border:2px dashed #3730A3;border-radius:8px;padding:10px 14px;text-align:center;cursor:pointer;background:#EEF2FF;transition:background 0.15s"
-              onmouseover="this.style.background='#E0E7FF'" onmouseout="this.style.background='#EEF2FF'">
+            <div id="alb-nm-pdf-zone" onclick="document.getElementById(&#39;alb-nm-pdf-input&#39;).click()" style="flex:1;min-width:180px;border:2px dashed #3730A3;border-radius:8px;padding:10px 14px;text-align:center;cursor:pointer;background:#EEF2FF;transition:background 0.15s" onmouseover="this.style.background=&#39;#E0E7FF&#39;" onmouseout="this.style.background=&#39;#EEF2FF&#39;">
               <i class="ti ti-file-upload" style="font-size:18px;color:#3730A3;vertical-align:-3px;margin-right:6px"></i>
               <span style="font-size:12px;font-weight:600;color:#3730A3">Albarán NEW MATTRESS</span>
             </div>
@@ -1254,12 +1231,9 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
           <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;align-items:center">
             <div style="display:flex;align-items:center;gap:8px">
               <label style="font-size:12px;font-weight:600;color:#6b7280;white-space:nowrap">Fecha recepción:</label>
-              <input type="date" id="alb-fecha-recepcion"
-                style="padding:7px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none"
-                onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
+              <input type="date" id="alb-fecha-recepcion" style="padding:7px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
             </div>
-            <input type="text" id="alb-ref" placeholder="Nº albarán (opcional)" style="padding:8px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;flex:1;min-width:160px"
-              onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
+            <input type="text" id="alb-ref" placeholder="Nº albarán (opcional)" style="padding:8px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;flex:1;min-width:160px" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
           </div>
           <div class="status-box" id="alb-pdf-status" style="margin-bottom:12px"></div>
 
@@ -1283,6 +1257,420 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
           </div>
           <div class="status-box" id="alb-status" style="margin-top:12px"></div>
         </div>
+      </div>
+    </div>
+
+    <!-- STOCK -->
+    <div class="page active" id="page-stock">
+      <div class="page-header">
+        <h2>Stock de colchones</h2>
+        <p>Inventario disponible en almacén. Entradas y salidas quedan registradas.</p>
+      </div>
+
+      <div style="display:flex;gap:0;border-bottom:2px solid #3730A3;margin-bottom:20px">
+        <button class="colch-tab active" id="stock-tab-btn-actual" onclick="stockTab(&#39;actual&#39;)" style="--tab-active:#3730A3"><i class="ti ti-stack-2"></i> Stock actual</button>
+        <button class="colch-tab" id="stock-tab-btn-movimientos" onclick="stockTab(&#39;movimientos&#39;)" style="--tab-active:#3730A3"><i class="ti ti-history"></i> Movimientos</button>
+      </div>
+
+      <!-- STOCK ACTUAL -->
+      <div id="stock-panel-actual">
+        <!-- Filtros -->
+        <div class="card" style="margin-bottom:16px;padding:16px 20px">
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end">
+            <div>
+              <label style="font-size:11px;font-weight:600;color:#6b7280;display:block;margin-bottom:4px">Modelo</label>
+              <select id="stock-filtro-modelo" onchange="stockRenderActual()" style="padding:7px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;background:white;min-width:200px"><option value="">Todos los modelos</option><option value="4D">4D</option><option value="BAMBOO DELUXE">BAMBOO DELUXE</option><option value="BELLAGIO DELUXE">BELLAGIO DELUXE</option><option value="ERGO RELAX">ERGO RELAX</option><option value="FITNESS SPORT">FITNESS SPORT</option><option value="LATEX GEL">LATEX GEL</option><option value="MURANO">MURANO</option><option value="PHARMATHERAPY SOJA">PHARMATHERAPY SOJA</option><option value="PHARMATHERAPY SOJA SLIM">PHARMATHERAPY SOJA SLIM</option></select>
+            </div>
+            <div>
+              <label style="font-size:11px;font-weight:600;color:#6b7280;display:block;margin-bottom:4px">Medida</label>
+              <select id="stock-filtro-medida" onchange="stockRenderActual()" style="padding:7px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;background:white;min-width:140px"><option value="">Todas las medidas</option><option value="80x180">80x180</option><option value="80x190">80x190</option><option value="80x200">80x200</option><option value="90x180">90x180</option><option value="90x190">90x190</option><option value="90x200">90x200</option><option value="105x180">105x180</option><option value="120x200">120x200</option><option value="135x180">135x180</option><option value="135x190">135x190</option><option value="135x200">135x200</option><option value="140x190">140x190</option><option value="140x200">140x200</option><option value="150x190">150x190</option><option value="150x200">150x200</option><option value="160x190">160x190</option><option value="160x200">160x200</option><option value="180x190">180x190</option></select>
+            </div>
+            <button onclick="stockLimpiarFiltros()" class="btn"><i class="ti ti-x"></i> Limpiar</button>
+            <button onclick="stockExportarExcel()" class="btn" style="margin-left:auto"><i class="ti ti-download"></i> Exportar Excel</button>
+            <button onclick="stockAbrirEntradaManual()" class="btn" style="background:#065F46;color:white;border-color:#065F46"><i class="ti ti-plus"></i> Entrada manual</button>
+          </div>
+        </div>
+
+        <div id="stock-stats" class="stats-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:16px">
+    <div class="stat-card"><div class="label">Líneas en stock</div><div class="value">38</div></div>
+    <div class="stat-card"><div class="label">Unidades totales</div><div class="value" style="color:#3730A3">64</div></div>
+    <div class="stat-card"><div class="label">Movimientos registrados</div><div class="value" style="font-size:16px;padding-top:4px">38</div></div></div>
+        <div id="stock-actual-content"><div style="overflow-x:auto">
+    <table class="pedidos-table" style="margin:0">
+      <thead><tr>
+        <th>Modelo</th>
+        <th style="text-align:center">Medida</th>
+        <th style="text-align:center;color:#3730A3">Uds en stock</th>
+        <th style="text-align:center">Acción</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td style="font-weight:600;color:#3B4A2F">4D</td>
+          <td style="text-align:center;font-family:monospace">135x200</td>
+          <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">1</span></td>
+          <td style="text-align:center">
+            <button onclick="stockAbrirSalida(&#39;4D&#39;,&#39;135x200&#39;,1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+              <i class="ti ti-minus"></i> Salida
+            </button>
+          </td>
+        </tr><tr>
+          <td style="font-weight:600;color:#3B4A2F">4D</td>
+          <td style="text-align:center;font-family:monospace">150x190</td>
+          <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">2</span></td>
+          <td style="text-align:center">
+            <button onclick="stockAbrirSalida(&#39;4D&#39;,&#39;150x190&#39;,2)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+              <i class="ti ti-minus"></i> Salida
+            </button>
+          </td>
+        </tr><tr>
+          <td style="font-weight:600;color:#3B4A2F">4D</td>
+          <td style="text-align:center;font-family:monospace">150x200</td>
+          <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">2</span></td>
+          <td style="text-align:center">
+            <button onclick="stockAbrirSalida(&#39;4D&#39;,&#39;150x200&#39;,2)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+              <i class="ti ti-minus"></i> Salida
+            </button>
+          </td>
+        </tr><tr>
+          <td style="font-weight:600;color:#3B4A2F">4D</td>
+          <td style="text-align:center;font-family:monospace">90x200</td>
+          <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">2</span></td>
+          <td style="text-align:center">
+            <button onclick="stockAbrirSalida(&#39;4D&#39;,&#39;90x200&#39;,2)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+              <i class="ti ti-minus"></i> Salida
+            </button>
+          </td>
+        </tr><tr>
+          <td style="font-weight:600;color:#3B4A2F">BAMBOO DELUXE</td>
+          <td style="text-align:center;font-family:monospace">80x180</td>
+          <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">1</span></td>
+          <td style="text-align:center">
+            <button onclick="stockAbrirSalida(&#39;BAMBOO DELUXE&#39;,&#39;80x180&#39;,1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+              <i class="ti ti-minus"></i> Salida
+            </button>
+          </td>
+        </tr><tr>
+          <td style="font-weight:600;color:#3B4A2F">BAMBOO DELUXE</td>
+          <td style="text-align:center;font-family:monospace">80x190</td>
+          <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">1</span></td>
+          <td style="text-align:center">
+            <button onclick="stockAbrirSalida(&#39;BAMBOO DELUXE&#39;,&#39;80x190&#39;,1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+              <i class="ti ti-minus"></i> Salida
+            </button>
+          </td>
+        </tr><tr>
+          <td style="font-weight:600;color:#3B4A2F">BELLAGIO DELUXE</td>
+          <td style="text-align:center;font-family:monospace">105x180</td>
+          <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">1</span></td>
+          <td style="text-align:center">
+            <button onclick="stockAbrirSalida(&#39;BELLAGIO DELUXE&#39;,&#39;105x180&#39;,1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+              <i class="ti ti-minus"></i> Salida
+            </button>
+          </td>
+        </tr><tr>
+          <td style="font-weight:600;color:#3B4A2F">BELLAGIO DELUXE</td>
+          <td style="text-align:center;font-family:monospace">120x200</td>
+          <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">1</span></td>
+          <td style="text-align:center">
+            <button onclick="stockAbrirSalida(&#39;BELLAGIO DELUXE&#39;,&#39;120x200&#39;,1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+              <i class="ti ti-minus"></i> Salida
+            </button>
+          </td>
+        </tr><tr>
+          <td style="font-weight:600;color:#3B4A2F">BELLAGIO DELUXE</td>
+          <td style="text-align:center;font-family:monospace">140x190</td>
+          <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">2</span></td>
+          <td style="text-align:center">
+            <button onclick="stockAbrirSalida(&#39;BELLAGIO DELUXE&#39;,&#39;140x190&#39;,2)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+              <i class="ti ti-minus"></i> Salida
+            </button>
+          </td>
+        </tr><tr>
+          <td style="font-weight:600;color:#3B4A2F">BELLAGIO DELUXE</td>
+          <td style="text-align:center;font-family:monospace">150x190</td>
+          <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">1</span></td>
+          <td style="text-align:center">
+            <button onclick="stockAbrirSalida(&#39;BELLAGIO DELUXE&#39;,&#39;150x190&#39;,1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+              <i class="ti ti-minus"></i> Salida
+            </button>
+          </td>
+        </tr><tr>
+          <td style="font-weight:600;color:#3B4A2F">BELLAGIO DELUXE</td>
+          <td style="text-align:center;font-family:monospace">90x190</td>
+          <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">1</span></td>
+          <td style="text-align:center">
+            <button onclick="stockAbrirSalida(&#39;BELLAGIO DELUXE&#39;,&#39;90x190&#39;,1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+              <i class="ti ti-minus"></i> Salida
+            </button>
+          </td>
+        </tr><tr>
+          <td style="font-weight:600;color:#3B4A2F">ERGO RELAX</td>
+          <td style="text-align:center;font-family:monospace">105x180</td>
+          <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">1</span></td>
+          <td style="text-align:center">
+            <button onclick="stockAbrirSalida(&#39;ERGO RELAX&#39;,&#39;105x180&#39;,1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+              <i class="ti ti-minus"></i> Salida
+            </button>
+          </td>
+        </tr><tr>
+          <td style="font-weight:600;color:#3B4A2F">ERGO RELAX</td>
+          <td style="text-align:center;font-family:monospace">135x180</td>
+          <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">2</span></td>
+          <td style="text-align:center">
+            <button onclick="stockAbrirSalida(&#39;ERGO RELAX&#39;,&#39;135x180&#39;,2)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+              <i class="ti ti-minus"></i> Salida
+            </button>
+          </td>
+        </tr><tr>
+          <td style="font-weight:600;color:#3B4A2F">ERGO RELAX</td>
+          <td style="text-align:center;font-family:monospace">135x190</td>
+          <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">2</span></td>
+          <td style="text-align:center">
+            <button onclick="stockAbrirSalida(&#39;ERGO RELAX&#39;,&#39;135x190&#39;,2)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+              <i class="ti ti-minus"></i> Salida
+            </button>
+          </td>
+        </tr><tr>
+          <td style="font-weight:600;color:#3B4A2F">ERGO RELAX</td>
+          <td style="text-align:center;font-family:monospace">140x190</td>
+          <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">1</span></td>
+          <td style="text-align:center">
+            <button onclick="stockAbrirSalida(&#39;ERGO RELAX&#39;,&#39;140x190&#39;,1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+              <i class="ti ti-minus"></i> Salida
+            </button>
+          </td>
+        </tr><tr>
+          <td style="font-weight:600;color:#3B4A2F">ERGO RELAX</td>
+          <td style="text-align:center;font-family:monospace">140x200</td>
+          <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">3</span></td>
+          <td style="text-align:center">
+            <button onclick="stockAbrirSalida(&#39;ERGO RELAX&#39;,&#39;140x200&#39;,3)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+              <i class="ti ti-minus"></i> Salida
+            </button>
+          </td>
+        </tr><tr>
+          <td style="font-weight:600;color:#3B4A2F">ERGO RELAX</td>
+          <td style="text-align:center;font-family:monospace">150x190</td>
+          <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">2</span></td>
+          <td style="text-align:center">
+            <button onclick="stockAbrirSalida(&#39;ERGO RELAX&#39;,&#39;150x190&#39;,2)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+              <i class="ti ti-minus"></i> Salida
+            </button>
+          </td>
+        </tr><tr>
+          <td style="font-weight:600;color:#3B4A2F">FITNESS SPORT</td>
+          <td style="text-align:center;font-family:monospace">135x190</td>
+          <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">1</span></td>
+          <td style="text-align:center">
+            <button onclick="stockAbrirSalida(&#39;FITNESS SPORT&#39;,&#39;135x190&#39;,1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+              <i class="ti ti-minus"></i> Salida
+            </button>
+          </td>
+        </tr><tr>
+          <td style="font-weight:600;color:#3B4A2F">FITNESS SPORT</td>
+          <td style="text-align:center;font-family:monospace">135x200</td>
+          <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">1</span></td>
+          <td style="text-align:center">
+            <button onclick="stockAbrirSalida(&#39;FITNESS SPORT&#39;,&#39;135x200&#39;,1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+              <i class="ti ti-minus"></i> Salida
+            </button>
+          </td>
+        </tr><tr>
+          <td style="font-weight:600;color:#3B4A2F">FITNESS SPORT</td>
+          <td style="text-align:center;font-family:monospace">140x190</td>
+          <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">1</span></td>
+          <td style="text-align:center">
+            <button onclick="stockAbrirSalida(&#39;FITNESS SPORT&#39;,&#39;140x190&#39;,1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+              <i class="ti ti-minus"></i> Salida
+            </button>
+          </td>
+        </tr><tr>
+          <td style="font-weight:600;color:#3B4A2F">FITNESS SPORT</td>
+          <td style="text-align:center;font-family:monospace">150x200</td>
+          <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">2</span></td>
+          <td style="text-align:center">
+            <button onclick="stockAbrirSalida(&#39;FITNESS SPORT&#39;,&#39;150x200&#39;,2)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+              <i class="ti ti-minus"></i> Salida
+            </button>
+          </td>
+        </tr><tr>
+          <td style="font-weight:600;color:#3B4A2F">FITNESS SPORT</td>
+          <td style="text-align:center;font-family:monospace">180x190</td>
+          <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">1</span></td>
+          <td style="text-align:center">
+            <button onclick="stockAbrirSalida(&#39;FITNESS SPORT&#39;,&#39;180x190&#39;,1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+              <i class="ti ti-minus"></i> Salida
+            </button>
+          </td>
+        </tr><tr>
+          <td style="font-weight:600;color:#3B4A2F">LATEX GEL</td>
+          <td style="text-align:center;font-family:monospace">135x190</td>
+          <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">2</span></td>
+          <td style="text-align:center">
+            <button onclick="stockAbrirSalida(&#39;LATEX GEL&#39;,&#39;135x190&#39;,2)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+              <i class="ti ti-minus"></i> Salida
+            </button>
+          </td>
+        </tr><tr>
+          <td style="font-weight:600;color:#3B4A2F">LATEX GEL</td>
+          <td style="text-align:center;font-family:monospace">140x190</td>
+          <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">7</span></td>
+          <td style="text-align:center">
+            <button onclick="stockAbrirSalida(&#39;LATEX GEL&#39;,&#39;140x190&#39;,7)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+              <i class="ti ti-minus"></i> Salida
+            </button>
+          </td>
+        </tr><tr>
+          <td style="font-weight:600;color:#3B4A2F">LATEX GEL</td>
+          <td style="text-align:center;font-family:monospace">90x180</td>
+          <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">2</span></td>
+          <td style="text-align:center">
+            <button onclick="stockAbrirSalida(&#39;LATEX GEL&#39;,&#39;90x180&#39;,2)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+              <i class="ti ti-minus"></i> Salida
+            </button>
+          </td>
+        </tr><tr>
+          <td style="font-weight:600;color:#3B4A2F">MURANO</td>
+          <td style="text-align:center;font-family:monospace">135x190</td>
+          <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">3</span></td>
+          <td style="text-align:center">
+            <button onclick="stockAbrirSalida(&#39;MURANO&#39;,&#39;135x190&#39;,3)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+              <i class="ti ti-minus"></i> Salida
+            </button>
+          </td>
+        </tr><tr>
+          <td style="font-weight:600;color:#3B4A2F">MURANO</td>
+          <td style="text-align:center;font-family:monospace">135x200</td>
+          <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">1</span></td>
+          <td style="text-align:center">
+            <button onclick="stockAbrirSalida(&#39;MURANO&#39;,&#39;135x200&#39;,1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+              <i class="ti ti-minus"></i> Salida
+            </button>
+          </td>
+        </tr><tr>
+          <td style="font-weight:600;color:#3B4A2F">MURANO</td>
+          <td style="text-align:center;font-family:monospace">160x190</td>
+          <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">1</span></td>
+          <td style="text-align:center">
+            <button onclick="stockAbrirSalida(&#39;MURANO&#39;,&#39;160x190&#39;,1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+              <i class="ti ti-minus"></i> Salida
+            </button>
+          </td>
+        </tr><tr>
+          <td style="font-weight:600;color:#3B4A2F">MURANO</td>
+          <td style="text-align:center;font-family:monospace">160x200</td>
+          <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">2</span></td>
+          <td style="text-align:center">
+            <button onclick="stockAbrirSalida(&#39;MURANO&#39;,&#39;160x200&#39;,2)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+              <i class="ti ti-minus"></i> Salida
+            </button>
+          </td>
+        </tr><tr>
+          <td style="font-weight:600;color:#3B4A2F">MURANO</td>
+          <td style="text-align:center;font-family:monospace">90x190</td>
+          <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">1</span></td>
+          <td style="text-align:center">
+            <button onclick="stockAbrirSalida(&#39;MURANO&#39;,&#39;90x190&#39;,1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+              <i class="ti ti-minus"></i> Salida
+            </button>
+          </td>
+        </tr><tr>
+          <td style="font-weight:600;color:#3B4A2F">MURANO</td>
+          <td style="text-align:center;font-family:monospace">90x200</td>
+          <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">1</span></td>
+          <td style="text-align:center">
+            <button onclick="stockAbrirSalida(&#39;MURANO&#39;,&#39;90x200&#39;,1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+              <i class="ti ti-minus"></i> Salida
+            </button>
+          </td>
+        </tr><tr>
+          <td style="font-weight:600;color:#3B4A2F">PHARMATHERAPY SOJA</td>
+          <td style="text-align:center;font-family:monospace">80x200</td>
+          <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">2</span></td>
+          <td style="text-align:center">
+            <button onclick="stockAbrirSalida(&#39;PHARMATHERAPY SOJA&#39;,&#39;80x200&#39;,2)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+              <i class="ti ti-minus"></i> Salida
+            </button>
+          </td>
+        </tr><tr>
+          <td style="font-weight:600;color:#3B4A2F">PHARMATHERAPY SOJA SLIM</td>
+          <td style="text-align:center;font-family:monospace">80x180</td>
+          <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">1</span></td>
+          <td style="text-align:center">
+            <button onclick="stockAbrirSalida(&#39;PHARMATHERAPY SOJA SLIM&#39;,&#39;80x180&#39;,1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+              <i class="ti ti-minus"></i> Salida
+            </button>
+          </td>
+        </tr><tr>
+          <td style="font-weight:600;color:#3B4A2F">PHARMATHERAPY SOJA SLIM</td>
+          <td style="text-align:center;font-family:monospace">80x190</td>
+          <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">2</span></td>
+          <td style="text-align:center">
+            <button onclick="stockAbrirSalida(&#39;PHARMATHERAPY SOJA SLIM&#39;,&#39;80x190&#39;,2)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+              <i class="ti ti-minus"></i> Salida
+            </button>
+          </td>
+        </tr><tr>
+          <td style="font-weight:600;color:#3B4A2F">PHARMATHERAPY SOJA SLIM</td>
+          <td style="text-align:center;font-family:monospace">80x200</td>
+          <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">2</span></td>
+          <td style="text-align:center">
+            <button onclick="stockAbrirSalida(&#39;PHARMATHERAPY SOJA SLIM&#39;,&#39;80x200&#39;,2)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+              <i class="ti ti-minus"></i> Salida
+            </button>
+          </td>
+        </tr><tr>
+          <td style="font-weight:600;color:#3B4A2F">PHARMATHERAPY SOJA SLIM</td>
+          <td style="text-align:center;font-family:monospace">90x180</td>
+          <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">1</span></td>
+          <td style="text-align:center">
+            <button onclick="stockAbrirSalida(&#39;PHARMATHERAPY SOJA SLIM&#39;,&#39;90x180&#39;,1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+              <i class="ti ti-minus"></i> Salida
+            </button>
+          </td>
+        </tr><tr>
+          <td style="font-weight:600;color:#3B4A2F">PHARMATHERAPY SOJA SLIM</td>
+          <td style="text-align:center;font-family:monospace">90x190</td>
+          <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">2</span></td>
+          <td style="text-align:center">
+            <button onclick="stockAbrirSalida(&#39;PHARMATHERAPY SOJA SLIM&#39;,&#39;90x190&#39;,2)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+              <i class="ti ti-minus"></i> Salida
+            </button>
+          </td>
+        </tr><tr>
+          <td style="font-weight:600;color:#3B4A2F">PHARMATHERAPY SOJA SLIM</td>
+          <td style="text-align:center;font-family:monospace">90x200</td>
+          <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">2</span></td>
+          <td style="text-align:center">
+            <button onclick="stockAbrirSalida(&#39;PHARMATHERAPY SOJA SLIM&#39;,&#39;90x200&#39;,2)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+              <i class="ti ti-minus"></i> Salida
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div></div>
+      </div>
+
+      <!-- MOVIMIENTOS -->
+      <div id="stock-panel-movimientos" style="display:none">
+        <div class="card" style="margin-bottom:16px;padding:16px 20px">
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end">
+            <div>
+              <label style="font-size:11px;font-weight:600;color:#6b7280;display:block;margin-bottom:4px">Tipo</label>
+              <select id="stock-mov-tipo" onchange="stockRenderMovimientos()" style="padding:7px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;background:white">
+                <option value="">Todos</option>
+                <option value="ENTRADA">Entradas</option>
+                <option value="SALIDA">Salidas</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size:11px;font-weight:600;color:#6b7280;display:block;margin-bottom:4px">Modelo</label>
+              <select id="stock-mov-modelo" onchange="stockRenderMovimientos()" style="padding:7px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;background:white;min-width:180px"><option value="">Todos</option><option value="4D">4D</option><option value="BAMBOO DELUXE">BAMBOO DELUXE</option><option value="BELLAGIO DELUXE">BELLAGIO DELUXE</option><option value="ERGO RELAX">ERGO RELAX</option><option value="FITNESS SPORT">FITNESS SPORT</option><option value="LATEX GEL">LATEX GEL</option><option value="MURANO">MURANO</option><option value="PHARMATHERAPY SOJA">PHARMATHERAPY SOJA</option><option value="PHARMATHERAPY SOJA SLIM">PHARMATHERAPY SOJA SLIM</option></select>
+            </div>
+          </div>
+        </div>
+        <div id="stock-movimientos-content"><div class="empty-state"><i class="ti ti-history"></i><p>Aún no hay movimientos registrados.</p></div></div>
       </div>
     </div>
 
@@ -1310,9 +1698,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
 
         <!-- Campo dirección -->
         <div class="section-label" style="margin-top:0">Dirección de envío</div>
-        <textarea id="nacex-direccion" rows="3" placeholder="Nombre destinatario, Calle, Nº, CP, Ciudad, Provincia…" oninput="nacexActualizarPreview()"
-          style="width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;font-family:inherit;resize:vertical;line-height:1.6;outline:none;transition:border-color 0.15s"
-          onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'"></textarea>
+        <textarea id="nacex-direccion" rows="3" placeholder="Nombre destinatario, Calle, Nº, CP, Ciudad, Provincia…" oninput="nacexActualizarPreview()" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;font-family:inherit;resize:vertical;line-height:1.6;outline:none;transition:border-color 0.15s" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;"></textarea>
 
         <div class="status-box" id="nacex-status" style="margin-top:12px"></div>
 
@@ -1344,15 +1730,11 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
           <div>
             <div class="section-label" style="margin-top:0">Desde</div>
-            <input type="date" id="nacex-exp-desde" oninput="nacexExpPreview()"
-              style="width:100%;padding:8px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none"
-              onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
+            <input type="date" id="nacex-exp-desde" oninput="nacexExpPreview()" style="width:100%;padding:8px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
           </div>
           <div>
             <div class="section-label" style="margin-top:0">Hasta</div>
-            <input type="date" id="nacex-exp-hasta" oninput="nacexExpPreview()"
-              style="width:100%;padding:8px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none"
-              onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
+            <input type="date" id="nacex-exp-hasta" oninput="nacexExpPreview()" style="width:100%;padding:8px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
           </div>
         </div>
 
@@ -1444,11 +1826,8 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
           <div style="font-size:15px;font-weight:700;color:#1a1a1a;margin-bottom:4px" id="pw-lock-title">Introduce tu clave maestra</div>
           <div style="font-size:12px;color:#6b7280;margin-bottom:20px">Las contraseñas están cifradas. Necesitas tu clave para acceder.</div>
           <div style="position:relative;margin-bottom:12px">
-            <input type="password" id="pw-master-input" placeholder="Clave maestra…"
-              style="width:100%;padding:10px 40px 10px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;outline:none;text-align:center;letter-spacing:2px"
-              onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'"
-              onkeydown="if(event.key==='Enter')pwDesbloquear()">
-            <button onclick="pwToggleInput('pw-master-input',this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#9ca3af;font-size:18px"><i class="ti ti-eye"></i></button>
+            <input type="password" id="pw-master-input" placeholder="Clave maestra…" style="width:100%;padding:10px 40px 10px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;outline:none;text-align:center;letter-spacing:2px" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;" onkeydown="if(event.key===&#39;Enter&#39;)pwDesbloquear()">
+            <button onclick="pwToggleInput(&#39;pw-master-input&#39;,this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#9ca3af;font-size:18px"><i class="ti ti-eye"></i></button>
           </div>
           <button onclick="pwDesbloquear()" style="width:100%;padding:10px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;background:#3B4A2F;border:none;color:white;margin-bottom:8px">
             <i class="ti ti-unlock"></i> Desbloquear
@@ -1457,10 +1836,8 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
           <div id="pw-crear-wrap" style="display:none;margin-top:16px;padding-top:16px;border-top:1px solid #f3f4f6">
             <div style="font-size:12px;color:#6b7280;margin-bottom:8px">Primera vez — elige tu clave maestra</div>
             <div style="position:relative;margin-bottom:8px">
-              <input type="password" id="pw-master-confirm" placeholder="Confirma la clave maestra…"
-                style="width:100%;padding:10px 40px 10px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;outline:none;text-align:center;letter-spacing:2px"
-                onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
-              <button onclick="pwToggleInput('pw-master-confirm',this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#9ca3af;font-size:18px"><i class="ti ti-eye"></i></button>
+              <input type="password" id="pw-master-confirm" placeholder="Confirma la clave maestra…" style="width:100%;padding:10px 40px 10px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;outline:none;text-align:center;letter-spacing:2px" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
+              <button onclick="pwToggleInput(&#39;pw-master-confirm&#39;,this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#9ca3af;font-size:18px"><i class="ti ti-eye"></i></button>
             </div>
             <button onclick="pwCrearMaestra()" style="width:100%;padding:10px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;background:#1a56db;border:none;color:white">
               Crear clave maestra y acceder
@@ -1477,9 +1854,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
             <span style="font-size:11px;color:#9ca3af"><i class="ti ti-lock" style="font-size:11px"></i> Sesión activa</span>
           </div>
           <div style="display:flex;gap:8px;flex-wrap:wrap">
-            <input type="text" id="pw-search" placeholder="Buscar servicio…" oninput="pwRender()"
-              style="padding:7px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;width:180px"
-              onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
+            <input type="text" id="pw-search" placeholder="Buscar servicio…" oninput="pwRender()" style="padding:7px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;width:180px" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
             <button onclick="pwAbrirModal()" style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;background:#3B4A2F;border:none;color:white"><i class="ti ti-plus"></i> Nueva</button>
             <button onclick="pwBloquear()" style="display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:8px;font-size:13px;cursor:pointer;background:white;border:1px solid #d1d5db;color:#6b7280" title="Bloquear"><i class="ti ti-lock"></i></button>
           </div>
@@ -1569,15 +1944,11 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
       <div style="display:grid;grid-template-columns:1fr 90px;gap:14px;margin-bottom:20px">
         <div>
           <div class="section-label" style="margin-top:0">Medida</div>
-          <input type="text" id="colch-edit-medida" placeholder="ej. 150x200"
-            style="width:100%;padding:8px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none"
-            onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
+          <input type="text" id="colch-edit-medida" placeholder="ej. 150x200" style="width:100%;padding:8px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
         </div>
         <div>
           <div class="section-label" style="margin-top:0">Cantidad</div>
-          <input type="number" id="colch-edit-cantidad" min="1" value="1"
-            style="width:100%;padding:8px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none"
-            onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
+          <input type="number" id="colch-edit-cantidad" min="1" value="1" style="width:100%;padding:8px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
         </div>
       </div>
       <div style="display:flex;gap:10px">
@@ -1599,30 +1970,22 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
       <input type="hidden" id="pw-modal-id">
       <div style="margin-bottom:12px">
         <div class="section-label" style="margin-top:0">Servicio</div>
-        <input type="text" id="pw-modal-servicio" placeholder="ej. Gmail, Amazon, POLIVAL…"
-          style="width:100%;padding:8px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none"
-          onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
+        <input type="text" id="pw-modal-servicio" placeholder="ej. Gmail, Amazon, POLIVAL…" style="width:100%;padding:8px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
       </div>
       <div style="margin-bottom:12px">
         <div class="section-label" style="margin-top:0">Usuario / Email</div>
-        <input type="text" id="pw-modal-usuario" placeholder="usuario@email.com"
-          style="width:100%;padding:8px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none"
-          onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
+        <input type="text" id="pw-modal-usuario" placeholder="usuario@email.com" style="width:100%;padding:8px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
       </div>
       <div style="margin-bottom:12px">
         <div class="section-label" style="margin-top:0">Contraseña</div>
         <div style="position:relative">
-          <input type="password" id="pw-modal-pass" placeholder="Contraseña"
-            style="width:100%;padding:8px 36px 8px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;font-family:monospace"
-            onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
-          <button onclick="pwToggleInput('pw-modal-pass',this)" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#9ca3af;font-size:16px"><i class="ti ti-eye"></i></button>
+          <input type="password" id="pw-modal-pass" placeholder="Contraseña" style="width:100%;padding:8px 36px 8px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;font-family:monospace" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
+          <button onclick="pwToggleInput(&#39;pw-modal-pass&#39;,this)" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#9ca3af;font-size:16px"><i class="ti ti-eye"></i></button>
         </div>
       </div>
       <div style="margin-bottom:20px">
         <div class="section-label" style="margin-top:0">URL (opcional)</div>
-        <input type="text" id="pw-modal-url" placeholder="https://…"
-          style="width:100%;padding:8px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none"
-          onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
+        <input type="text" id="pw-modal-url" placeholder="https://…" style="width:100%;padding:8px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
       </div>
       <div class="status-box" id="pw-modal-status" style="margin-bottom:12px"></div>
       <div style="display:flex;gap:10px">
@@ -2840,9 +3203,17 @@ function traducir(texto,plataforma,modeloPrincipal){
   if(t.startsWith('PRO'))return{tipo:'PROTECTOR',lineas:[`PROTECTOR ${medida(texto)}${udStr(ud)}`]};
   if(t.replace(/\s/g,'').includes('LATEXNATURA')||t.startsWith('LATEX')){const med=medida(texto),tipo2=t.includes('N18')||t.includes('H21')?'N18 H21':'N15 H18';return{tipo:'LATEX',lineas:[lim,`MODELO: LATEX NATURA ${tipo2}`,`MEDIDA: ${med}`]};}
   if(t.includes('CABECERO')||['AURA','ARIA','ATENEA','IRIS','GAIA'].some(m=>t.includes(m))){
-    const am=texto.match(/(\d{2,3})[xX]\d{2,3}/),ancho=am?parseInt(am[1]):null;
+    const am=texto.match(/(\d{2,3})[xX]\d{2,3}/);
+    let ancho=am?parseInt(am[1]):null;
+    if(!ancho){const am2=texto.match(/\b(\d{2,3})\b/);ancho=am2?parseInt(am2[1]):null;}
     let fab,suma,serie;
-    if(t.includes('AURA')){fab='SIENNA';suma=30;serie='ARGOS';}else if(t.includes('ARIA')){fab='ASHLEY';suma=10;serie='DUNA';}else if(t.includes('ATENEA')){fab='MERYL';suma=10;serie='DUNA';}else if(t.includes('IRIS')){fab='MARGOT';suma=10;serie='DUNA';}else if(t.includes('GAIA')){fab='GRETA';suma=10;serie='DUNA';}else{fab='MERYL';suma=10;serie='DUNA';}
+    if(t.includes('AURA')){fab='SIENNA';suma=30;serie='ARGOS';}else if(t.includes('ARIA')){fab='ASHLEY';suma=10;serie='DUNA';}else if(t.includes('ATENEA')){
+      fab='MERYL';suma=10;serie='DUNA';
+      if(N(plataforma).includes('MAISON')||N(modeloPrincipal).includes('MAISON')){
+        const mf2=ancho?ancho+10:null;
+        return{tipo:'CABECERO',lineas:[lim,`MODELO: ${fab}`,`MEDIDA: ${ancho?ancho+'CM':''}`,`MEDIDA FINAL: ${mf2?mf2+'CM':''}`,`ACABADO: DUNA FLAMINGO`]};
+      }
+    }else if(t.includes('IRIS')){fab='MARGOT';suma=10;serie='DUNA';}else if(t.includes('GAIA')){fab='GRETA';suma=10;serie='DUNA';}else{fab='MERYL';suma=10;serie='DUNA';}
     const mf=ancho?ancho+suma:null;
     let acabado;
     if(serie==='ARGOS'){const c=colorPoli(texto)||colorPoli(modeloPrincipal);acabado=(ARGOS[c]||['ARGOS BLANCO'])[0];}else{const ck=colorTela(texto)||colorTela(modeloPrincipal);acabado=ck&&TELAS[ck]?TELAS[ck][0]:'DUNA LINO';}
@@ -2965,6 +3336,7 @@ function showPage(id,el){
   if(id==='nacex'){nacexRenderHistorial();}
   if(id==='nacex-export'){nacexExpInit();}
   if(id==='historial'){histRender();}
+  if(id==='stock'){stockRenderActual();}
   if(id==='admin-usuarios') adminRenderUsuarios();
   if(id==='admin-log') adminRenderLog();
 }
@@ -3266,6 +3638,10 @@ const MODELOS_NM=[];
 
 let colchLineasActuales=[];
 let colchPedidos=JSON.parse(localStorage.getItem('colch_pedidos')||'[]');
+
+// PDF en memoria del albarán actual (se limpia al confirmar)
+let _albPdfB64Luso=null;
+let _albPdfB64NM=null;
 // Normalización global de medidas: '200x150' === '150x200'
 const nmMed=med=>{const[a,b]=(med||'').split('x');const n=[parseInt(a||0),parseInt(b||0)];n.sort((x,y)=>x-y);return n.join('x');};
 
@@ -3505,6 +3881,7 @@ function colchTab(name){
   if(name==='pendientes'){ pendSetVista(pendVistaActual); colchRenderPendientes(); }
   if(name==='historial') colchRenderHistorial();
   if(name==='auditoria') auditRender();
+  if(name==='albaranes-recibidos') albHistRender();
   if(name==='pedidosclientes'){pcRender();pcUpdateBadge();}
   if(name==='sepuedenservir'){spsRender();spsUpdateBadge();}
   if(name==='stocksobrante'){ssUpdateBadge();ssRenderVacio();}
@@ -4420,13 +4797,46 @@ function colchConfirmarAlbaranFIFO(){
 
   localStorage.setItem('colch_pedidos',JSON.stringify(colchPedidos));
 
-  // Guardar contenido del albarán para cálculo de stock sobrante
+  // Guardar contenido del albarán + detalle FIFO + PDF
   const contenidoAlbLuso=[];
+  const detalleLineasLuso=[];
   document.querySelectorAll('#alb-tbody input[data-modelo]').forEach(inp=>{
     const cant=parseInt(inp.value)||0;
-    if(cant>0) contenidoAlbLuso.push({modelo:inp.dataset.modelo,medida:inp.dataset.medida,cantidad:cant});
+    if(cant<=0) return;
+    const modelo=inp.dataset.modelo;
+    const medida=inp.dataset.medida;
+    contenidoAlbLuso.push({modelo,medida,cantidad:cant});
+
+    // Reconstruir qué pedidos absorbieron esta línea (misma lógica FIFO, solo para trazar)
+    const normMedL=med=>{const[a,b]=(med||'').split('x');return `${parseInt(a||0)}x${parseInt(b||0)}`;};
+    let restante=cant;
+    const pedidosOrd=[...colchPedidos].sort((a,b)=>{
+      const pf=s=>{if(!s)return Infinity;const p=s.split('/');return p.length===3?new Date(p[2],p[1]-1,p[0]).getTime():Infinity;};
+      return pf(a.fecha)-pf(b.fecha);
+    });
+    const pedidosAsociados=[];
+    for(const ped of pedidosOrd){
+      if(restante<=0) break;
+      for(const linea of ped.lineas){
+        if(restante<=0) break;
+        if(linea.modelo!==modelo||normMedL(linea.medida)!==normMedL(medida)) continue;
+        // Cuánto absorbió este pedido (lo que ya tiene recibido antes de esta confirmación, aproximación)
+        const absorto=Math.min(restante,linea.recibido);
+        if(absorto>0){
+          pedidosAsociados.push({pedidoId:ped.id,fechaPedido:ped.fecha,uds:absorto});
+          restante-=absorto;
+        }
+      }
+    }
+    detalleLineasLuso.push({modelo,medida,cantidad:cant,pedidos:pedidosAsociados,sinPedido:restante>0?restante:0});
   });
-  if(contenidoAlbLuso.length) pcGuardarUltimoAlbaran(contenidoAlbLuso,ref,'LUSOCOLCHAO',document.getElementById('alb-fecha-recepcion')?.value||'');
+  if(contenidoAlbLuso.length) pcGuardarUltimoAlbaran(
+    contenidoAlbLuso, ref, 'LUSOCOLCHAO',
+    document.getElementById('alb-fecha-recepcion')?.value||'',
+    _albPdfB64Luso,
+    detalleLineasLuso
+  );
+  _albPdfB64Luso=null;
 
   colchUpdateBadge();
   st.textContent=`✓ ${totalRecibido} unidad${totalRecibido!==1?'es':''} registrada${totalRecibido!==1?'s':''}${ref?' · albarán '+ref:''}. Descontadas por orden de pedido (FIFO).`;
@@ -5680,6 +6090,69 @@ function ssRenderVacio(){
   if(content) content.innerHTML='<div class="empty-state"><i class="ti ti-filter"></i><p>Selecciona los filtros y pulsa <strong>Consultar</strong> para ver el stock sobrante.</p></div>';
 }
 
+// Sobrante = lo que vino en el albarán − ventas marcadas SERVIDO en la misma fecha del albarán
+function ssBuildMapaLineas(normMed, normTxt){
+  const mapaLineas=new Map();
+
+  const ventas=JSON.parse(localStorage.getItem('colch_ventas')||'[]');
+  const estadosVentas=JSON.parse(localStorage.getItem('colch_ventas_estado')||'{}');
+  const fechasServido=JSON.parse(localStorage.getItem('colch_ventas_fecha_servido')||'{}');
+
+  const albaranes=JSON.parse(localStorage.getItem('colch_albaranes_recibidos')||'[]');
+
+  albaranes.forEach(alb=>{
+    // Normalizar fecha del albarán
+    let fechaAlb=alb.fecha||'';
+    if(fechaAlb.includes('undefined')){
+      const m=fechaAlb.match(/(\d{2}\/\d{2}\/\d{4})/);
+      fechaAlb=m?m[1]:'';
+    }
+    if(!fechaAlb) return;
+
+    // Ventas marcadas SERVIDO en la misma fecha que este albarán, por modelo+medida
+    const servidosEseDia=new Map();
+    ventas.forEach(v=>{
+      if(estadosVentas[String(v.id)]!=='SERVIDO') return;
+      if(fechasServido[String(v.id)]!==fechaAlb) return;
+      const k=`${normTxt(v.modelo||'')}||${normMed(v.medida||'')}`;
+      servidosEseDia.set(k,(servidosEseDia.get(k)||0)+(v.unidades||1));
+    });
+
+    // Calcular sobrante por línea del albarán
+    (alb.lineas||[]).forEach(l=>{
+      const modelo=l.modelo||'';
+      const medida=l.medida||'';
+      const cantAlb=parseInt(l.cantidad)||0;
+      if(!modelo||!medida||cantAlb<=0) return;
+
+      const k=`${normTxt(modelo)}||${normMed(medida)}`;
+      const servidos=servidosEseDia.get(k)||0;
+      const sobrante=cantAlb-servidos;
+      if(sobrante<=0) return;
+
+      const key=`${alb.proveedor||''}||${fechaAlb}||${k}`;
+      const existing=mapaLineas.get(key);
+      if(existing){
+        existing.recibido+=sobrante;
+      } else {
+        mapaLineas.set(key,{
+          key,
+          modelo,
+          medida:nmMed(medida),
+          recibido:sobrante,
+          proveedor:alb.proveedor||'',
+          fecha:fechaAlb,
+          ref:alb.ref||'',
+          ts:alb.ts||0,
+          sinPedido:true
+        });
+      }
+    });
+  });
+
+  return mapaLineas;
+}
+
 function ssRender(){
   const estados=ssGetEstados();
   const filtroFecha=document.getElementById('ss-filtro-fecha')?.value||'';
@@ -5688,48 +6161,24 @@ function ssRender(){
   const normMed=med=>{const[a,b]=(med||'').split('x');const n=[parseInt(a||0),parseInt(b||0)];n.sort((x,y)=>x-y);return n.join('x');};
   const normTxt=s=>s.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^A-Z0-9]/g,'');
 
-  // Si no hay ningún filtro activo, no mostrar nada
   if(!filtroFecha&&!filtroProv){
     document.getElementById('ss-stats').innerHTML='';
     document.getElementById('ss-content').innerHTML=`<div class="empty-state"><i class="ti ti-filter"></i><p>Selecciona una fecha de camión o un proveedor para ver el stock sobrante.</p></div>`;
     return;
   }
-  // Agrupar por proveedor + fecha recepción + modelo + medida
-  const mapaLineas=new Map();
-  colchPedidos.forEach(ped=>{
-    ped.lineas.forEach(l=>{
-      if(!(l.recibido>0)) return;
-      const fechaRec=l.fechaRecepcion||'';
-      const key=`${ped.proveedor}||${fechaRec}||${normTxt(l.modelo)}||${normMed(l.medida)}`;
-      const existing=mapaLineas.get(key);
-      if(existing){
-        existing.recibido+=l.recibido;
-      } else {
-        mapaLineas.set(key,{
-          key,
-          modelo:l.modelo,
-          medida:nmMed(l.medida),
-          recibido:l.recibido,
-          proveedor:ped.proveedor,
-          fecha:fechaRec,
-          ref:(ped.albaranes&&ped.albaranes.length)?ped.albaranes.map(a=>a.ref).join(', '):'',
-          ts:ped.ts||0
-        });
-      }
-    });
-  });
 
-  // Calcular vendido y sobrante por línea
+  const mapaLineas=ssBuildMapaLineas(normMed,normTxt);
+
+  // Solo son sobrante las unidades que el FIFO no pudo asignar a ningún pedido de venta (sinPedido:true)
+  // Las de sinPedido:false ya están comprometidas con pedidos de venta pendientes de servir
   const filas=[];
   mapaLineas.forEach((l,key)=>{
-    const vendido=spsGetVendidoPorModeloMedida(normTxt(l.modelo),normMed(l.medida));
-    const stock=l.recibido-vendido;
+    if(!l.sinPedido) return;
+    const stock=l.recibido;
     if(stock<=0) return;
 
-    // Filtros
     if(filtroProv&&l.proveedor!==filtroProv) return;
     if(filtroFecha&&l.fecha){
-      // Convertir fecha DD/MM/YYYY a YYYY-MM-DD
       let fechaISO='';
       if(l.fecha.includes('-')) fechaISO=l.fecha;
       else{const[d,m,y]=l.fecha.split('/');fechaISO=`${y}-${m.padStart(2,'0')}-${d.padStart(2,'0')}`;}
@@ -5739,14 +6188,13 @@ function ssRender(){
     const estado=estados[key]||'PENDIENTE';
     if(filtroEstado!=='TODOS'&&estado!==filtroEstado) return;
 
-    filas.push({...l,key,stock,vendido,estado});
+    filas.push({...l,key,stock,estado});
   });
 
-  // Contadores globales (sin filtro de estado)
   const todasFilas=[];
   mapaLineas.forEach(l=>{
-    const vendido=spsGetVendidoPorModeloMedida(normTxt(l.modelo),normMed(l.medida));
-    const stock=l.recibido-vendido;
+    if(!l.sinPedido) return;
+    const stock=l.recibido;
     if(stock<=0) return;
     if(filtroProv&&l.proveedor!==filtroProv) return;
     if(filtroFecha&&l.fecha){
@@ -5776,12 +6224,10 @@ function ssRender(){
   }
 
   content.innerHTML=`<div style="overflow-x:auto">
-    <table class="pedidos-table" style="margin:0;min-width:900px">
+    <table class="pedidos-table" style="margin:0;min-width:820px">
       <thead><tr>
         <th>Modelo</th><th>Medida</th>
-        <th style="text-align:center">Recibido</th>
-        <th style="text-align:center">Vendido</th>
-        <th style="text-align:center;color:#16A34A">Sobrante</th>
+        <th style="text-align:center">Uds sobrantes</th>
         <th>Proveedor</th><th>Fecha camión</th><th>Albarán</th>
         <th style="text-align:center">Estado</th>
         <th style="text-align:center;min-width:130px">Acción</th>
@@ -5789,13 +6235,12 @@ function ssRender(){
       <tbody>
         ${filas.map(f=>{
           const esConf=f.estado==='CONFIRMADO';
+          const provLabel=f.proveedor==='LUSOCOLCHAO'?'LUSO':f.proveedor==='NEW MATTRESS'?'NEW M.':f.proveedor||'—';
           return `<tr style="opacity:${esConf?'0.55':'1'}">
             <td style="font-weight:600;color:#3B4A2F">${f.modelo}</td>
             <td style="font-family:monospace">${f.medida}</td>
-            <td style="text-align:center;color:#6b7280">${f.recibido}</td>
-            <td style="text-align:center;color:#991b1b">${f.vendido}</td>
             <td style="text-align:center"><span style="background:#D1FAE5;color:#065F46;font-weight:700;padding:2px 10px;border-radius:10px">${f.stock}</span></td>
-            <td style="font-size:11px;color:#6b7280">${f.proveedor==='LUSOCOLCHAO'?'LUSO':f.proveedor==='NEW MATTRESS'?'NEW M.':f.proveedor||'—'}</td>
+            <td style="font-size:11px;color:#6b7280">${provLabel}</td>
             <td style="font-size:11px;color:#6b7280">${f.fecha||'—'}</td>
             <td style="font-size:11px;font-family:monospace;color:#9ca3af">${f.ref||'—'}</td>
             <td style="text-align:center">
@@ -5805,7 +6250,7 @@ function ssRender(){
             </td>
             <td style="text-align:center">
               ${!esConf
-                ?`<button onclick="ssConfirmar('${f.key}')" style="padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#16A34A;border:none;color:white" title="Confirmar alta en stock"><i class="ti ti-check"></i> Confirmar alta</button>`
+                ?`<button onclick="ssConfirmar('${f.key}')" style="padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#16A34A;border:none;color:white"><i class="ti ti-check"></i> Confirmar alta</button>`
                 :`<button onclick="ssReabrir('${f.key}')" style="padding:4px 10px;border-radius:6px;font-size:11px;cursor:pointer;background:white;border:1px solid #d1d5db;color:#6b7280">Reabrir</button>`}
             </td>
           </tr>`;
@@ -5830,29 +6275,18 @@ function ssReabrir(key){
 }
 
 function ssConfirmarTodos(){
-  // Confirmar todas las filas visibles actualmente (las pendientes)
   const estados=ssGetEstados();
   const normMed=med=>{const[a,b]=(med||'').split('x');const n=[parseInt(a||0),parseInt(b||0)];n.sort((x,y)=>x-y);return n.join('x');};
   const normTxt=s=>s.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^A-Z0-9]/g,'');
-
-  // Construir las mismas filas que ssRender con filtro PENDIENTE
   const filtroFecha=document.getElementById('ss-filtro-fecha')?.value||'';
   const filtroProv=document.getElementById('ss-filtro-prov')?.value||'';
-  const mapaLineas=new Map();
-  colchPedidos.forEach(ped=>{
-    ped.lineas.forEach(l=>{
-      if(!(l.recibido>0)) return;
-      const fechaRec=l.fechaRecepcion||'';
-      const key=`${ped.proveedor}||${fechaRec}||${normTxt(l.modelo)}||${normMed(l.medida)}`;
-      if(!mapaLineas.has(key)) mapaLineas.set(key,{key,recibido:l.recibido,modelo:l.modelo,medida:l.medida,proveedor:ped.proveedor,fecha:fechaRec});
-      else mapaLineas.get(key).recibido+=l.recibido;
-    });
-  });
+
+  const mapaLineas=ssBuildMapaLineas(normMed,normTxt);
 
   let confirmados=0;
   mapaLineas.forEach(l=>{
-    const vendido=spsGetVendidoPorModeloMedida(normTxt(l.modelo),normMed(l.medida));
-    if(l.recibido-vendido<=0) return;
+    if(!l.sinPedido) return;
+    if(l.recibido<=0) return;
     if(filtroProv&&l.proveedor!==filtroProv) return;
     if(filtroFecha&&l.fecha){
       let fi='';if(l.fecha.includes('-'))fi=l.fecha;else{const[d,m,y]=l.fecha.split('/');fi=`${y}-${m.padStart(2,'0')}-${d.padStart(2,'0')}`;}
@@ -5892,26 +6326,12 @@ function ssExportarExcel(){
   const normMed=med=>{const[a,b]=(med||'').split('x');const n=[parseInt(a||0),parseInt(b||0)];n.sort((x,y)=>x-y);return n.join('x');};
   const normTxt=s=>s.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^A-Z0-9]/g,'');
 
-  const mapaLineas=new Map();
-  colchPedidos.forEach(ped=>{
-    ped.lineas.forEach(l=>{
-      if(!(l.recibido>0)) return;
-      const fechaRec=l.fechaRecepcion||'';
-      const key=`${ped.proveedor}||${fechaRec}||${normTxt(l.modelo)}||${normMed(l.medida)}`;
-      const existing=mapaLineas.get(key);
-      if(existing){existing.recibido+=l.recibido;}
-      else{
-        mapaLineas.set(key,{key,modelo:l.modelo,medida:l.medida,recibido:l.recibido,
-          proveedor:ped.proveedor,fecha:fechaRec,
-          ref:(ped.albaranes&&ped.albaranes.length)?ped.albaranes.map(a=>a.ref).join(', '):'',ts:ped.ts||0});
-      }
-    });
-  });
+  const mapaLineas=ssBuildMapaLineas(normMed,normTxt);
 
   const filas=[];
   mapaLineas.forEach(l=>{
-    const vendido=spsGetVendidoPorModeloMedida(normTxt(l.modelo),normMed(l.medida));
-    const stock=l.recibido-vendido;
+    if(!l.sinPedido) return;
+    const stock=l.recibido;
     if(stock<=0) return;
     if(filtroProv&&l.proveedor!==filtroProv) return;
     if(filtroFecha&&l.fecha){
@@ -5922,8 +6342,8 @@ function ssExportarExcel(){
     } else if(filtroFecha&&!l.fecha) return;
     const estado=estados[l.key]||'PENDIENTE';
     if(filtroEstado!=='TODOS'&&estado!==filtroEstado) return;
-    filas.push({'Modelo':l.modelo,'Medida':l.medida,'Recibido':l.recibido,'Vendido':vendido,
-      'Sobrante':stock,'Proveedor':l.proveedor,'Fecha camión':l.fecha||'','Albarán':l.ref||'','Estado':estado});
+    filas.push({'Modelo':l.modelo,'Medida':l.medida,'Sobrante':stock,
+      'Proveedor':l.proveedor,'Fecha camión':l.fecha||'','Albarán':l.ref||'','Estado':estado});
   });
 
   if(!filas.length){alert('No hay datos para exportar con los filtros actuales.');return;}
@@ -5940,7 +6360,7 @@ function ssExportarExcel(){
     fecha:ahora.toLocaleDateString('es-ES'),
     hora:ahora.toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'}),
     filas:filas.length,
-    totalUds:filas.reduce((a,f)=>a+(f.Sobrante||0),0),
+    totalUds:filas.reduce((a,f)=>a+(typeof f.Sobrante==='number'?f.Sobrante:0),0),
     filtroFecha:filtroFecha?new Date(filtroFecha+'T00:00:00').toLocaleDateString('es-ES'):'',
     filtroProv:filtroProv||''
   });
@@ -5948,15 +6368,48 @@ function ssExportarExcel(){
   ssRenderHistorial();
 }
 // ─────────────────────────────────────────────────────────────
-function pcGuardarUltimoAlbaran(lineas, ref, proveedor, fechaISO){
+function pcGuardarUltimoAlbaran(lineas, ref, proveedor, fechaInput, pdfB64, detalleLineas){
+  // Normalizar fecha siempre a DD/MM/YYYY
   let fecha='';
-  if(fechaISO){const[y,m,d]=fechaISO.split('-');fecha=`${d}/${m}/${y}`;}
+  if(fechaInput){
+    const f=String(fechaInput).trim();
+    if(/^\d{4}-\d{2}-\d{2}$/.test(f)){
+      // Formato YYYY-MM-DD → convertir a DD/MM/YYYY
+      const[y,m,d]=f.split('-');
+      fecha=`${d}/${m}/${y}`;
+    } else if(/^\d{2}\/\d{2}\/\d{4}$/.test(f)){
+      // Ya está en DD/MM/YYYY, usar tal cual
+      fecha=f;
+    } else {
+      // Formato desconocido, intentar limpiar undefined
+      fecha=f.replace(/undefined\//g,'');
+    }
+  }
   const albaran={ref,proveedor,fecha,lineas,ts:Date.now()};
-  // Acumular albaranes (no solo el último)
+  if(pdfB64) albaran.pdfB64=pdfB64;
+  if(detalleLineas) albaran.detalleLineas=detalleLineas;
   const albaranes=JSON.parse(localStorage.getItem('colch_albaranes_recibidos')||'[]');
   albaranes.unshift(albaran);
   localStorage.setItem('colch_albaranes_recibidos',JSON.stringify(albaranes.slice(0,50)));
   spsUpdateBadge();
+  // Reparar fechas corruptas existentes en el mismo guardado
+  pcRepararFechasAlbaranes();
+}
+
+function pcRepararFechasAlbaranes(){
+  try{
+    const albaranes=JSON.parse(localStorage.getItem('colch_albaranes_recibidos')||'[]');
+    let cambiado=false;
+    albaranes.forEach(a=>{
+      if(a.fecha&&a.fecha.includes('undefined')){
+        // Extraer la parte DD/MM/YYYY válida
+        const m=a.fecha.match(/(\d{2}\/\d{2}\/\d{4})/);
+        a.fecha=m?m[1]:'';
+        cambiado=true;
+      }
+    });
+    if(cambiado) localStorage.setItem('colch_albaranes_recibidos',JSON.stringify(albaranes));
+  }catch(e){}
 }
 
 function spsCalcularStock(){
@@ -6924,6 +7377,8 @@ async function albNMLeerPDF(input){
     }
 
     const arrayBuffer=await file.arrayBuffer();
+    // Guardar base64 del PDF para adjuntarlo al albarán
+    _albPdfB64NM=btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
     const pdfDoc=await pdfjsLib.getDocument({data:arrayBuffer}).promise;
     const totalPags=pdfDoc.numPages;
     // El PDF viene triplicado: leer solo la primera mitad (páginas 1..N/3*1 o N/3*2)
@@ -7133,17 +7588,41 @@ function albNMConfirmar(){
 
   localStorage.setItem('colch_pedidos',JSON.stringify(colchPedidos));
 
-  // Guardar contenido del albarán para cálculo de stock sobrante
+  // Guardar contenido del albarán + detalle FIFO + PDF
   const contenidoAlb=[];
+  const detalleLineasNM=[];
   filas.forEach(fila=>{
     const celdas=[...fila.querySelectorAll('td')];
     const modelo=celdas[0]?.textContent?.trim()||'';
     const medida=celdas[1]?.textContent?.trim()||'';
     const input=celdas[2]?.querySelector('input');
     const cant=input?Math.max(0,parseInt(input.value)||0):0;
-    if(modelo&&medida&&cant>0) contenidoAlb.push({modelo,medida,cantidad:cant});
+    if(!modelo||!medida||cant<=0) return;
+    contenidoAlb.push({modelo,medida,cantidad:cant});
+
+    // Trazar qué pedidos absorbieron cada línea
+    let restante=cant;
+    const pedidosAsociadosNM=[];
+    for(const ped of pedidosOrdenados){
+      if(restante<=0) break;
+      for(const linea of ped.lineas){
+        if(restante<=0) break;
+        if(normText(linea.modelo)!==normText(modelo)) continue;
+        if(normMed(linea.medida)!==normMed(medida)) continue;
+        const absorto=Math.min(restante,linea.recibido||0);
+        if(absorto>0){
+          pedidosAsociadosNM.push({pedidoId:ped.id,fechaPedido:ped.fecha,uds:absorto});
+          restante-=absorto;
+        }
+      }
+    }
+    detalleLineasNM.push({modelo,medida,cantidad:cant,pedidos:pedidosAsociadosNM,sinPedido:restante>0?restante:0});
   });
-  if(contenidoAlb.length) pcGuardarUltimoAlbaran(contenidoAlb,ref,'NEW MATTRESS',fechaRecep);
+  if(contenidoAlb.length) pcGuardarUltimoAlbaran(
+    contenidoAlb, ref, 'NEW MATTRESS', fechaRecep,
+    _albPdfB64NM, detalleLineasNM
+  );
+  _albPdfB64NM=null;
   colchRenderPendientes();
   colchRenderAlbaranFIFO();
   colchUpdateBadge();
@@ -7217,9 +7696,9 @@ async function albLeerPDF(input){
     }
 
     const arrayBuffer=await file.arrayBuffer();
+    // Guardar base64 del PDF para adjuntarlo al albarán
+    _albPdfB64Luso=btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
     const pdfDoc=await pdfjsLib.getDocument({data:arrayBuffer}).promise;
-
-    // Extraer texto agrupando por líneas según posición Y (redondeado a 2px)
     const lineasPDF=[];
     for(let p=1;p<=pdfDoc.numPages;p++){
       const page=await pdfDoc.getPage(p);
@@ -8140,13 +8619,731 @@ backupActualizarUltima();
 
 
 
-// Inicializar cuando se muestra la página
+// ══════════════════════════════════════════════════════════════
+// STOCK TOTAL DE COLCHONES
+// ══════════════════════════════════════════════════════════════
+function stockGetMovimientos(){
+  return JSON.parse(localStorage.getItem('colch_stock_movimientos')||'[]');
+}
 
+function stockGetActual(){
+  const actual=new Map();
+  stockGetMovimientos().forEach(m=>{
+    const k=`${m.modelo}||${m.medida}`;
+    const v=actual.get(k)||0;
+    actual.set(k, m.tipo==='ENTRADA' ? v+m.cantidad : v-m.cantidad);
+  });
+  return actual;
+}
+
+function stockBadgeUpdate(){
+  const total=[...stockGetActual().values()].reduce((a,b)=>a+(b>0?b:0),0);
+  const el=document.getElementById('badgeStock');
+  if(!el) return;
+  if(total>0){el.textContent=total;el.style.display='inline-block';}
+  else el.style.display='none';
+}
+
+function stockTab(name){
+  document.querySelectorAll('#page-stock .colch-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(`stock-tab-btn-${name}`).classList.add('active');
+  document.getElementById('stock-panel-actual').style.display=name==='actual'?'block':'none';
+  document.getElementById('stock-panel-movimientos').style.display=name==='movimientos'?'block':'none';
+  if(name==='actual') stockRenderActual();
+  if(name==='movimientos') stockRenderMovimientos();
+}
+
+function stockActualizarFiltros(){
+  const actual=stockGetActual();
+  const modelos=[...new Set([...actual.keys()].map(k=>k.split('||')[0]))].sort();
+  const medidas=[...new Set([...actual.keys()].map(k=>k.split('||')[1]))].sort((a,b)=>{
+    const [a1,a2]=a.split('x').map(Number);
+    const [b1,b2]=b.split('x').map(Number);
+    return a1-b1||a2-b2;
+  });
+  const selModelo=document.getElementById('stock-filtro-modelo');
+  const selMedida=document.getElementById('stock-filtro-medida');
+  if(!selModelo||!selMedida) return;
+  const mAct=selModelo.value;
+  const medAct=selMedida.value;
+  selModelo.innerHTML='<option value="">Todos los modelos</option>'+modelos.map(m=>`<option value="${m}"${m===mAct?' selected':''}>${m}</option>`).join('');
+  selMedida.innerHTML='<option value="">Todas las medidas</option>'+medidas.map(m=>`<option value="${m}"${m===medAct?' selected':''}>${m}</option>`).join('');
+
+  // Filtros de movimientos
+  const selMovMod=document.getElementById('stock-mov-modelo');
+  if(selMovMod){
+    const allMods=[...new Set(stockGetMovimientos().map(m=>m.modelo))].sort();
+    const mMovAct=selMovMod.value;
+    selMovMod.innerHTML='<option value="">Todos</option>'+allMods.map(m=>`<option value="${m}"${m===mMovAct?' selected':''}>${m}</option>`).join('');
+  }
+}
+
+function stockRenderActual(){
+  stockActualizarFiltros();
+  const actual=stockGetActual();
+  const filtroModelo=document.getElementById('stock-filtro-modelo')?.value||'';
+  const filtroMedida=document.getElementById('stock-filtro-medida')?.value||'';
+  const content=document.getElementById('stock-actual-content');
+  const stats=document.getElementById('stock-stats');
+
+  let filas=[...actual.entries()]
+    .map(([k,uds])=>{const[modelo,medida]=k.split('||');return{modelo,medida,uds};})
+    .filter(f=>f.uds>0)
+    .filter(f=>!filtroModelo||f.modelo===filtroModelo)
+    .filter(f=>!filtroMedida||f.medida===filtroMedida)
+    .sort((a,b)=>a.modelo.localeCompare(b.modelo)||a.medida.localeCompare(b.medida));
+
+  const totalUds=filas.reduce((a,f)=>a+f.uds,0);
+  stats.innerHTML=`
+    <div class="stat-card"><div class="label">Líneas en stock</div><div class="value">${filas.length}</div></div>
+    <div class="stat-card"><div class="label">Unidades totales</div><div class="value" style="color:#3730A3">${totalUds}</div></div>
+    <div class="stat-card"><div class="label">Movimientos registrados</div><div class="value" style="font-size:16px;padding-top:4px">${stockGetMovimientos().length}</div></div>`;
+
+  if(!filas.length){
+    content.innerHTML='<div class="empty-state"><i class="ti ti-stack-2"></i><p>'+(filtroModelo||filtroMedida?'No hay stock con esos filtros.':'Aún no hay stock dado de alta.')+'</p></div>';
+    return;
+  }
+
+  content.innerHTML=`<div style="overflow-x:auto">
+    <table class="pedidos-table" style="margin:0">
+      <thead><tr>
+        <th>Modelo</th>
+        <th style="text-align:center">Medida</th>
+        <th style="text-align:center;color:#3730A3">Uds en stock</th>
+        <th style="text-align:center">Acción</th>
+      </tr></thead>
+      <tbody>
+        ${filas.map(f=>`<tr>
+          <td style="font-weight:600;color:#3B4A2F">${f.modelo}</td>
+          <td style="text-align:center;font-family:monospace">${f.medida}</td>
+          <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">${f.uds}</span></td>
+          <td style="text-align:center">
+            <button onclick="stockAbrirSalida('${f.modelo}','${f.medida}',${f.uds})"
+              style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+              <i class="ti ti-minus"></i> Salida
+            </button>
+          </td>
+        </tr>`).join('')}
+      </tbody>
+    </table>
+  </div>`;
+}
+
+function stockRenderMovimientos(){
+  stockActualizarFiltros();
+  const movs=stockGetMovimientos().slice().reverse();
+  const filtroTipo=document.getElementById('stock-mov-tipo')?.value||'';
+  const filtroModelo=document.getElementById('stock-mov-modelo')?.value||'';
+  const content=document.getElementById('stock-movimientos-content');
+
+  const filtrados=movs
+    .filter(m=>!filtroTipo||m.tipo===filtroTipo)
+    .filter(m=>!filtroModelo||m.modelo===filtroModelo);
+
+  if(!filtrados.length){
+    content.innerHTML='<div class="empty-state"><i class="ti ti-history"></i><p>No hay movimientos con esos filtros.</p></div>';
+    return;
+  }
+
+  content.innerHTML=`<div style="overflow-x:auto">
+    <table class="pedidos-table" style="margin:0">
+      <thead><tr>
+        <th>Fecha</th><th>Tipo</th><th>Modelo</th>
+        <th style="text-align:center">Medida</th>
+        <th style="text-align:center">Uds</th>
+        <th>Referencia / Motivo</th>
+      </tr></thead>
+      <tbody>
+        ${filtrados.map(m=>{
+          const esEntrada=m.tipo==='ENTRADA';
+          return `<tr>
+            <td style="font-size:12px;color:#6b7280;white-space:nowrap">${m.fecha||'—'}</td>
+            <td><span style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:8px;background:${esEntrada?'#D1FAE5':'#FEE2E2'};color:${esEntrada?'#065F46':'#991b1b'}">${esEntrada?'ENTRADA':'SALIDA'}</span></td>
+            <td style="font-weight:600;color:#3B4A2F">${m.modelo}</td>
+            <td style="text-align:center;font-family:monospace">${m.medida}</td>
+            <td style="text-align:center;font-weight:700;color:${esEntrada?'#065F46':'#991b1b'}">${esEntrada?'+':'−'}${m.cantidad}</td>
+            <td style="font-size:12px;color:#6b7280">${m.ref||'—'}</td>
+          </tr>`;
+        }).join('')}
+      </tbody>
+    </table>
+  </div>`;
+}
+
+function stockLimpiarFiltros(){
+  const m=document.getElementById('stock-filtro-modelo');
+  const med=document.getElementById('stock-filtro-medida');
+  if(m) m.value='';
+  if(med) med.value='';
+  stockRenderActual();
+}
+
+function stockRegistrarMovimiento(tipo, modelo, medida, cantidad, ref){
+  const movs=stockGetMovimientos();
+  movs.push({tipo,modelo,medida,cantidad,ref,fecha:new Date().toLocaleDateString('es-ES'),ts:Date.now()});
+  localStorage.setItem('colch_stock_movimientos',JSON.stringify(movs));
+  stockBadgeUpdate();
+}
+
+function stockExportarExcel(){
+  const actual=stockGetActual();
+  if(!actual.size){alert('No hay stock para exportar.');return;}
+  const filas=[...actual.entries()]
+    .filter(([,uds])=>uds>0)
+    .map(([k,uds])=>{const[modelo,medida]=k.split('||');return{'Modelo':modelo,'Medida':medida,'Uds en stock':uds};})
+    .sort((a,b)=>a.Modelo.localeCompare(b.Modelo));
+  const ws=XLSX.utils.json_to_sheet(filas);
+  const wb=XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb,ws,'Stock');
+  XLSX.writeFile(wb,`Stock_colchones_${new Date().toLocaleDateString('es-ES').replace(/\//g,'-')}.xlsx`);
+}
+
+// ── Alta desde stock sobrante ──
+let _stockAltaPendiente=null;
+
+function ssConfirmar(key){
+  const normMed=med=>{const[a,b]=(med||'').split('x');const n=[parseInt(a||0),parseInt(b||0)];n.sort((x,y)=>x-y);return n.join('x');};
+  const normTxt=s=>s.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^A-Z0-9]/g,'');
+  const mapa=ssBuildMapaLineas(normMed,normTxt);
+  const linea=mapa.get(key);
+  if(!linea){
+    const estados=ssGetEstados();
+    estados[key]='CONFIRMADO';
+    localStorage.setItem('colch_stock_estados',JSON.stringify(estados));
+    ssRender();ssUpdateBadge();stockBadgeUpdate();
+    return;
+  }
+  _stockAltaPendiente={key,modelo:linea.modelo,medida:linea.medida,cantidad:linea.recibido,ref:linea.ref,fecha:linea.fecha};
+  document.getElementById('modal-stock-alta-modelo').textContent=`${linea.modelo} · ${linea.medida}`;
+  document.getElementById('modal-stock-alta-cant').value=linea.recibido;
+  document.getElementById('modal-stock-alta').style.display='flex';
+  document.body.style.overflow='hidden';
+}
+
+function stockAltaConfirmar(){
+  if(!_stockAltaPendiente) return;
+  const cant=parseInt(document.getElementById('modal-stock-alta-cant').value)||0;
+  if(cant<=0){alert('Introduce una cantidad válida.');return;}
+  stockRegistrarMovimiento('ENTRADA',_stockAltaPendiente.modelo,_stockAltaPendiente.medida,cant,_stockAltaPendiente.ref||'Alta desde albarán');
+  const estados=ssGetEstados();
+  estados[_stockAltaPendiente.key]='CONFIRMADO';
+  localStorage.setItem('colch_stock_estados',JSON.stringify(estados));
+  _stockAltaPendiente=null;
+  stockAltaCerrar();
+  ssRender();ssUpdateBadge();
+}
+
+function stockAltaCerrar(){
+  _stockAltaPendiente=null;
+  document.getElementById('modal-stock-alta').style.display='none';
+  document.body.style.overflow='';
+}
+
+// ── Entrada/Salida manual ──
+let _stockEntradaTipo='ENTRADA';
+
+function stockEntradaSetTipo(tipo){
+  _stockEntradaTipo=tipo;
+  const esEntrada=tipo==='ENTRADA';
+  const btnE=document.getElementById('modal-entrada-btn-entrada');
+  const btnS=document.getElementById('modal-entrada-btn-salida');
+  const btnConf=document.getElementById('modal-entrada-confirmar');
+  const refOblig=document.getElementById('modal-entrada-ref-obligatorio');
+  const refNota=document.getElementById('modal-entrada-ref-nota');
+  const motivoWrap=document.getElementById('modal-entrada-motivo-wrap');
+  const subtipoWrap=document.getElementById('modal-entrada-subtipo-wrap');
+  btnE.style.background=esEntrada?'#D1FAE5':'#f9fafb';
+  btnE.style.color=esEntrada?'#065F46':'#6b7280';
+  btnS.style.background=!esEntrada?'#FEE2E2':'#f9fafb';
+  btnS.style.color=!esEntrada?'#991b1b':'#6b7280';
+  btnConf.style.background=esEntrada?'#065F46':'#991b1b';
+  btnConf.innerHTML=`<i class="ti ti-check"></i> Registrar ${esEntrada?'entrada':'salida'}`;
+  refOblig.style.display=!esEntrada?'inline':'none';
+  refNota.style.display=!esEntrada?'block':'none';
+  if(motivoWrap) motivoWrap.style.display=esEntrada?'block':'none';
+  if(subtipoWrap) subtipoWrap.style.display='none';
+  const fechaWrap=document.getElementById('modal-entrada-fecha-wrap');
+  if(fechaWrap) fechaWrap.style.display='none';
+  const motSel=document.getElementById('modal-entrada-motivo');
+  if(motSel&&esEntrada) motSel.value='';
+}
+
+function stockEntradaMotivoCambio(){
+  const motivo=document.getElementById('modal-entrada-motivo').value;
+  const subtipoWrap=document.getElementById('modal-entrada-subtipo-wrap');
+  const fechaWrap=document.getElementById('modal-entrada-fecha-wrap');
+  subtipoWrap.style.display=motivo==='DEVOLUCION_CLIENTE'?'block':'none';
+  fechaWrap.style.display=motivo==='RECEPCION_CAMION'?'block':'none';
+  if(motivo!=='DEVOLUCION_CLIENTE'){
+    document.getElementById('modal-entrada-subtipo').value='';
+    document.getElementById('modal-seur-ref-wrap').style.display='none';
+    document.getElementById('modal-seur-recogida-wrap').style.display='none';
+  }
+  if(motivo==='RECEPCION_CAMION'){
+    document.getElementById('modal-entrada-fecha').value=new Date().toISOString().split('T')[0];
+  }
+}
+
+function stockSubtipoCambio(){
+  const subtipo=document.getElementById('modal-entrada-subtipo').value;
+  document.getElementById('modal-seur-ref-wrap').style.display=subtipo==='SEUR_NO_ENTREGADO'?'block':'none';
+  document.getElementById('modal-seur-recogida-wrap').style.display=subtipo==='SEUR_RECOGIDO'?'block':'none';
+  if(subtipo!=='SEUR_NO_ENTREGADO') document.getElementById('modal-seur-ref').value='';
+  if(subtipo!=='SEUR_RECOGIDO') document.getElementById('modal-seur-recogida').value='';
+}
+
+function stockGetCatalogo(){
+  // Todos los modelos y medidas conocidos por el sistema
+  const modelos=new Set();
+  const medidas=new Set();
+  const porModelo=new Map(); // modelo → Set de medidas
+
+  const agregarLinea=(modelo,medida)=>{
+    if(!modelo||!medida) return;
+    const m=modelo.trim().toUpperCase();
+    const med=medida.trim();
+    modelos.add(m);
+    medidas.add(med);
+    if(!porModelo.has(m)) porModelo.set(m,new Set());
+    porModelo.get(m).add(med);
+  };
+
+  // De pedidos al proveedor
+  colchPedidos.forEach(p=>p.lineas.forEach(l=>agregarLinea(l.modelo,l.medida)));
+  // De albaranes recibidos
+  JSON.parse(localStorage.getItem('colch_albaranes_recibidos')||'[]')
+    .forEach(a=>(a.lineas||[]).forEach(l=>agregarLinea(l.modelo,l.medida)));
+  // Del stock actual
+  stockGetActual().forEach((uds,k)=>{const[m,med]=k.split('||');agregarLinea(m,med);});
+  // De ventas
+  JSON.parse(localStorage.getItem('colch_ventas')||'[]')
+    .forEach(v=>agregarLinea(v.modelo,v.medida));
+
+  return {
+    modelos:[...modelos].sort(),
+    medidas:[...medidas].sort(),
+    porModelo
+  };
+}
+
+function stockAutocomplete(campo){
+  const input=document.getElementById(`modal-entrada-${campo}`);
+  const dropdown=document.getElementById(`ac-${campo}`);
+  const val=(input.value||'').trim().toLowerCase();
+  const catalogo=stockGetCatalogo();
+
+  let opciones=[];
+  if(campo==='modelo'){
+    opciones=catalogo.modelos;
+  } else {
+    const modeloEscrito=(document.getElementById('modal-entrada-modelo').value||'').trim().toUpperCase();
+    if(modeloEscrito&&catalogo.porModelo.has(modeloEscrito)){
+      opciones=[...catalogo.porModelo.get(modeloEscrito)].sort();
+    } else {
+      opciones=catalogo.medidas;
+    }
+  }
+
+  const filtradas=val?opciones.filter(o=>o.toLowerCase().includes(val)):opciones;
+
+  if(!filtradas.length){dropdown.style.display='none';return;}
+  dropdown.innerHTML=filtradas.map(o=>
+    `<div onclick="document.getElementById('modal-entrada-${campo}').value='${o}';document.getElementById('ac-${campo}').style.display='none';${campo==='modelo'?'stockAutocomplete(\'medida\')':''}"
+      style="padding:8px 12px;cursor:pointer;font-size:13px;border-bottom:1px solid #f3f4f6"
+      onmouseover="this.style.background='#f0f9ff'" onmouseout="this.style.background=''">${o}</div>`
+  ).join('');
+  dropdown.style.display='block';
+}
+
+function stockAbrirEntradaManual(){
+  _stockEntradaTipo='ENTRADA';
+  document.getElementById('modal-entrada-modelo').value='';
+  document.getElementById('modal-entrada-medida').value='';
+  document.getElementById('modal-entrada-cant').value='1';
+  document.getElementById('modal-entrada-ref').value='';
+  const motSel=document.getElementById('modal-entrada-motivo');
+  if(motSel) motSel.value='';
+  const subSel=document.getElementById('modal-entrada-subtipo');
+  if(subSel) subSel.value='';
+  const fechaSel=document.getElementById('modal-entrada-fecha');
+  if(fechaSel) fechaSel.value='';
+  document.getElementById('modal-seur-ref-wrap').style.display='none';
+  document.getElementById('modal-seur-recogida-wrap').style.display='none';
+  const seurRef=document.getElementById('modal-seur-ref');
+  if(seurRef) seurRef.value='';
+  const seurRec=document.getElementById('modal-seur-recogida');
+  if(seurRec) seurRec.value='';
+  stockEntradaSetTipo('ENTRADA');
+  document.getElementById('modal-stock-entrada').style.display='flex';
+  document.body.style.overflow='hidden';
+}
+
+function stockEntradaConfirmar(){
+  const modelo=(document.getElementById('modal-entrada-modelo').value||'').trim().toUpperCase();
+  const medida=(document.getElementById('modal-entrada-medida').value||'').trim();
+  const cant=parseInt(document.getElementById('modal-entrada-cant').value)||0;
+  const ref=(document.getElementById('modal-entrada-ref').value||'').trim();
+  const esEntrada=_stockEntradaTipo==='ENTRADA';
+  if(!modelo){alert('Indica el modelo.');return;}
+  if(!medida){alert('Indica la medida.');return;}
+  if(cant<=0){alert('Indica una cantidad válida.');return;}
+  if(esEntrada){
+    const motivo=document.getElementById('modal-entrada-motivo').value;
+    if(!motivo){alert('Selecciona el motivo de entrada.');return;}
+    if(motivo==='DEVOLUCION_CLIENTE'){
+      const subtipo=document.getElementById('modal-entrada-subtipo').value;
+      if(!subtipo){alert('Selecciona el tipo de devolución.');return;}
+      let refCompleta='';
+      if(subtipo==='SEUR_NO_ENTREGADO'){
+        const seurRef=(document.getElementById('modal-seur-ref').value||'').trim();
+        if(!seurRef){alert('Indica la referencia del envío SEUR.');return;}
+        refCompleta=`Devolución Seur paquete no entregado · Ref: ${seurRef}${ref?' · '+ref:''}`;
+      } else if(subtipo==='SEUR_RECOGIDO'){
+        const seurRecogida=(document.getElementById('modal-seur-recogida').value||'').trim();
+        if(!seurRecogida){alert('Indica el número de recogida SEUR.');return;}
+        refCompleta=`Devolución Seur recogido por nosotros · Recogida: ${seurRecogida}${ref?' · '+ref:''}`;
+      } else {
+        refCompleta=ref?`${subtipo} · ${ref}`:subtipo;
+      }
+      stockRegistrarMovimiento('ENTRADA',modelo,medida,cant,refCompleta);
+    } else if(motivo==='RECEPCION_CAMION'){
+      const fechaInput=document.getElementById('modal-entrada-fecha').value;
+      if(!fechaInput){alert('Indica la fecha de recepción del camión.');return;}
+      const[y,m2,d]=fechaInput.split('-');
+      const fechaFormato=`${d}/${m2}/${y}`;
+      const refCompleta=ref?`Recepción camión ${fechaFormato} · ${ref}`:`Recepción camión ${fechaFormato}`;
+      stockRegistrarMovimiento('ENTRADA',modelo,medida,cant,refCompleta);
+    } else {
+      stockRegistrarMovimiento('ENTRADA',modelo,medida,cant,ref||'Recuento de stock');
+    }
+  } else {
+    if(!ref){alert('La referencia de cliente es obligatoria en las salidas.');return;}
+    const actual=stockGetActual();
+    const disponible=actual.get(`${modelo}||${medida}`)||0;
+    if(cant>disponible){alert(`Solo hay ${disponible} uds de ${modelo} ${medida} en stock.`);return;}
+    stockRegistrarMovimiento('SALIDA',modelo,medida,cant,ref);
+  }
+  document.getElementById('modal-stock-entrada').style.display='none';
+  document.body.style.overflow='';
+  stockRenderActual();
+}
+
+// ── Salida manual ──
+let _stockSalidaPendiente=null;
+
+function stockAbrirSalida(modelo,medida,disponible){
+  _stockSalidaPendiente={modelo,medida,disponible};
+  document.getElementById('modal-salida-modelo-info').textContent=`${modelo} · ${medida} · ${disponible} uds disponibles`;
+  document.getElementById('modal-salida-cant').value=1;
+  document.getElementById('modal-salida-cant').max=disponible;
+  document.getElementById('modal-salida-ref').value='';
+  document.getElementById('modal-stock-salida').style.display='flex';
+  document.body.style.overflow='hidden';
+}
+
+function stockSalidaConfirmar(){
+  if(!_stockSalidaPendiente) return;
+  const cant=parseInt(document.getElementById('modal-salida-cant').value)||0;
+  const ref=(document.getElementById('modal-salida-ref').value||'').trim();
+  if(cant<=0){alert('Indica una cantidad válida.');return;}
+  if(cant>_stockSalidaPendiente.disponible){alert(`Solo hay ${_stockSalidaPendiente.disponible} uds disponibles.`);return;}
+  if(!ref){alert('La referencia de cliente es obligatoria.');return;}
+  stockRegistrarMovimiento('SALIDA',_stockSalidaPendiente.modelo,_stockSalidaPendiente.medida,cant,ref);
+  _stockSalidaPendiente=null;
+  document.getElementById('modal-stock-salida').style.display='none';
+  document.body.style.overflow='';
+  stockRenderActual();
+}
+
+document.addEventListener('datosListos',()=>{
+  // Migrar datos de colch_stock_entradas (formato antiguo) a colch_stock_movimientos
+  const entradasAntiguas=JSON.parse(localStorage.getItem('colch_stock_entradas')||'[]');
+  if(entradasAntiguas.length){
+    const movsExistentes=JSON.parse(localStorage.getItem('colch_stock_movimientos')||'[]');
+    // Solo migrar si no hay ya movimientos (para no duplicar)
+    if(!movsExistentes.length){
+      const movsMigrados=entradasAntiguas.map(e=>({
+        tipo:'ENTRADA',
+        modelo:e.modelo,
+        medida:e.medida,
+        cantidad:e.cantidad,
+        ref:e.ref||'Alta desde albarán',
+        fecha:e.fecha||'',
+        ts:e.ts||0
+      }));
+      localStorage.setItem('colch_stock_movimientos',JSON.stringify(movsMigrados));
+    }
+    localStorage.removeItem('colch_stock_entradas');
+  }
+  stockBadgeUpdate();
+});
 
 </script>
+function albHistRender(){
+  const albaranes=JSON.parse(localStorage.getItem('colch_albaranes_recibidos')||'[]');
+  const filtroFecha=document.getElementById('albhist-filtro-fecha')?.value||'';
+  const filtroProv=document.getElementById('albhist-filtro-prov')?.value||'';
+  const filtroRef=(document.getElementById('albhist-filtro-ref')?.value||'').trim().toLowerCase();
+
+  const normFecha=f=&gt;{
+    if(!f) return '';
+    if(f.includes('-')) return f;
+    const[d,m,y]=f.split('/');
+    return `${y}-${m.padStart(2,'0')}-${d.padStart(2,'0')}`;
+  };
+
+  const filtrados=albaranes.filter(a=&gt;{
+    if(filtroFecha &amp;&amp; normFecha(a.fecha)!==filtroFecha) return false;
+    if(filtroProv &amp;&amp; a.proveedor!==filtroProv) return false;
+    if(filtroRef &amp;&amp; !(a.ref||'').toLowerCase().includes(filtroRef)) return false;
+    return true;
+  });
+
+  const stats=document.getElementById('albhist-stats');
+  const content=document.getElementById('albhist-content');
+
+  const totalUds=filtrados.reduce((sum,a)=&gt;{
+    return sum+(a.lineas||[]).reduce((s,l)=&gt;s+(parseInt(l.cantidad)||0),0);
+  },0);
+
+  stats.innerHTML=`
+    <div class="stat-card"><div class="label">Albaranes</div><div class="value">${filtrados.length}</div></div>
+    <div class="stat-card"><div class="label">Unidades totales</div><div class="value">${totalUds}</div></div>
+    <div class="stat-card"><div class="label">Total guardados</div><div class="value" style="font-size:16px;padding-top:4px">${albaranes.length}</div></div>`;
+
+  if(!filtrados.length){
+    content.innerHTML='<div class="empty-state"><i class="ti ti-file-invoice"></i><p>No hay albaranes que coincidan con los filtros.</p></div>';
+    return;
+  }
+
+  content.innerHTML=filtrados.map((a,idx)=&gt;{
+    const provColor=a.proveedor==='NEW MATTRESS'?'#3730A3':'#3B4A2F';
+    const provBg=a.proveedor==='NEW MATTRESS'?'#EEF2FF':'#F4F6F1';
+    const provLabel=a.proveedor==='NEW MATTRESS'?'NEW MATTRESS':a.proveedor==='LUSOCOLCHAO'?'LUSOCOLCHÃO':a.proveedor||'—';
+    const totalUdsAlb=(a.lineas||[]).reduce((s,l)=&gt;s+(parseInt(l.cantidad)||0),0);
+
+    // ── Tabla de líneas con detalle de pedidos asociados ──
+    const lineasSrc=a.detalleLineas||((a.lineas||[]).map(l=&gt;({...l,pedidos:[],sinPedido:0})));
+    const lineasHTML=lineasSrc.map(l=&gt;{
+      const pedidosHTML=(l.pedidos||[]).length&gt;0
+        ? (l.pedidos||[]).map(p=&gt;`<span style="display:inline-block;margin:1px 3px 1px 0;font-size:10px;background:#EEF2FF;color:#3730A3;padding:1px 7px;border-radius:8px;font-weight:600">${p.pedidoId}${p.fechaPedido?' · '+p.fechaPedido:''} · ${p.uds}ud</span>`).join('')
+        : '';
+      const sinPedidoHTML=l.sinPedido&gt;0
+        ? `<span style="display:inline-block;margin:1px 0;font-size:10px;background:#FEF3C7;color:#92400e;padding:1px 7px;border-radius:8px;font-weight:600">${l.sinPedido}ud sin pedido</span>`
+        : '';
+      return `
+        ${l.modelo||'—'}
+        ${l.medida||'—'}
+        ${l.cantidad||0}
+        ${pedidosHTML}${sinPedidoHTML}${!pedidosHTML&amp;&amp;!sinPedidoHTML?'<span style="color:#d1d5db;font-size:11px">—</span>':''}
+      `;
+    }).join('');
+
+    // ── Visor PDF (si hay base64) ──
+    const pdfViewerId=`albpdf-${idx}`;
+    const pdfBtnHTML=a.pdfB64
+      ? `<button onclick="albHistVerPDF(&#39;${pdfViewerId}&#39;)" style="display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;background:${provColor};border:none;color:white"><i class="ti ti-file-type-pdf"></i> Ver PDF</button>`
+      : `<span style="font-size:11px;color:#d1d5db;font-style:italic">Sin PDF adjunto</span>`;
+
+    const pdfViewerHTML=a.pdfB64
+      ? `<div id="${pdfViewerId}" style="display:none;margin-top:12px;border:1px solid #e2e6dc;border-radius:8px;overflow:hidden">
+          <div style="background:#f9fafb;padding:8px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #e2e6dc">
+            <span style="font-size:12px;font-weight:600;color:#374151"><i class="ti ti-file-type-pdf"></i> Documento PDF</span>
+            <button onclick="document.getElementById(&#39;${pdfViewerId}&#39;).style.display=&#39;none&#39;" style="background:none;border:none;font-size:18px;cursor:pointer;color:#9ca3af;padding:0 4px">✕</button>
+          </div>
+          <iframe src="./index_files/saved_resource.html" style="width:100%;height:600px;border:none" title="Albarán PDF"></iframe>
+        </div>`
+      : '';
+
+    return `<div class="card" style="margin-bottom:16px;padding:0;overflow:hidden">
+      <!-- Cabecera -->
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:${provBg};border-bottom:1px solid #e2e6dc;flex-wrap:wrap;gap:8px">
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+          <span style="font-size:11px;font-weight:700;padding:3px 10px;border-radius:10px;background:${provColor};color:white">${provLabel}</span>
+          <span style="font-size:14px;font-weight:700;color:#1a1a1a">${a.ref?'Alb. '+a.ref:'Sin nº albarán'}</span>
+          <span style="font-size:12px;color:#6b7280">${a.fecha||'Sin fecha'}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="font-size:12px;font-weight:700;color:#065F46;background:#D1FAE5;padding:3px 10px;border-radius:10px">${totalUdsAlb} ud${totalUdsAlb!==1?'s':''}</span>
+          ${pdfBtnHTML}
+        </div>
+      </div>
+      <!-- Tabla de líneas -->
+      <div style="overflow-x:auto">
+        ${lineasHTML}<table style="width:100%;border-collapse:collapse">
+          <thead>
+            <tr style="background:#f9fafb">
+              <th style="padding:6px 14px;font-size:11px;font-weight:600;color:#6b7280;text-align:left;border-bottom:1px solid #f3f4f6;text-transform:uppercase;letter-spacing:0.5px">Modelo</th>
+              <th style="padding:6px 14px;font-size:11px;font-weight:600;color:#6b7280;text-align:left;border-bottom:1px solid #f3f4f6;text-transform:uppercase;letter-spacing:0.5px">Medida</th>
+              <th style="padding:6px 14px;font-size:11px;font-weight:600;color:#6b7280;text-align:center;border-bottom:1px solid #f3f4f6;text-transform:uppercase;letter-spacing:0.5px">Uds</th>
+              <th style="padding:6px 14px;font-size:11px;font-weight:600;color:#6b7280;text-align:left;border-bottom:1px solid #f3f4f6;text-transform:uppercase;letter-spacing:0.5px">Pedido asociado · fecha</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <!-- Visor PDF inline -->
+      <div style="padding:0 16px 16px">
+        ${pdfViewerHTML}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function albHistVerPDF(id){
+  const el=document.getElementById(id);
+  if(!el) return;
+  el.style.display=el.style.display==='none'?'block':'none';
+}
+
+function albHistLimpiarFiltros(){
+  const f=document.getElementById('albhist-filtro-fecha');
+  const p=document.getElementById('albhist-filtro-prov');
+  const r=document.getElementById('albhist-filtro-ref');
+  if(f) f.value='';
+  if(p) p.value='';
+  if(r) r.value='';
+  albHistRender();
+}
 
 
 
+
+
+
+<!-- MODAL ALTA STOCK (desde sobrante) -->
+<div id="modal-stock-alta" style="display:none;position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,0.5);align-items:center;justify-content:center">
+  <div style="background:white;border-radius:16px;padding:28px;width:380px;max-width:95vw;box-shadow:0 24px 64px rgba(0,0,0,0.25)">
+    <div style="font-size:16px;font-weight:700;color:#3730A3;margin-bottom:6px"><i class="ti ti-stack-2"></i> Dar de alta en stock</div>
+    <div id="modal-stock-alta-modelo" style="font-size:13px;color:#6b7280;margin-bottom:20px"></div>
+    <div style="margin-bottom:16px">
+      <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:6px">Unidades a dar de alta</label>
+      <input type="number" id="modal-stock-alta-cant" min="1" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:18px;font-weight:700;text-align:center;outline:none" onfocus="this.style.borderColor=&#39;#3730A3&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
+    </div>
+    <div style="display:flex;gap:10px">
+      <button onclick="stockAltaConfirmar()" style="flex:1;padding:10px;background:#3730A3;color:white;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer"><i class="ti ti-check"></i> Confirmar alta</button>
+      <button onclick="stockAltaCerrar()" style="padding:10px 16px;background:white;border:1px solid #d1d5db;border-radius:8px;font-size:14px;cursor:pointer;color:#6b7280">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL ENTRADA/SALIDA MANUAL STOCK -->
+<div id="modal-stock-entrada" style="display: none; position: fixed; inset: 0px; z-index: 9000; background: rgba(0, 0, 0, 0.5); align-items: center; justify-content: center;">
+  <div style="background:white;border-radius:16px;padding:28px;width:440px;max-width:95vw;box-shadow:0 24px 64px rgba(0,0,0,0.25)">
+    <div style="font-size:16px;font-weight:700;color:#374151;margin-bottom:16px"><i class="ti ti-stack-2"></i> Movimiento manual de stock</div>
+
+    <!-- Selector Entrada / Salida -->
+    <div style="display:flex;gap:0;border:1px solid #d1d5db;border-radius:8px;overflow:hidden;margin-bottom:20px">
+      <button id="modal-entrada-btn-entrada" onclick="stockEntradaSetTipo(&#39;ENTRADA&#39;)" style="flex: 1 1 0%; padding: 9px; font-size: 13px; font-weight: 600; cursor: pointer; border-width: medium 1px medium medium; border-style: none solid none none; border-color: currentcolor rgb(209, 213, 219) currentcolor currentcolor; border-image: initial; background: rgb(209, 250, 229); color: rgb(6, 95, 70);">
+        <i class="ti ti-plus"></i> Entrada
+      </button>
+      <button id="modal-entrada-btn-salida" onclick="stockEntradaSetTipo(&#39;SALIDA&#39;)" style="flex: 1 1 0%; padding: 9px; font-size: 13px; font-weight: 600; cursor: pointer; border-width: medium; border-style: none; border-color: currentcolor; border-image: initial; background: rgb(249, 250, 251); color: rgb(107, 114, 128);">
+        <i class="ti ti-minus"></i> Salida
+      </button>
+    </div>
+
+    <div style="display:grid;gap:14px;margin-bottom:20px">
+
+      <!-- Motivo (solo entradas) -->
+      <div id="modal-entrada-motivo-wrap" style="display: block;">
+        <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:5px">Motivo de entrada</label>
+        <select id="modal-entrada-motivo" onchange="stockEntradaMotivoCambio()" style="width: 100%; padding: 8px 12px; border: 1px solid rgb(209, 213, 219); border-radius: 8px; font-size: 13px; outline: none; background: white;" onfocus="this.style.borderColor=&#39;#065F46&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
+          <option value="">— Selecciona motivo —</option>
+          <option value="RECUENTO">Recuento de stock</option>
+          <option value="RECEPCION_CAMION">Recepción camión</option>
+          <option value="DEVOLUCION_CLIENTE">Devolución cliente</option>
+        </select>
+      </div>
+
+      <!-- Sub-tipo devolución (solo si motivo = DEVOLUCION_CLIENTE) -->
+      <div id="modal-entrada-subtipo-wrap" style="display: block;">
+        <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:5px">Tipo de devolución</label>
+        <select id="modal-entrada-subtipo" onchange="stockSubtipoCambio()" style="width: 100%; padding: 8px 12px; border: 1px solid rgb(209, 213, 219); border-radius: 8px; font-size: 13px; outline: none; background: white;" onfocus="this.style.borderColor=&#39;#065F46&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
+          <option value="">— Selecciona tipo —</option>
+          <option value="Devolución personal">Devolución personal</option>
+          <option value="Devolución por agencia de su elección">Devolución por agencia de su elección</option>
+          <option value="SEUR_NO_ENTREGADO">Devolución por Seur - paquete no entregado</option>
+          <option value="SEUR_RECOGIDO">Devolución por Seur - recogido por nosotros</option>
+        </select>
+
+        <!-- Referencia envío SEUR (paquete no entregado) -->
+        <div id="modal-seur-ref-wrap" style="display: none; margin-top: 10px;">
+          <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:5px">Referencia del envío SEUR <span style="color:#991b1b">*</span></label>
+          <input type="text" id="modal-seur-ref" placeholder="Nº expedición o referencia SEUR…" style="width:100%;padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;box-sizing:border-box" onfocus="this.style.borderColor=&#39;#065F46&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
+        </div>
+
+        <!-- Número de recogida SEUR (recogido por nosotros) -->
+        <div id="modal-seur-recogida-wrap" style="display: block; margin-top: 10px;">
+          <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:5px">Número de recogida SEUR <span style="color:#991b1b">*</span></label>
+          <input type="text" id="modal-seur-recogida" placeholder="Nº de recogida solicitada…" style="width:100%;padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;box-sizing:border-box" onfocus="this.style.borderColor=&#39;#065F46&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
+        </div>
+      </div>
+
+      <!-- Fecha recepción camión (solo si motivo = RECEPCION_CAMION) -->
+      <div id="modal-entrada-fecha-wrap" style="display:none">
+        <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:5px">Fecha de recepción <span style="color:#991b1b">*</span></label>
+        <input type="date" id="modal-entrada-fecha" style="width:100%;padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;box-sizing:border-box" onfocus="this.style.borderColor=&#39;#065F46&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
+      </div>
+
+      <!-- Modelo con autocomplete -->
+      <div style="position:relative">
+        <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:5px">Modelo</label>
+        <input type="text" id="modal-entrada-modelo" placeholder="Escribe para buscar…" autocomplete="off" oninput="stockAutocomplete(&#39;modelo&#39;)" onblur="setTimeout(()=&gt;document.getElementById(&#39;ac-modelo&#39;).style.display=&#39;none&#39;,200)" style="width:100%;padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;box-sizing:border-box" onfocus="this.style.borderColor=&#39;#3730A3&#39;;stockAutocomplete(&#39;modelo&#39;)">
+        <div id="ac-modelo" style="display:none;position:absolute;top:100%;left:0;right:0;background:white;border:1px solid #d1d5db;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.1);z-index:100;max-height:180px;overflow-y:auto"></div>
+      </div>
+
+      <!-- Medida con autocomplete -->
+      <div style="position:relative">
+        <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:5px">Medida</label>
+        <input type="text" id="modal-entrada-medida" placeholder="Ej: 150x200" autocomplete="off" oninput="stockAutocomplete(&#39;medida&#39;)" onblur="setTimeout(()=&gt;document.getElementById(&#39;ac-medida&#39;).style.display=&#39;none&#39;,200)" style="width:100%;padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;box-sizing:border-box" onfocus="this.style.borderColor=&#39;#3730A3&#39;;stockAutocomplete(&#39;medida&#39;)">
+        <div id="ac-medida" style="display:none;position:absolute;top:100%;left:0;right:0;background:white;border:1px solid #d1d5db;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.1);z-index:100;max-height:180px;overflow-y:auto"></div>
+      </div>
+
+      <!-- Cantidad -->
+      <div>
+        <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:5px">Unidades</label>
+        <input type="number" id="modal-entrada-cant" min="1" value="1" style="width:100%;padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;box-sizing:border-box" onfocus="this.style.borderColor=&#39;#3730A3&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
+      </div>
+
+      <!-- Referencia -->
+      <div>
+        <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:5px">
+          Referencia / Cliente <span id="modal-entrada-ref-obligatorio" style="color: rgb(153, 27, 27); display: none;">*</span>
+        </label>
+        <input type="text" id="modal-entrada-ref" placeholder="Nº pedido, nombre cliente…" style="width:100%;padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;box-sizing:border-box" onfocus="this.style.borderColor=&#39;#3730A3&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
+        <div id="modal-entrada-ref-nota" style="font-size: 11px; color: rgb(156, 163, 175); margin-top: 4px; display: none;">Obligatorio en salidas</div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:10px">
+      <button id="modal-entrada-confirmar" onclick="stockEntradaConfirmar()" style="flex: 1 1 0%; padding: 10px; background: rgb(6, 95, 70); color: white; border-width: medium; border-style: none; border-color: currentcolor; border-image: initial; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer;"><i class="ti ti-check"></i> Registrar entrada</button>
+      <button onclick="document.getElementById(&#39;modal-stock-entrada&#39;).style.display=&#39;none&#39;;document.body.style.overflow=&#39;&#39;" style="padding:10px 16px;background:white;border:1px solid #d1d5db;border-radius:8px;font-size:14px;cursor:pointer;color:#6b7280">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL SALIDA MANUAL STOCK -->
+<div id="modal-stock-salida" style="display: none; position: fixed; inset: 0px; z-index: 9000; background: rgba(0, 0, 0, 0.5); align-items: center; justify-content: center;">
+  <div style="background:white;border-radius:16px;padding:28px;width:420px;max-width:95vw;box-shadow:0 24px 64px rgba(0,0,0,0.25)">
+    <div style="font-size:16px;font-weight:700;color:#991b1b;margin-bottom:6px"><i class="ti ti-minus"></i> Registrar salida de stock</div>
+    <div id="modal-salida-modelo-info" style="font-size:13px;font-weight:600;color:#374151;margin-bottom:16px">4D · 135x200 · 1 uds disponibles</div>
+    <div style="display:grid;gap:14px;margin-bottom:20px">
+      <div>
+        <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:5px">Unidades que salen</label>
+        <input type="number" id="modal-salida-cant" min="1" value="1" style="width:100%;padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none" onfocus="this.style.borderColor=&#39;#991b1b&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;" max="1">
+      </div>
+      <div>
+        <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:5px">Referencia cliente <span style="color:#991b1b">*</span></label>
+        <input type="text" id="modal-salida-ref" placeholder="Nº pedido, nombre cliente…" style="width:100%;padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none" onfocus="this.style.borderColor=&#39;#991b1b&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
+        <div style="font-size:11px;color:#9ca3af;margin-top:4px">Obligatorio — identifica a quién van destinadas las unidades</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px">
+      <button onclick="stockSalidaConfirmar()" style="flex:1;padding:10px;background:#991b1b;color:white;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer"><i class="ti ti-check"></i> Confirmar salida</button>
+      <button onclick="document.getElementById(&#39;modal-stock-salida&#39;).style.display=&#39;none&#39;;document.body.style.overflow=&#39;&#39;" style="padding:10px 16px;background:white;border:1px solid #d1d5db;border-radius:8px;font-size:14px;cursor:pointer;color:#6b7280">Cancelar</button>
+    </div>
+  </div>
+</div>
 
 <!-- MODAL COPIA DE SEGURIDAD -->
 <div id="modal-backup" style="display:none;position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,0.5);align-items:center;justify-content:center">
@@ -8193,5 +9390,6 @@ backupActualizarUltima();
   </div>
 </div>
 
-</body>
-</html>
+
+
+</body></html>
