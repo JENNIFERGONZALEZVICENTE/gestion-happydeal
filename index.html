@@ -153,6 +153,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1a;min-height:100vh}
@@ -531,7 +532,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
       <div class="section-label">Telas → Serie DUNA</div>
       <div class="card" style="padding:0 24px">
         <div class="dict-item"><span class="dict-key">CACAO</span><span class="dict-val">DUNA COCOA · Rejilla 3D WENGUÉ</span></div>
-        <div class="dict-item"><span class="dict-key">BEIGE</span><span class="dict-val">DUNA LINO · Rejilla 3D TIERRA</span></div>
+        <div class="dict-item"><span class="dict-key">BEIGE</span><span class="dict-val">DUNA ALPACA · Rejilla 3D TIERRA</span></div>
         <div class="dict-item"><span class="dict-key">GRIS ANTRACITA</span><span class="dict-val">DUNA ONIX · Rejilla 3D NEGRA</span></div>
         <div class="dict-item"><span class="dict-key">GRIS NIEBLA / NIEBLA</span><span class="dict-val">DUNA KOALA · Rejilla 3D GRAFITO</span></div>
         <div class="dict-item"><span class="dict-key">OLIVA</span><span class="dict-val">DUNA OLIVA · Rejilla 3D NEGRA</span></div>
@@ -2236,6 +2237,31 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
   </div>
 </div>
 
+<!-- MODAL MEDIDA COMPARTIDA -->
+<div id="modal-medida-compartida" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:4000;align-items:center;justify-content:center;padding:24px">
+  <div style="background:white;border-radius:14px;padding:24px;max-width:460px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,0.3)">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+      <div style="width:32px;height:32px;background:#FEF3C7;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-ruler-measure" style="color:#D97706;font-size:16px"></i></div>
+      <div style="font-size:14px;font-weight:700;color:#1a1a1a">Canapé sin medida detectado</div>
+    </div>
+    <div style="font-size:12px;color:#6b7280;margin-bottom:16px;padding-left:42px" id="mmc-descripcion"></div>
+    <div style="background:#F9FAFB;border:1px solid #e5e7eb;border-radius:10px;padding:14px;margin-bottom:18px">
+      <div style="font-size:11px;font-weight:700;color:#374151;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px">Canapé sin medida</div>
+      <div style="font-size:13px;font-weight:600;color:#3B4A2F" id="mmc-canape-texto"></div>
+      <div style="margin-top:10px;padding-top:10px;border-top:1px solid #e5e7eb">
+        <div style="font-size:11px;font-weight:700;color:#374151;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px">Siguiente línea</div>
+        <div style="font-size:13px;color:#374151" id="mmc-siguiente-texto"></div>
+        <div style="font-size:12px;font-weight:700;color:#1a56db;margin-top:4px" id="mmc-medida-detectada"></div>
+      </div>
+    </div>
+    <div style="font-size:13px;color:#374151;margin-bottom:14px">¿El canapé comparte la medida <strong id="mmc-medida-label"></strong> del cabecero?</div>
+    <div style="display:flex;gap:10px">
+      <button onclick="mmcResponder(true)" style="flex:1;padding:10px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;background:#3B4A2F;border:none;color:white;display:flex;align-items:center;justify-content:center;gap:6px"><i class="ti ti-check"></i> Sí, usar <span id="mmc-btn-medida"></span></button>
+      <button onclick="mmcResponder(false)" style="flex:1;padding:10px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;background:white;border:1px solid #d1d5db;color:#374151;display:flex;align-items:center;justify-content:center;gap:6px"><i class="ti ti-x"></i> No, dejar sin medida</button>
+    </div>
+  </div>
+</div>
+
 <!-- MODAL ENVÍO POLIVAL -->
 <div id="modal-envio" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:3000;display:none;align-items:center;justify-content:center">
   <div style="background:white;border-radius:16px;max-width:420px;width:90%;padding:28px 32px;box-shadow:0 24px 80px rgba(0,0,0,0.25)">
@@ -3334,21 +3360,21 @@ function adminLimpiarLog(){
 // ─────────────────────────────────────────────────────────────
 // ─────────────────────────────────────────────────────────────
 
-const TELAS={'CACAO':['DUNA COCOA','REJILLA 3D WENGUE'],'BEIGE':['DUNA LINO','REJILLA 3D TIERRA'],'GRIS ANTRACITA':['DUNA ONIX','REJILLA 3D NEGRA'],'GRIS NIEBLA':['DUNA KOALA','REJILLA 3D GRAFITO'],'NIEBLA':['DUNA KOALA','REJILLA 3D GRAFITO'],'OLIVA':['DUNA OLIVA','REJILLA 3D NEGRA'],'MENTA':['DUNA SALVIA','REJILLA 3D NEGRA'],'OCEANIC':['DUNA TULUM','REJILLA 3D NEGRA'],'MAGENTA':['DUNA MAGENTA','REJILLA 3D NEGRA'],'ROSA':['DUNA FLAMINGO','REJILLA 3D NEGRA'],'LAVANDA':['DUNA MORADO','REJILLA 3D NEGRA'],'STAR':['DUNA DIJON','REJILLA 3D NEGRA']};
+const TELAS={'CACAO':['DUNA COCOA','REJILLA 3D WENGUE'],'BEIGE':['DUNA ALPACA','REJILLA 3D TIERRA'],'GRIS ANTRACITA':['DUNA ONIX','REJILLA 3D NEGRA'],'GRIS NIEBLA':['DUNA KOALA','REJILLA 3D GRAFITO'],'NIEBLA':['DUNA KOALA','REJILLA 3D GRAFITO'],'OLIVA':['DUNA OLIVA','REJILLA 3D NEGRA'],'MENTA':['DUNA SALVIA','REJILLA 3D NEGRA'],'OCEANIC':['DUNA TULUM','REJILLA 3D NEGRA'],'MAGENTA':['DUNA MAGENTA','REJILLA 3D NEGRA'],'ROSA':['DUNA FLAMINGO','REJILLA 3D NEGRA'],'LAVANDA':['DUNA MORADO','REJILLA 3D NEGRA'],'STAR':['DUNA DIJON','REJILLA 3D NEGRA']};
 const ARGOS={'BLANCO':['ARGOS BLANCO','REJILLA 3D BLANCA'],'BEIGE':['ARGOS HIELO','REJILLA 3D BEIGE'],'MARRON':['ARGOS CUERO','REJILLA 3D MARRON'],'GRIS':['ARGOS MARENGO','REJILLA 3D GRAFITO'],'NEGRO':['ARGOS NEGRO','REJILLA 3D NEGRA'],'PIEDRA':['ARGOS PIEDRA','REJILLA 3D TIERRA']};
 const ARGOS_MAGNUM={'BLANCO':['ARGOS BLANCO','ARGOS BLANCO + REJILLA 3D BLANCA'],'BEIGE':['ARGOS HIELO','ARGOS HIELO + REJILLA 3D BEIGE'],'MARRON':['ARGOS CUERO','ARGOS CUERO + REJILLA 3D MARRON'],'GRIS':['ARGOS POLAR','ARGOS POLAR + REJILLA 3D GRAFITO'],'NEGRO':['ARGOS NEGRO','ARGOS NEGRO + REJILLA 3D NEGRA'],'PIEDRA':['ARGOS PIEDRA','ARGOS PIEDRA + REJILLA 3D TIERRA']};
 const REJILLA_MADERA={'BLANCO':'REJILLA 3D BLANCA','ROBLE':'REJILLA 3D BEIGE','CEREZO':'REJILLA MARRON','WENGUE':'REJILLA WENGUE','NORDICO':'REJILLA GRAFITO','GRIS':'REJILLA GRAFITO'};
 const ALMOHADAS={'ALMANTI':'ALMOHADA COPITOS','ALMNOR':'ALMOHADA NORDIC','ALMLAT':'ALMOHADA LATEX','ALMZEN':'ALMOHADA NUBE','ALMSEA':'ALMOHADA SEA FOAM'};
 const PROTECTORES={'PROBRU':'PROTECTOR BACTERBRIL','PROPRO':'PROTECTOR POLIURETANO'};
 const FRASES_OMITIR=[/- CON MONTAJE.*/gi,/- SIN MONTAJE.*/gi,/- SOLO TRANSPORTE.*/gi,/- CON RETIRADA.*/gi,/- DISTANCIA.*/gi,/- COLCH[OÓ]N.*/gi,/- OJO.*/gi,/- PEDIR A.*/gi,/- HAY UNO.*/gi,/- LO QUIERE.*/gi,/- PTE.*/gi,/\s*\*+\s*$/gi];
-const N=s=>s?s.toUpperCase().trim():'';
+const N=s=>s?s.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim():'';
 const medida=t=>{const m=t.match(/(\d{2,3})[xX](\d{2,3})/);return m?`${m[1]}X${m[2]}`:''};
 const potencia=t=>{const m=t.match(/(\d{3,4}NW)/i);return m?m[1]:''};
 const udTexto=t=>{const m=t.match(/\((\d+)\s*UD\)/i);return m?parseInt(m[1]):1};
 const udStr=u=>u>1?` (${u}UD)`:'';
 const colorMadera=t=>{const u=N(t);if(u.includes('ROBLE'))return'ROBLE';if(u.includes('CEREZO'))return'CEREZO';if(u.includes('WENGUE')||u.includes('WENGUÉ'))return'WENGUE';if(u.includes('NORDICO')||u.includes('NÓRDICO')||u.includes('GRIS'))return'NORDICO';return'BLANCO'};
 const colorPoli=t=>{const u=N(t);for(const c of['NEGRO','MARRON','BEIGE','GRIS','PIEDRA','BLANCO'])if(u.includes(c))return c;return'BLANCO'};
-const DUNA_A_COLOR={"DUNA COCOA":"CACAO","DUNA LINO":"BEIGE","DUNA ONIX":"GRIS ANTRACITA","DUNA KOALA":"GRIS NIEBLA","DUNA OLIVA":"OLIVA","DUNA SALVIA":"MENTA","DUNA TULUM":"OCEANIC","DUNA MAGENTA":"MAGENTA","DUNA FLAMINGO":"ROSA","DUNA MORADO":"LAVANDA","DUNA DIJON":"STAR"};
+const DUNA_A_COLOR={"DUNA COCOA":"CACAO","DUNA ALPACA":"BEIGE","DUNA ONIX":"GRIS ANTRACITA","DUNA KOALA":"GRIS NIEBLA","DUNA OLIVA":"OLIVA","DUNA SALVIA":"MENTA","DUNA TULUM":"OCEANIC","DUNA MAGENTA":"MAGENTA","DUNA FLAMINGO":"ROSA","DUNA MORADO":"LAVANDA","DUNA DIJON":"STAR"};
 const colorTela=t=>{const u=N(t);for(const k of["GRIS ANTRACITA","GRIS NIEBLA","NIEBLA","CACAO","OLIVA","MENTA","OCEANIC","MAGENTA","ROSA","LAVANDA","STAR","BEIGE"])if(u.includes(k))return k;for(const[duna,color]of Object.entries(DUNA_A_COLOR))if(u.includes(N(duna)))return color;return null};
 const extrasTapa=t=>{const u=N(t),ex=[];if(u.includes('PARTIDA'))ex.push('TAPA PARTIDA');if(u.includes('REFORZADA')||u.includes('REFORAZDA'))ex.push('TAPA REFORZADA');return ex};
 const limpiar=t=>{let r=t;FRASES_OMITIR.forEach(p=>r=r.replace(p,''));return r.trim()};
@@ -3379,7 +3405,7 @@ function traducir(texto,plataforma,modeloPrincipal){
     }else if(t.includes('IRIS')){fab='MARGOT';suma=10;serie='DUNA';}else if(t.includes('GAIA')){fab='GRETA';suma=10;serie='DUNA';}else{fab='MERYL';suma=10;serie='DUNA';}
     const mf=ancho?ancho+suma:null;
     let acabado;
-    if(serie==='ARGOS'){const c=colorPoli(texto)||colorPoli(modeloPrincipal);acabado=(ARGOS[c]||['ARGOS BLANCO'])[0];}else{const ck=colorTela(texto)||colorTela(modeloPrincipal);acabado=ck&&TELAS[ck]?TELAS[ck][0]:'DUNA LINO';}
+    if(serie==='ARGOS'){const c=colorPoli(texto)||colorPoli(modeloPrincipal);acabado=(ARGOS[c]||['ARGOS BLANCO'])[0];}else{const ck=colorTela(texto)||colorTela(modeloPrincipal);acabado=ck&&TELAS[ck]?TELAS[ck][0]:'DUNA ALPACA';}
     return{tipo:'CABECERO',lineas:[lim,`MODELO: ${fab}`,`MEDIDA: ${ancho?ancho+'CM':''}`,`MEDIDA FINAL: ${mf?mf+'CM':''}`,`ACABADO: ${acabado}`]};
   }
   if(t.startsWith('BASE')){
@@ -3392,15 +3418,17 @@ function traducir(texto,plataforma,modeloPrincipal){
     return{tipo:'BASE',lineas:ls};
   }
   if(t.includes('BASIC')){const c=colorMadera(texto),med=medida(texto),pot=potencia(texto);const ls=[lim,`MODELO: ASTRA`,`MEDIDA: ${med}`,`ACABADO: ${c}`,`ACABADO TAPA: ${REJILLA_MADERA[c]||'REJILLA 3D BLANCA'}`,`TIRADOR: PLATA`];if(pot)ls.push(`POTENCIA HIDRAULICOS: ${pot}`);ex.forEach(e=>ls.push(`EXTRA TAPA: ${e}`));return{tipo:'CANAPE_MADERA',lineas:ls};}
+  const mCanMon=t.match(/^CANMON(BLA|ROB|WEN|CER|GRIS|GRI|GRS)(\d{2,3}X\d{2,3})(?:\s+(\d{3,4}NW))?/);
+  if(mCanMon){const abv=mCanMon[1],med=mCanMon[2],pot=mCanMon[3]||'';const COLOR_ABV={BLA:'BLANCO',ROB:'ROBLE',WEN:'WENGUE',CER:'CEREZO',GRIS:'NORDICO',GRI:'NORDICO',GRS:'NORDICO'};const c=COLOR_ABV[abv]||'BLANCO';const ls=[lim||texto,`MODELO: ZENIT`,`MEDIDA: ${med}`,`ACABADO: ${c}`,`ACABADO TAPA: ${REJILLA_MADERA[c]||'REJILLA 3D BLANCA'}`,`TIRADOR: PLATA`];if(pot)ls.push(`POTENCIA HIDRAULICOS: ${pot}`);return{tipo:'CANAPE_MADERA',lineas:ls};}
   if(t.includes('MONACO')||t.includes('MÓNACO')||(t.includes('MADERA')&&t.includes('CANAPE'))){const c=colorMadera(texto),med=medida(texto),pot=potencia(texto);const ls=[lim,`MODELO: ZENIT`,`MEDIDA: ${med}`,`ACABADO: ${c}`,`ACABADO TAPA: ${REJILLA_MADERA[c]||'REJILLA 3D BLANCA'}`,`TIRADOR: PLATA`];if(pot)ls.push(`POTENCIA HIDRAULICOS: ${pot}`);ex.forEach(e=>ls.push(`EXTRA TAPA: ${e}`));return{tipo:'CANAPE_MADERA',lineas:ls};}
   if(t.includes('INITIAL')){
     const med=medida(texto),esTela=t.includes('TELA')||t.includes('DUNA')||colorTela(texto)!==null;
     let ac3,tapa,xb=[];
-    if(esTela){const ck=colorTela(texto);const[a,r]=ck&&TELAS[ck]?TELAS[ck]:['DUNA LINO','REJILLA 3D TIERRA'];ac3=a;tapa=`BORDE ${a} + ${r}`;xb=['BORDE DELUXE'];}else{const c=colorPoli(texto);ac3=c==='GRIS'?'GRIS NIEBLA':c;tapa={BLANCO:'REJILLA 3D BLANCA',BEIGE:'REJILLA 3D BEIGE',GRIS:'REJILLA 3D GRAFITO',NEGRO:'REJILLA 3D NEGRA',MARRON:'REJILLA 3D MARRON'}[c]||'REJILLA 3D BLANCA';}
+    if(esTela){const ck=colorTela(texto);const[a,r]=ck&&TELAS[ck]?TELAS[ck]:['DUNA ALPACA','REJILLA 3D TIERRA'];ac3=a;tapa=`BORDE ${a} + ${r}`;xb=['BORDE DELUXE'];}else{const c=colorPoli(texto);ac3=c==='GRIS'?'GRIS NIEBLA':c;tapa={BLANCO:'REJILLA 3D BLANCA',BEIGE:'REJILLA 3D BEIGE',GRIS:'REJILLA 3D GRAFITO',NEGRO:'REJILLA 3D NEGRA',MARRON:'REJILLA 3D MARRON'}[c]||'REJILLA 3D BLANCA';}
     const ls=[lim,`MODELO: ${esTela?'INITIAL DELUXE':'INITIAL'}`,`MEDIDA: ${med}`,`PATAS: 12,5 CM`,`ACABADO: ${ac3}`,`TAPA: ${tapa}`,`TIRADOR: COLOR NATURAL`];[...xb,...ex].forEach(e=>ls.push(`EXTRA TAPA: ${e}`));return{tipo:'CANAPE_INITIAL',lineas:ls};
   }
   if(t.includes('MAGNUM')){const med=medida(texto),c=colorPoli(texto);const[ac,tp]=ARGOS_MAGNUM[c]||['ARGOS BLANCO','ARGOS BLANCO + REJILLA 3D BLANCA'];const ls=[lim,`MODELO: MAGNUM`,`MEDIDA: ${med}`,`ACABADO: ${ac}`,`TAPA: ${tp}`,`TIRADOR: 2 TIRADORES PLATA`,`EXTRA: SISTEMA MOVIL`,`EXTRA TAPA: BORDE DELUXE`];ex.forEach(e=>ls.push(`EXTRA TAPA: ${e}`));return{tipo:'CANAPE_MAGNUM',lineas:ls};}
-  if(t.includes('CANAPE TELA')||(t.includes('TELA')&&t.includes('CANAPE')&&!t.includes('INITIAL')&&!t.includes('MAGNUM'))){const med=medida(texto),ck=colorTela(texto);const[ac,rj]=ck&&TELAS[ck]?TELAS[ck]:['DUNA LINO','REJILLA 3D TIERRA'];const tirador=t.includes('PARTIDA')?'NORMAL':'UÑERO';const ls=[lim,`MODELO: SPACE DELUXE`,`MEDIDA: ${med}`,`ACABADO: ${ac}`,`TAPA: BORDE ${ac} + ${rj}`,`TIRADOR: ${tirador}`,`EXTRA TAPA: BORDE DELUXE`];ex.forEach(e=>ls.push(`EXTRA TAPA: ${e}`));return{tipo:'CANAPE_TELA',lineas:ls};}
+  if(t.includes('CANAPE TELA')||(t.includes('TELA')&&t.includes('CANAPE')&&!t.includes('INITIAL')&&!t.includes('MAGNUM'))){const med=medida(texto),ck=colorTela(texto);const[ac,rj]=ck&&TELAS[ck]?TELAS[ck]:['DUNA ALPACA','REJILLA 3D TIERRA'];const tirador=t.includes('PARTIDA')?'NORMAL':'UÑERO';const ls=[lim,`MODELO: SPACE DELUXE`,`MEDIDA: ${med}`,`ACABADO: ${ac}`,`TAPA: BORDE ${ac} + ${rj}`,`TIRADOR: ${tirador}`,`EXTRA TAPA: BORDE DELUXE`];ex.forEach(e=>ls.push(`EXTRA TAPA: ${e}`));return{tipo:'CANAPE_TELA',lineas:ls};}
   if(t.includes('POLIPIEL')||t.includes('CANAPE SPACE')){const med=medida(texto),c=colorPoli(texto);const[ac,rj]=ARGOS[c]||['ARGOS BLANCO','REJILLA 3D BLANCA'];const borde=t.includes('BORDE DELUXE');const tapa=borde?`${ac} + ${rj}`:rj;const ls=[lim,`MODELO: SPACE`,`MEDIDA: ${med}`,`ACABADO: ${ac}`,`TAPA: ${tapa}`,`TIRADOR: PLATA`];if(borde)ls.push('EXTRA TAPA: BORDE DELUXE');ex.forEach(e=>ls.push(`EXTRA TAPA: ${e}`));return{tipo:'CANAPE_POLIPIEL',lineas:ls};}
   return{tipo:'OTRO',lineas:[lim]};
 }
@@ -3414,14 +3442,11 @@ function procesarExcel(data){
   const ws=wb.Sheets['ACTUAL'];
   if(!ws){showStatus('No se encontró la hoja ACTUAL.','error');return;}
   const rows=XLSX.utils.sheet_to_json(ws,{header:1,defval:''});
-  // Detect separator row by text "GESTIONAR A PARTIR DE AQUÍ"
   let pinkRow=-1;
-  const TEXTO_SEPARADOR='GESTIONAR A PARTIR DE AQUÍ';
   for(let i=1;i<rows.length;i++){
     const celda=String(rows[i][0]||'').toUpperCase().trim();
     if(celda.includes('GESTIONAR A PARTIR')){pinkRow=i;break;}
   }
-  // Fallback: last empty row followed by data
   if(pinkRow===-1){
     for(let i=rows.length-2;i>10;i--){
       const isEmpty=rows[i].every(v=>!v||String(v).trim()==='');
@@ -3441,11 +3466,60 @@ function procesarExcel(data){
     subs.forEach((sub,idx)=>{
       const r=refs[idx]||refs[0]||ref;
       const res=traducir(sub,plataforma,principal);
-      if(res)resultado.push({ref:r,tipo:res.tipo,lineas:res.lineas});
+      if(res)resultado.push({ref:r,tipo:res.tipo,lineas:res.lineas,_textoOriginal:sub});
     });
   });
+  // Detectar canapés sin medida seguidos de cabecero con medida
+  mmcPendientes=[];
+  for(let i=0;i<resultado.length-1;i++){
+    const curr=resultado[i],next=resultado[i+1];
+    const esCanape=['CANAPE_TELA','CANAPE_POLIPIEL','CANAPE_MADERA','CANAPE_INITIAL','CANAPE_MAGNUM'].includes(curr.tipo);
+    const sinMedida=esCanape&&!curr.lineas.some(l=>l.startsWith('MEDIDA:')&&l.replace('MEDIDA:','').trim());
+    const nextEsCabecero=next.tipo==='CABECERO';
+    const medVal=medida(next._textoOriginal||'');
+    if(sinMedida&&nextEsCabecero&&medVal){
+      mmcPendientes.push({idx:i,medida:medVal,textoCanape:curr.lineas[0]||curr._textoOriginal||'',textoCabecero:next.lineas[0]||''});
+    }
+  }
   pedidosActuales=resultado;
-  mostrarPreview(resultado);
+  if(mmcPendientes.length>0){
+    mmcResolver(0);
+  }else{
+    mostrarPreview(resultado);
+  }
+}
+
+let mmcPendientes=[];
+function mmcResolver(pos){
+  if(pos>=mmcPendientes.length){
+    document.getElementById('modal-medida-compartida').style.display='none';
+    mostrarPreview(pedidosActuales);
+    return;
+  }
+  const item=mmcPendientes[pos];
+  const med=item.medida;
+  document.getElementById('mmc-descripcion').textContent=`Línea ${item.idx+1} de ${pedidosActuales.length}`;
+  document.getElementById('mmc-canape-texto').textContent=item.textoCanape;
+  document.getElementById('mmc-siguiente-texto').textContent=item.textoCabecero;
+  document.getElementById('mmc-medida-detectada').textContent=`Medida: ${med}`;
+  document.getElementById('mmc-medida-label').textContent=med;
+  document.getElementById('mmc-btn-medida').textContent=med;
+  const modal=document.getElementById('modal-medida-compartida');
+  modal.style.display='flex';
+  modal._pos=pos;
+}
+function mmcResponder(aplicar){
+  const modal=document.getElementById('modal-medida-compartida');
+  const pos=modal._pos;
+  const item=mmcPendientes[pos];
+  if(aplicar){
+    // Insertar medida en la línea MEDIDA: del canapé
+    const lineas=pedidosActuales[item.idx].lineas;
+    const idxMed=lineas.findIndex(l=>l.startsWith('MEDIDA:'));
+    if(idxMed>=0){lineas[idxMed]=`MEDIDA: ${item.medida}`;}
+    else{const idxIns=lineas.findIndex(l=>l.startsWith('MODELO:'));lineas.splice(idxIns>=0?idxIns+1:1,0,`MEDIDA: ${item.medida}`);}
+  }
+  mmcResolver(pos+1);
 }
 
 function mostrarPreview(pedidos){
