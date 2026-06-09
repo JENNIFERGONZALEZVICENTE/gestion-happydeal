@@ -5841,7 +5841,18 @@ function furniRenderNoAsociados() {
   section.style.display='block';
   const iconos={'INCIDENCIA':'⚠️','REPOSICION':'🔄','MONTAJE':'🔧','RECOGIDA':'📦','PRINCIPAL':'📋'};
   content.innerHTML = `<div style="border:1px solid #FDE68A;border-radius:10px;overflow:hidden">
-    <table style="width:100%;border-collapse:collapse">
+    <table style="width:100%;border-collapse:collapse;table-layout:fixed">
+          <colgroup>
+            <col style="width:120px">
+            <col style="width:130px">
+            <col style="width:100px">
+            <col style="width:auto">
+            <col style="width:55px">
+            <col style="width:130px">
+            <col style="width:40px">
+            <col style="width:200px">
+            <col style="width:65px">
+          </colgroup>
       <thead><tr style="background:#FEF3C7">
         <th style="padding:8px 12px;font-size:10px;font-weight:700;color:#92400e;text-align:left">Albarán Furniture</th>
         <th style="padding:8px 12px;font-size:10px;font-weight:700;color:#92400e;text-align:left">Tipo</th>
@@ -6411,71 +6422,115 @@ function furniCargasRender() {
   const q = ((document.getElementById('furni-cargas-buscar')?.value)||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
   const norm = s => (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
 
-  if(!cargas.length) { contentEl.innerHTML = '<div class="empty-state"><i class="ti ti-truck"></i><p>No hay cargas. Crea la primera arriba.</p></div>'; return; }
+  if(!cargas.length) {
+    contentEl.innerHTML = '<div class="empty-state"><i class="ti ti-truck"></i><p>No hay cargas. Crea la primera arriba.</p></div>';
+    return;
+  }
 
-  contentEl.innerHTML = cargas.map(carga => {
+  // Construir una sola tabla con todas las cargas
+  let html = `<div style="border:1px solid #e5e7eb;border-radius:12px;overflow:hidden">
+    <table style="width:100%;border-collapse:collapse;table-layout:fixed">
+      <colgroup>
+        <col style="width:110px">
+        <col style="width:140px">
+        <col style="width:90px">
+        <col style="width:auto">
+        <col style="width:55px">
+        <col style="width:120px">
+        <col style="width:35px">
+        <col style="width:190px">
+        <col style="width:60px">
+      </colgroup>
+      <thead>
+        <tr style="background:#f9fafb;border-bottom:2px solid #e5e7eb">
+          <th style="padding:8px 10px;font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;text-align:left">Cliente</th>
+          <th style="padding:8px 10px;font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;text-align:left">Pedido</th>
+          <th style="padding:8px 10px;font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;text-align:left">Ref Polival</th>
+          <th style="padding:8px 10px;font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;text-align:left">Modelo</th>
+          <th style="padding:8px 10px;font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;text-align:left">CP</th>
+          <th style="padding:8px 10px;font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;text-align:left">Montaje</th>
+          <th style="padding:8px 10px;font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;text-align:center">Uds</th>
+          <th style="padding:8px 10px;font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;text-align:left">Estado Furniture</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>`;
+
+  let algunaCarga = false;
+
+  cargas.forEach(carga => {
     const esCerrada = carga.estado === 'CERRADA';
-    const lineas = carga.pedidos.map(pid => pedidos.find(p => String(p.id) === pid)).filter(Boolean);
-    const totalUds = lineas.reduce((s,p) => s+(p.uds||0), 0);
-    // Aplicar filtro de búsqueda a las líneas
+    const lineas = carga.pedidos.map(pid => pedidos.find(p => String(p.id) === String(pid))).filter(Boolean);
     const lineasFiltradas = q ? lineas.filter(p =>
       norm(p.pedido).includes(q) || norm(p.cliente).includes(q) ||
       norm(p.modelo).includes(q) || norm(p.refPolival).includes(q)
     ) : lineas;
-    // Si hay búsqueda y esta carga no tiene coincidencias, ocultarla
-    if(q && !lineasFiltradas.length) return '';
 
-    const lineasHtml = lineasFiltradas.length ? lineasFiltradas.map(p => `
-      <tr style="border-bottom:1px solid #f3f4f6">
-        <td style="padding:8px 12px;font-size:12px;font-weight:600;color:#374151">${p.cliente||'—'}</td>
-        <td style="padding:8px 12px;font-size:12px;color:#3B4A2F">${p.modelo||'—'}</td>
-        <td style="padding:8px 12px;font-family:monospace;font-size:11px;color:#3730A3;font-weight:600">${p.pedido||'—'}</td>
-        <td style="padding:8px 12px;font-family:monospace;font-size:11px;color:#6b7280">${p.refPolival||'—'}</td>
-        <td style="padding:8px 12px;font-size:11px;color:#374151">${p.cp||'—'}</td>
-        <td style="padding:8px 12px;font-size:11px;color:#6b7280">${p.obs||p.entrega||'—'}</td>
-        <td style="padding:8px 12px;text-align:center;font-size:12px">${p.uds||1}</td>
-        <td style="padding:8px 12px">${p.estadoFurniture?(()=>{
-          const ef=p.estadoFurniture;
-          const bg=ef==='ENTREGADO OK'?'#DCFCE7':ef==='PENDIENTE DE ENTREGA'?'#FEF3C7':ef==='NO ENTREGADO'?'#FEE2E2':ef.includes('INCIDENCIA')?'#F3E8FF':'#F3F4F6';
-          const col=ef==='ENTREGADO OK'?'#065F46':ef==='PENDIENTE DE ENTREGA'?'#92400e':ef==='NO ENTREGADO'?'#991b1b':ef.includes('INCIDENCIA')?'#6b21a8':'#374151';
-          const link=p.seguimientoFurniture?` <a href="${p.seguimientoFurniture}" target="_blank" style="color:${col};font-size:10px">🔗</a>`:'';
-          return `<span style="background:${bg};color:${col};font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;white-space:nowrap">${ef}${p.ultimaFechaFurniture?' · '+p.ultimaFechaFurniture:''}${link}</span>`;
-        })():'—'}</td>
-        ${!esCerrada?`<td style="padding:8px 8px;text-align:right"><button onclick="furniQuitarDeCarga('${p.id}','${carga.id}')" style="padding:3px 10px;border-radius:6px;font-size:10px;cursor:pointer;background:white;border:1px solid #d1d5db;color:#6b7280">Quitar</button></td>`:'<td></td>'}
-      </tr>`).join('')
-      : '<tr><td colspan="7" style="padding:16px;text-align:center;color:#9ca3af;font-size:12px">Sin pedidos en esta carga</td></tr>';
+    if(q && !lineasFiltradas.length) return;
+    algunaCarga = true;
 
-    return `<div style="border:1px solid ${esCerrada?'#d1d5db':'#C4B5FD'};border-radius:12px;margin-bottom:16px;overflow:hidden">
-      <div style="background:${esCerrada?'#F3F4F6':'#EDE9FE'};padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
-        <div style="display:flex;align-items:center;gap:10px">
-          <i class="ti ti-truck" style="font-size:18px;color:${esCerrada?'#6b7280':'#7c3aed'}"></i>
-          <div>
-            <div style="font-size:14px;font-weight:700;color:${esCerrada?'#374151':'#4c1d95'}">${carga.dia} · ${carga.fecha}</div>
-            <div style="font-size:11px;color:#9ca3af">${lineas.length} pedido${lineas.length!==1?'s':''} · ${totalUds} uds · ${esCerrada?'CERRADA':'ABIERTA'}</div>
+    const totalUds = lineas.reduce((s,p) => s+(p.uds||0), 0);
+    const bgHeader = esCerrada ? '#F3F4F6' : '#EDE9FE';
+    const colHeader = esCerrada ? '#374151' : '#4c1d95';
+    const iconColor = esCerrada ? '#6b7280' : '#7c3aed';
+
+    // Fila de cabecera de la carga
+    html += `<tr style="background:${bgHeader};border-top:2px solid ${esCerrada?'#d1d5db':'#C4B5FD'}">
+      <td colspan="9" style="padding:10px 14px">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+          <div style="display:flex;align-items:center;gap:10px">
+            <i class="ti ti-truck" style="font-size:16px;color:${iconColor}"></i>
+            <div>
+              <span style="font-size:13px;font-weight:700;color:${colHeader}">${carga.dia} · ${carga.fecha}</span>
+              <span style="font-size:11px;color:#9ca3af;margin-left:10px">${lineas.length} pedido${lineas.length!==1?'s':''} · ${totalUds} uds · ${esCerrada?'CERRADA':'ABIERTA'}</span>
+            </div>
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <button onclick="furniDescargarCarga(${carga.id})" style="padding:5px 12px;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;background:#166534;border:none;color:white"><i class="ti ti-download"></i> Excel Ariadna</button>
+            <button onclick="furniDescargarAlmacen(${carga.id})" style="padding:5px 12px;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;background:#1d4ed8;border:none;color:white"><i class="ti ti-download"></i> Excel almacén</button>
+            ${!esCerrada?`<button onclick="furniCerrarCarga(${carga.id})" style="padding:5px 12px;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;background:white;border:1px solid #C4B5FD;color:#7c3aed"><i class="ti ti-lock"></i> Cerrar carga</button>`:''}
           </div>
         </div>
-        <button onclick="furniDescargarCarga(${carga.id})" style="padding:6px 14px;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;background:#166534;border:none;color:white"><i class="ti ti-download"></i> Excel Ariadna</button>
-        <button onclick="furniDescargarAlmacen(${carga.id})" style="padding:6px 14px;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;background:#1d4ed8;border:none;color:white"><i class="ti ti-download"></i> Excel almacén</button>
-        ${!esCerrada?`<button onclick="furniCerrarCarga(${carga.id})" style="padding:6px 14px;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;background:white;border:1px solid #C4B5FD;color:#7c3aed"><i class="ti ti-lock"></i> Cerrar carga</button>`:''}
-      </div>
-      <div style="overflow-x:auto">
-        <table style="width:100%;border-collapse:collapse">
-          <thead><tr style="background:#f9fafb">
-            <th style="padding:8px 12px;font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;text-align:left">Cliente</th>
-            <th style="padding:8px 12px;font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;text-align:left">Modelo</th>
-            <th style="padding:8px 12px;font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;text-align:left">Pedido</th>
-            <th style="padding:8px 12px;font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;text-align:left">Ref Polival</th>
-            <th style="padding:8px 12px;font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;text-align:left">CP</th>
-            <th style="padding:8px 12px;font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;text-align:left">Montaje</th>
-            <th style="padding:8px 12px;font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;text-align:center">Uds</th>
-            <th style="padding:8px 12px;font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;text-align:left">Estado Furniture</th>
-            <th></th>
-          </tr></thead>
-          <tbody>${lineasHtml}</tbody>
-        </table>
-      </div>
-    </div>`;
-  }).join('');
+      </td>
+    </tr>`;
+
+    if(!lineasFiltradas.length) {
+      html += `<tr><td colspan="9" style="padding:14px;text-align:center;color:#9ca3af;font-size:12px;background:white">Sin pedidos en esta carga</td></tr>`;
+    } else {
+      lineasFiltradas.forEach((p, i) => {
+        const bgRow = i % 2 === 0 ? 'white' : '#fafafa';
+        // Estado Furniture
+        let estadoFurHtml = '—';
+        if(p.estadoFurniture) {
+          const ef = p.estadoFurniture;
+          const bg = ef==='ENTREGADO OK'?'#DCFCE7':ef==='PENDIENTE DE ENTREGA'?'#FEF3C7':ef==='NO ENTREGADO'?'#FEE2E2':ef.includes('INCIDENCIA')?'#F3E8FF':'#F3F4F6';
+          const col = ef==='ENTREGADO OK'?'#065F46':ef==='PENDIENTE DE ENTREGA'?'#92400e':ef==='NO ENTREGADO'?'#991b1b':ef.includes('INCIDENCIA')?'#6b21a8':'#374151';
+          const link = p.seguimientoFurniture?` <a href="${p.seguimientoFurniture}" target="_blank" style="color:${col};font-size:10px">🔗</a>`:'';
+          estadoFurHtml = `<span style="background:${bg};color:${col};font-size:10px;font-weight:700;padding:2px 6px;border-radius:5px">${ef}${p.ultimaFechaFurniture?' · '+p.ultimaFechaFurniture:''}${link}</span>`;
+        }
+
+        html += `<tr style="background:${bgRow};border-top:1px solid #f3f4f6">
+          <td style="padding:7px 10px;font-size:11px;font-weight:600;color:#374151;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${p.cliente||''}">${p.cliente||'—'}</td>
+          <td style="padding:7px 10px;font-family:monospace;font-size:10px;color:#3730A3;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${p.pedido||''}">${p.pedido||'—'}</td>
+          <td style="padding:7px 10px;font-family:monospace;font-size:10px;color:#6b7280;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${p.refPolival||''}">${p.refPolival||'—'}</td>
+          <td style="padding:7px 10px;font-size:11px;color:#3B4A2F;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${p.modelo||''}">${p.modelo||'—'}</td>
+          <td style="padding:7px 10px;font-size:11px;color:#374151;white-space:nowrap">${p.cp||'—'}</td>
+          <td style="padding:7px 10px;font-size:11px;color:#6b7280;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${p.obs||p.entrega||''}">${p.obs||p.entrega||'—'}</td>
+          <td style="padding:7px 10px;text-align:center;font-size:11px">${p.uds||1}</td>
+          <td style="padding:7px 10px;overflow:hidden">${estadoFurHtml}</td>
+          <td style="padding:7px 8px;text-align:right">${!esCerrada?`<button onclick="furniQuitarDeCarga('${p.id}','${carga.id}')" style="padding:2px 8px;border-radius:5px;font-size:10px;cursor:pointer;background:white;border:1px solid #d1d5db;color:#6b7280;white-space:nowrap">Quitar</button>`:''}</td>
+        </tr>`;
+      });
+    }
+  });
+
+  html += '</tbody></table></div>';
+
+  if(!algunaCarga) {
+    contentEl.innerHTML = '<div class="empty-state"><i class="ti ti-search"></i><p>No hay resultados para esa búsqueda.</p></div>';
+  } else {
+    contentEl.innerHTML = html;
+  }
 }
 
 // ── OTROS TAPICERÍA ────────────────────────────────────────
