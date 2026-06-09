@@ -5767,8 +5767,8 @@ function furniGetEstado(pedido) {
   const colchon = (pedido.colchon||{}).estado;
   const tieneTapiz = furniEsTapiceria((pedido.modelo||'').toUpperCase().normalize('NFD').replace(/[̀-ͯ]/g,''));
 
-  // Sin tapicería + colchón descontado → LISTO directamente
-  if(!tieneTapiz && colchon === 'DESCONTADO') return 'LISTO';
+  // Sin tapicería + colchón descontado o recibido → LISTO directamente
+  if(!tieneTapiz && (colchon === 'DESCONTADO' || colchon === 'RECIBIDO')) return 'LISTO';
 
   // Sin refs de Polival válidas
   if(!refs.length) {
@@ -5964,6 +5964,8 @@ function furniRender() {
     let colchonBadge = '';
     if(colchon.estado === 'DESCONTADO') {
       colchonBadge = `<span style="background:#DCFCE7;color:#065F46;font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px">🛏 Colchón ✓ stock</span>`;
+    } else if(colchon.estado === 'RECIBIDO') {
+      colchonBadge = `<span style="background:#DCFCE7;color:#065F46;font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px">🛏 Colchón ✓ recibido${colchon.fechaRecibido?' · '+colchon.fechaRecibido:''}</span>`;
     } else if(colchon.estado === 'PENDIENTE_RECIBIR') {
       // Buscar en pedidos clientes colchones
       const refFur = 'FUR'+(x.pedido||'').toUpperCase();
@@ -8385,6 +8387,20 @@ function pcMarcarServido(id, onConfirmado){
     const fechas=JSON.parse(localStorage.getItem('colch_ventas_fecha_servido')||'{}');
     fechas[String(id)]=fechaStr;
     localStorage.setItem('colch_ventas_fecha_servido',JSON.stringify(fechas));
+
+    // Si la referencia empieza por FUR → actualizar colchón en pedido Furniture
+    const ventas=JSON.parse(localStorage.getItem('colch_ventas')||'[]');
+    const venta=ventas.find(v=>String(v.id)===String(id));
+    if(venta && (venta.ref||'').toUpperCase().startsWith('FUR')) {
+      const refFurni = (venta.ref||'').substring(3); // quitar FUR
+      let furniture=JSON.parse(localStorage.getItem('furni_pedidos')||'[]');
+      const idx=furniture.findIndex(p=>(p.pedido||'').trim()===refFurni.trim());
+      if(idx>=0) {
+        furniture[idx].colchon={estado:'RECIBIDO', fechaRecibido: fechaStr};
+        localStorage.setItem('furni_pedidos',JSON.stringify(furniture));
+      }
+    }
+
     overlay.remove();
     if(typeof onConfirmado==='function') onConfirmado();
     pcRender(); pcUpdateBadge();
