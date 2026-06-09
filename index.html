@@ -6258,9 +6258,11 @@ function furniDescargarCarga(cargaId) {
   const pedidos = JSON.parse(localStorage.getItem('furni_pedidos')||'[]');
   const lineas = carga.pedidos.map(pid => pedidos.find(p => String(p.id) === String(pid))).filter(Boolean);
 
-  // Cabecera igual que el Excel original
+  // Excluir pedidos cuya referencia empiece por FUR
+  const lineasAriadna = lineas.filter(p => !(p.pedido||'').toUpperCase().startsWith('FUR'));
+
   const headers = ['FECHA','PLATAFORMA','MODELO','REF POLIVAL','PEDIDO','CLIENTE','UD','ENTREGA','OBSERVACIONES','CP'];
-  const rows = [headers, ...lineas.map(p => [
+  const rows = [headers, ...lineasAriadna.map(p => [
     p.fecha||'',
     p.plataforma||'',
     p.modelo||'',
@@ -6275,12 +6277,7 @@ function furniDescargarCarga(cargaId) {
 
   const wb = XLSX.utils.book_new();
   const ws = XLSX.utils.aoa_to_sheet(rows);
-
-  // Anchos de columna
-  ws['!cols'] = [
-    {wch:12},{wch:18},{wch:60},{wch:40},{wch:25},{wch:25},{wch:5},{wch:15},{wch:30},{wch:10}
-  ];
-
+  ws['!cols'] = [{wch:12},{wch:18},{wch:60},{wch:40},{wch:25},{wch:25},{wch:5},{wch:15},{wch:30},{wch:10}];
   XLSX.utils.book_append_sheet(wb, ws, 'Carga');
   const nombre = `FURNITURE_${carga.dia}_${carga.fecha.replace(/\//g,'-')}.xlsx`;
   XLSX.writeFile(wb, nombre);
@@ -6293,18 +6290,33 @@ function furniDescargarAlmacen(cargaId) {
   const pedidos = JSON.parse(localStorage.getItem('furni_pedidos')||'[]');
   const lineas = carga.pedidos.map(pid => pedidos.find(p => String(p.id) === String(pid))).filter(Boolean);
 
+  // Separar SEUR (no FUR) y FURNITURE (FUR)
+  const lineasSeur = lineas.filter(p => !(p.pedido||'').toUpperCase().startsWith('FUR'));
+  const lineasFur  = lineas.filter(p =>  (p.pedido||'').toUpperCase().startsWith('FUR'));
+
   const headers = ['MODELO','REFERENCIA POLIVAL','PEDIDO'];
-  const rows = [headers, ...lineas.map(p => [
-    p.modelo||'',
-    p.refPolival||'',
-    p.pedido||''
-  ])];
+  const rows = [];
+
+  if(lineasSeur.length) {
+    rows.push(['── SEUR ──','','']);
+    rows.push(headers);
+    lineasSeur.forEach(p => rows.push([p.modelo||'', p.refPolival||'', p.pedido||'']));
+  }
+
+  if(lineasFur.length) {
+    if(rows.length) rows.push(['','','']); // fila vacía separadora
+    rows.push(['── FURNITURE ──','','']);
+    rows.push(headers);
+    lineasFur.forEach(p => rows.push([p.modelo||'', p.refPolival||'', p.pedido||'']));
+  }
+
+  if(!rows.length) { alert('No hay pedidos en esta carga.'); return; }
 
   const wb = XLSX.utils.book_new();
   const ws = XLSX.utils.aoa_to_sheet(rows);
   ws['!cols'] = [{wch:60},{wch:40},{wch:25}];
   XLSX.utils.book_append_sheet(wb, ws, 'Almacén');
-  const nombre = `ALMACEN_FURNITURE_${carga.dia}_${carga.fecha.replace(/\//g,'-')}.xlsx`;
+  const nombre = `ALMACEN_${carga.dia}_${carga.fecha.replace(/\//g,'-')}.xlsx`;
   XLSX.writeFile(wb, nombre);
 }
 
@@ -8044,21 +8056,46 @@ function spsExportarAriadna(){
 }
 
 function spsExportarAlmacen(){
-  const lista=spsCalcular().filter(v=>pcGetAgencia(v.id,v.ref)==='SEUR');
-  if(!lista.length){alert('No hay pedidos SEUR listos para el almacén.');return;}
-  const grupos=new Map();
-  lista.forEach(v=>{
-    const key=`${v.modelo}||${v.medida}`;
-    grupos.set(key,(grupos.get(key)||0)+v.unidades);
-  });
-  const filas=[...grupos.entries()].sort((a,b)=>a[0].localeCompare(b[0])).map(([key,uds])=>{
-    const[modelo,medida]=key.split('||');
-    return {'Modelo':modelo,'Medida':medida,'Unidades a preparar':uds};
-  });
-  const ws=XLSX.utils.json_to_sheet(filas);
-  const wb=XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb,ws,'Almacén');
-  XLSX.writeFile(wb,`Almacen_${new Date().toLocaleDateString('es-ES').replace(/\//g,'-')}.xlsx`);
+  const lista = spsCalcular();
+  if(!lista.length){alert('No hay pedidos listos para el almacén.');return;}
+
+  const listaSeur     = lista.filter(v => pcGetAgencia(v.id,v.ref)==='SEUR');
+  const listaFurni    = lista.filter(v => pcGetAgencia(v.id,v.ref)==='FURNITURE');
+
+  const rows = [];
+
+  // ── SEUR ──
+  if(listaSeur.length) {
+    rows.push(['── SEUR ──','','']);
+    rows.push(['Modelo','Medida','Unidades a preparar']);
+    const gruposSeur = new Map();
+    listaSeur.forEach(v => {
+      const key = `${v.modelo}||${v.medida}`;
+      gruposSeur.set(key, (gruposSeur.get(key)||0)+v.unidades);
+    });
+    [...gruposSeur.entries()].sort((a,b)=>a[0].localeCompare(b[0])).forEach(([key,uds]) => {
+      const [modelo,medida] = key.split('||');
+      rows.push([modelo, medida, uds]);
+    });
+  }
+
+  // ── FURNITURE ──
+  if(listaFurni.length) {
+    if(rows.length) rows.push(['','','']);
+    rows.push(['── FURNITURE ──','','']);
+    rows.push(['Modelo','Medida','Referencia','Unidades']);
+    listaFurni.forEach(v => {
+      rows.push([v.modelo, v.medida, v.ref||'—', v.unidades]);
+    });
+  }
+
+  if(!rows.length){alert('No hay pedidos listos para el almacén.');return;}
+
+  const ws = XLSX.utils.aoa_to_sheet(rows);
+  ws['!cols'] = [{wch:35},{wch:12},{wch:25},{wch:10}];
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Almacén');
+  XLSX.writeFile(wb, `Almacen_${new Date().toLocaleDateString('es-ES').replace(/\//g,'-')}.xlsx`);
 }
 // ─────────────────────────────────────────────────────────────
 function pcUpdateBadge(){
