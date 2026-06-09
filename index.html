@@ -1985,12 +1985,14 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
       <div class="card" style="margin-bottom:16px">
         <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:12px">
           <div style="font-size:13px;font-weight:600;color:#3B4A2F"><i class="ti ti-upload" style="margin-right:6px"></i>Importar Excel cuaderno tapicería</div>
-          <div style="display:flex;gap:8px">
-            <button onclick="furniImportar()" style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;background:#7c3aed;border:none;color:white"><i class="ti ti-file-spreadsheet"></i> Subir Excel</button>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button onclick="furniImportar()" style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;background:#7c3aed;border:none;color:white"><i class="ti ti-file-spreadsheet"></i> Subir Excel cuaderno</button>
+            <button onclick="furniImportarNotas()" style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;background:#1d4ed8;border:none;color:white"><i class="ti ti-refresh"></i> Actualizar desde Furniture</button>
             <button onclick="furniLimpiarTodo()" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;background:white;border:1px solid #d1d5db;color:#6b7280"><i class="ti ti-trash"></i> Limpiar todo</button>
           </div>
         </div>
         <input type="file" id="furni-file-input" accept=".xlsx,.xls" style="display:none" onchange="furniProcesarExcel(event)">
+        <input type="file" id="furni-notas-input" accept=".xls,.xlsx,.html,.htm" style="display:none" onchange="furniProcesarNotas(event)">
         <div id="furni-import-status"></div>
       </div>
 
@@ -5961,6 +5963,14 @@ function furniRender() {
           ${x.plataforma?`<span style="background:rgba(0,0,0,0.07);color:#374151;font-size:10px;font-weight:600;padding:1px 7px;border-radius:8px;white-space:nowrap">${x.plataforma}</span>`:''}
           ${colchonBadge}
           ${(x.notaInterna||'').trim()?`<span style="background:#F59E0B;color:white;font-size:11px;font-weight:700;padding:3px 12px;border-radius:8px">📌 ${x.notaInterna}</span>`:''}
+          ${x.estadoFurniture?(()=>{
+            const ef=x.estadoFurniture;
+            const bg=ef==='ENTREGADO OK'?'#DCFCE7':ef==='PENDIENTE DE ENTREGA'?'#FEF3C7':ef==='NO ENTREGADO'?'#FEE2E2':ef.includes('INCIDENCIA')?'#F3E8FF':'#F3F4F6';
+            const col=ef==='ENTREGADO OK'?'#065F46':ef==='PENDIENTE DE ENTREGA'?'#92400e':ef==='NO ENTREGADO'?'#991b1b':ef.includes('INCIDENCIA')?'#6b21a8':'#374151';
+            const fecha=x.ultimaFechaFurniture?' · '+x.ultimaFechaFurniture:'';
+            const link=x.seguimientoFurniture?` <a href="${x.seguimientoFurniture}" target="_blank" onclick="event.stopPropagation()" style="color:${col};text-decoration:underline;font-size:10px">🔗</a>`:'';
+            return `<span style="background:${bg};color:${col};font-size:10px;font-weight:700;padding:2px 10px;border-radius:8px;border:1px solid ${col}40">🚛 ${ef}${fecha}${link}</span>`;
+          })():''}
         </div>
         <div style="display:flex;gap:5px;flex-wrap:wrap;flex-shrink:0">${botonesHtml}</div>
       </div>
@@ -6212,6 +6222,80 @@ function furniDescargarAlmacen(cargaId) {
   XLSX.writeFile(wb, nombre);
 }
 
+function furniImportarNotas() {
+  document.getElementById('furni-notas-input').click();
+}
+
+function furniProcesarNotas(event) {
+  const file = event.target.files[0];
+  if(!file) return;
+  const statusEl = document.getElementById('furni-import-status');
+  statusEl.innerHTML = '<div class="status-box" style="background:#EFF6FF;border-color:#bfdbfe;color:#1e40af">Leyendo listado de Furniture...</div>';
+
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      // Parsear el HTML disfrazado de XLS
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(ev.target.result, 'text/html');
+      const rows = Array.from(doc.querySelectorAll('tbody tr'));
+
+      let furniture = JSON.parse(localStorage.getItem('furni_pedidos')||'[]');
+      let actualizados = 0, noEncontrados = 0;
+
+      rows.forEach(row => {
+        const celdas = Array.from(row.querySelectorAll('td'));
+        if(celdas.length < 18) return;
+
+        const albaran = (celdas[0]?.textContent||'').trim();
+        const estado = (celdas[1]?.textContent||'').trim();
+        // Columnas C-H: índices 2 (F.Creación) al 8 (F.Prevista)
+        // Coger la última con dato entre índices 3-8 (F.Fábrica a F.Prevista)
+        let ultimaFecha = '';
+        for(let i = 8; i >= 3; i--) {
+          const v = (celdas[i]?.textContent||'').trim();
+          if(v) { ultimaFecha = v; break; }
+        }
+        // Link de seguimiento
+        const linkEl = celdas[17]?.querySelector('a');
+        const seguimiento = linkEl?.href || (celdas[17]?.textContent||'').trim();
+
+        if(!albaran || !estado) return;
+
+        // Buscar en furniture por referencia de pedido (campo pedido)
+        const idx = furniture.findIndex(p => {
+          const ref = (p.pedido||'').trim();
+          // Comparar directamente o si el albarán contiene la ref o viceversa
+          return ref === albaran ||
+                 albaran.includes(ref) ||
+                 ref.includes(albaran) ||
+                 // También buscar en refPolival
+                 (p.refPolival||'').includes(albaran);
+        });
+
+        if(idx >= 0) {
+          furniture[idx].estadoFurniture = estado;
+          furniture[idx].ultimaFechaFurniture = ultimaFecha;
+          furniture[idx].seguimientoFurniture = seguimiento;
+          furniture[idx].ultimaActualizacionFurniture = new Date().toLocaleDateString('es-ES');
+          actualizados++;
+        } else {
+          noEncontrados++;
+        }
+      });
+
+      localStorage.setItem('furni_pedidos', JSON.stringify(furniture));
+      const msg = `✓ ${actualizados} pedido${actualizados!==1?'s':''} actualizado${actualizados!==1?'s':''}${noEncontrados?' · '+noEncontrados+' no encontrado'+(noEncontrados!==1?'s':''):''}`;
+      statusEl.innerHTML = `<div class="status-box" style="background:#F0FDF4;border-color:#86efac;color:#166534">${msg}</div>`;
+      furniRender();
+      event.target.value = '';
+    } catch(e) {
+      statusEl.innerHTML = `<div class="status-box status-error">Error al procesar el archivo: ${e.message}</div>`;
+    }
+  };
+  reader.readAsText(file, 'UTF-8');
+}
+
 function furniCargasRender() {
   const contentEl = document.getElementById('furni-cargas-content');
   if(!contentEl) return;
@@ -6229,6 +6313,7 @@ function furniCargasRender() {
       <tr style="border-bottom:1px solid #f3f4f6">
         <td style="padding:8px 12px;font-size:12px;font-weight:600;color:#374151">${p.cliente||'—'}</td>
         <td style="padding:8px 12px;font-size:12px;color:#3B4A2F">${p.modelo||'—'}</td>
+        <td style="padding:8px 12px;font-family:monospace;font-size:11px;color:#3730A3;font-weight:600">${p.pedido||'—'}</td>
         <td style="padding:8px 12px;font-family:monospace;font-size:11px;color:#6b7280">${p.refPolival||'—'}</td>
         <td style="padding:8px 12px;font-size:11px;color:#374151">${p.cp||'—'}</td>
         <td style="padding:8px 12px;font-size:11px;color:#6b7280">${p.obs||p.entrega||'—'}</td>
@@ -6255,6 +6340,7 @@ function furniCargasRender() {
           <thead><tr style="background:#f9fafb">
             <th style="padding:8px 12px;font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;text-align:left">Cliente</th>
             <th style="padding:8px 12px;font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;text-align:left">Modelo</th>
+            <th style="padding:8px 12px;font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;text-align:left">Pedido</th>
             <th style="padding:8px 12px;font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;text-align:left">Ref Polival</th>
             <th style="padding:8px 12px;font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;text-align:left">CP</th>
             <th style="padding:8px 12px;font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;text-align:left">Montaje</th>
