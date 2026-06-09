@@ -116,23 +116,41 @@ function _mostrarNotifSync(cambios) {
   setTimeout(() => { el.style.display = 'none'; }, 4000);
 }
 
+let _syncPeriodicoActivo = false;
 function _iniciarSyncPeriodico() {
+  if (_syncPeriodicoActivo) return;
+  _syncPeriodicoActivo = true;
+  let _syncEnCurso = false;
   setInterval(async () => {
     if (Object.keys(_pendingWrites).length > 0) return;
+    if (_syncEnCurso) return;
+    _syncEnCurso = true;
     try {
       const res = await fetch(`${WORKER_URL}/api/export`);
-      if (!res.ok) return;
+      if (!res.ok) { _syncEnCurso = false; return; }
       const datos = await res.json();
+      if (Object.keys(_pendingWrites).length > 0) { _syncEnCurso = false; return; }
       let cambios = 0;
       Object.entries(datos).forEach(([k,v]) => {
         if (v !== null && _cache[k] !== v) { _cache[k] = v; try { window._localStorage_real.setItem(k,v); } catch(e){} cambios++; }
       });
       if (cambios > 0) _mostrarNotifSync(cambios);
     } catch(e) {}
+    _syncEnCurso = false;
   }, 30000);
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
+  // Forzar sincronización si se cierra la pestaña con datos pendientes
+  window.addEventListener('beforeunload', (e) => {
+    if(Object.keys(_pendingWrites).length>0){
+      clearTimeout(_syncTimer);
+      // navigator.sendBeacon es síncrono y sobrevive al cierre de pestaña
+      const datos = {..._pendingWrites};
+      _pendingWrites = {};
+      navigator.sendBeacon(`${WORKER_URL}/api/set-many`, new Blob([JSON.stringify({data:datos})], {type:'application/json'}));
+    }
+  });
   // Mostrar pantalla de carga si estamos en la nube
   if (_esNube) {
     const loading = document.getElementById('_loading_screen');
@@ -2854,20 +2872,18 @@ function loginMostrarApp(){
   if(navAdmin) navAdmin.style.display=authUsuarioActual.rol==='admin'?'block':'none';
   authAplicarRestricciones();
   authRegistrarAccion('Inicio de sesión');
-  // Si estamos en la nube, recargar datos para asegurar que están actualizados
-  if(typeof _esNube !== 'undefined' && _esNube) {
-    _cargarDesdeLaNube().then(() => {
-      // Actualizar colchPedidos en memoria con los datos frescos de la nube
-      colchPedidos = JSON.parse(localStorage.getItem('colch_pedidos') || '[]');
-      // Refrescar la vista actual
-      const activeItem = document.querySelector('.nav-item.active');
-      if(activeItem) activeItem.click();
-    });
-  }
+  // Actualizar colchPedidos en memoria con los datos del caché (ya cargados al inicio)
+  colchPedidos = JSON.parse(localStorage.getItem('colch_pedidos') || '[]');
 }
 
-function loginCerrarSesion(){
+async function loginCerrarSesion(){
   if(!confirm('¿Cerrar sesión?')) return;
+  // Forzar envío inmediato de cualquier dato pendiente antes de cerrar
+  clearTimeout(_syncTimer);
+  if(Object.keys(_pendingWrites).length>0){
+    _showSyncIndicator('saving');
+    await _flushWrites();
+  }
   authUsuarioActual=null;
   sessionStorage.removeItem('auth_sesion');
   document.getElementById('login-screen').style.display='flex';
