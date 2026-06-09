@@ -6155,6 +6155,63 @@ function furniQuitarDeCarga(pedidoId, cargaId) {
   furniCargasRender();
 }
 
+function furniDescargarCarga(cargaId) {
+  const cargas = JSON.parse(localStorage.getItem('furni_cargas')||'[]');
+  const carga = cargas.find(c => String(c.id) === String(cargaId));
+  if(!carga) return;
+  const pedidos = JSON.parse(localStorage.getItem('furni_pedidos')||'[]');
+  const lineas = carga.pedidos.map(pid => pedidos.find(p => String(p.id) === String(pid))).filter(Boolean);
+
+  // Cabecera igual que el Excel original
+  const headers = ['FECHA','PLATAFORMA','MODELO','REF POLIVAL','PEDIDO','CLIENTE','UD','ENTREGA','OBSERVACIONES','CP'];
+  const rows = [headers, ...lineas.map(p => [
+    p.fecha||'',
+    p.plataforma||'',
+    p.modelo||'',
+    p.refPolival||'',
+    p.pedido||'',
+    p.cliente||'',
+    p.uds||1,
+    p.entrega||'FURNITURE',
+    p.obs||'',
+    p.cp||''
+  ])];
+
+  const wb = XLSX.utils.book_new();
+  const ws = XLSX.utils.aoa_to_sheet(rows);
+
+  // Anchos de columna
+  ws['!cols'] = [
+    {wch:12},{wch:18},{wch:60},{wch:40},{wch:25},{wch:25},{wch:5},{wch:15},{wch:30},{wch:10}
+  ];
+
+  XLSX.utils.book_append_sheet(wb, ws, 'Carga');
+  const nombre = `FURNITURE_${carga.dia}_${carga.fecha.replace(/\//g,'-')}.xlsx`;
+  XLSX.writeFile(wb, nombre);
+}
+
+function furniDescargarAlmacen(cargaId) {
+  const cargas = JSON.parse(localStorage.getItem('furni_cargas')||'[]');
+  const carga = cargas.find(c => String(c.id) === String(cargaId));
+  if(!carga) return;
+  const pedidos = JSON.parse(localStorage.getItem('furni_pedidos')||'[]');
+  const lineas = carga.pedidos.map(pid => pedidos.find(p => String(p.id) === String(pid))).filter(Boolean);
+
+  const headers = ['MODELO','REFERENCIA POLIVAL','PEDIDO'];
+  const rows = [headers, ...lineas.map(p => [
+    p.modelo||'',
+    p.refPolival||'',
+    p.pedido||''
+  ])];
+
+  const wb = XLSX.utils.book_new();
+  const ws = XLSX.utils.aoa_to_sheet(rows);
+  ws['!cols'] = [{wch:60},{wch:40},{wch:25}];
+  XLSX.utils.book_append_sheet(wb, ws, 'Almacén');
+  const nombre = `ALMACEN_FURNITURE_${carga.dia}_${carga.fecha.replace(/\//g,'-')}.xlsx`;
+  XLSX.writeFile(wb, nombre);
+}
+
 function furniCargasRender() {
   const contentEl = document.getElementById('furni-cargas-content');
   if(!contentEl) return;
@@ -6189,6 +6246,8 @@ function furniCargasRender() {
             <div style="font-size:11px;color:#9ca3af">${lineas.length} pedido${lineas.length!==1?'s':''} · ${totalUds} uds · ${esCerrada?'CERRADA':'ABIERTA'}</div>
           </div>
         </div>
+        <button onclick="furniDescargarCarga(${carga.id})" style="padding:6px 14px;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;background:#166534;border:none;color:white"><i class="ti ti-download"></i> Excel Ariadna</button>
+        <button onclick="furniDescargarAlmacen(${carga.id})" style="padding:6px 14px;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;background:#1d4ed8;border:none;color:white"><i class="ti ti-download"></i> Excel almacén</button>
         ${!esCerrada?`<button onclick="furniCerrarCarga(${carga.id})" style="padding:6px 14px;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;background:white;border:1px solid #C4B5FD;color:#7c3aed"><i class="ti ti-lock"></i> Cerrar carga</button>`:''}
       </div>
       <div style="overflow-x:auto">
