@@ -2857,6 +2857,8 @@ function loginMostrarApp(){
   // Si estamos en la nube, recargar datos para asegurar que están actualizados
   if(typeof _esNube !== 'undefined' && _esNube) {
     _cargarDesdeLaNube().then(() => {
+      // Actualizar colchPedidos en memoria con los datos frescos de la nube
+      colchPedidos = JSON.parse(localStorage.getItem('colch_pedidos') || '[]');
       // Refrescar la vista actual
       const activeItem = document.querySelector('.nav-item.active');
       if(activeItem) activeItem.click();
@@ -6704,8 +6706,8 @@ function spsCalcular(){
   const normMed=med=>{const[a,b]=(med||'').split('x');const n=[parseInt(a||0),parseInt(b||0)];n.sort((x,y)=>x-y);return n.join('x');};
   const normTxt=s=>s.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^A-Z0-9]/g,'');
 
-  // Solo pendientes
-  const pendientes=ventas.filter(v=>{const est=estados[String(v.id)]||'PENDIENTE';return est==='PENDIENTE';});
+  // Pendientes y en espera (ambos son realmente pendientes de envío)
+  const pendientes=ventas.filter(v=>{const est=estados[String(v.id)]||'PENDIENTE';return est==='PENDIENTE'||est==='EN ESPERA';});
 
   // Ver cuánto stock recibido hay por modelo+medida
   const stockRecibido=new Map();
@@ -6743,7 +6745,7 @@ function spsCalcular(){
     const key=`${normTxt(v.modelo)}||${normMed(v.medida)}`;
     const disponible=(stockDisponible.get(key)||0)-(consumido.get(key)||0);
     if(disponible>=v.unidades){
-      resultado.push(v);
+      resultado.push({...v, _estado: estados[String(v.id)]||'PENDIENTE'});
       consumido.set(key,(consumido.get(key)||0)+v.unidades);
     }
   });
@@ -6783,12 +6785,19 @@ function spsRender(){
     const agBg=agencia==='FURNITURE'?'#EDE9FE':agencia==='VIENE A RECOGER'?'#D1FAE5':'#EFF6FF';
     const obs=pcGetObs(v.id);
     const espDat=(JSON.parse(localStorage.getItem('colch_ventas_espera')||'{}'))[String(v.id)]||{};
-    return `<div id="sps-card-${v.id}" style="border:1px solid #FDE68A;border-radius:10px;margin-bottom:10px;overflow:hidden;background:#FFFBEB">
-      <div style="background:#FEF3C7;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+    const esEspera=v._estado==='EN ESPERA';
+    const cardBorder=esEspera?'#C4B5FD':'#FDE68A';
+    const cardBg=esEspera?'#FAF5FF':'#FFFBEB';
+    const headerBg=esEspera?'#EDE9FE':'#FEF3C7';
+    const mot={'FECHA':'📅 Fecha programada','CANCELAR':'❌ Posible cancelación','CAMBIO':'🔄 Cambio medida/modelo'}[espDat.motivo]||'';
+    const fechaEsp=espDat.fecha?(' · '+espDat.fecha.split('-').reverse().join('/')):'';
+    const etiquetaEspera=esEspera?`<span style="background:#EDE9FE;color:#7c3aed;font-size:10px;font-weight:700;padding:2px 10px;border-radius:10px">⏸ EN ESPERA${mot?' · '+mot+fechaEsp:''}</span>`:'';
+    return `<div id="sps-card-${v.id}" style="border:1px solid ${cardBorder};border-radius:10px;margin-bottom:10px;overflow:hidden;background:${cardBg}">
+      <div style="background:${headerBg};padding:10px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
         <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-          <span style="background:#F59E0B;color:white;font-size:10px;font-weight:700;padding:2px 10px;border-radius:10px">✓ LISTO PARA SERVIR</span>
+          ${etiquetaEspera}<span style="background:#F59E0B;color:white;font-size:10px;font-weight:700;padding:2px 10px;border-radius:10px">✓ LISTO PARA SERVIR</span>
           <span style="font-weight:700;font-size:13px;color:#3B4A2F">${v.modelo}</span>
-          <span style="font-family:monospace;font-size:12px;color:#6b7280;background:#FDE68A;padding:2px 8px;border-radius:6px">${v.medida}</span>
+          <span style="font-family:monospace;font-size:12px;color:#6b7280;background:${esEspera?'#DDD6FE':'#FDE68A'};padding:2px 8px;border-radius:6px">${v.medida}</span>
           <span class="badge-pend">${v.unidades} ud${v.unidades!==1?'s':''}</span>
           <span style="background:${agBg};color:${agColor};font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px">${agencia}</span>
         </div>
