@@ -79,6 +79,17 @@ const _proxy = new Proxy({}, {
 
 Object.defineProperty(window, 'localStorage', { get: () => _proxy, configurable: true });
 
+
+// ── DATOS INICIALES FURNITURE (cargados el 09/06/2026) ──
+(function() {
+  if(!localStorage.getItem('furni_pedidos') || localStorage.getItem('furni_pedidos') === '[]') {
+    localStorage.setItem('furni_pedidos', "[{\"id\": 1750000000166, \"fecha\": \"03/06/2026\", \"plataforma\": \"BEZEN\", \"modelo\": \"LATEX NATURA N15 H18 135x200 (5UD) + LATEX NATURA N15 H18 105x200 - SOLO TRANSPORTE SERVICIO ENTREGA EXPRESS\", \"refPolival\": \"1012FUR (135X200) + 1013FUR (105X200)\", \"refs\": [{\"codigo\": \"1012FUR\", \"desc\": \"135X200\"}, {\"codigo\": \"1013FUR\", \"desc\": \"105X200\"}], \"pedido\": \"BEZEN11640\", \"cliente\": \"OZEANO STUDIO\", \"uds\": 6, \"entrega\": \"FURNITURE\", \"obs\": \"SOLO TRANSPORTE\", \"cp\": \"31192\", \"importado\": \"09/06/2026\", \"recepcion\": {}, \"colchon\": {\"estado\": \"POLIVAL\"}, \"nota\": \"\", \"subTipo\": \"PENDIENTE_POLIVAL\"}, {\"id\": 1750000001954, \"fecha\": \"01/06/2026\", \"plataforma\": \"CONFORAMA ES\", \"modelo\": \"CANAPE MONACO CEREZO 150X200 1150NW - CON MONTAJE - SE PUEDE MANDAR\", \"refPolival\": \"MC079FUR\", \"refs\": [{\"codigo\": \"MC079FUR\", \"desc\": \"\"}], \"pedido\": \"MP6092615200169889-A\", \"cliente\": \"MARGARITA ROSA\", \"uds\": 1, \"entrega\": \"FURNITURE\", \"obs\": \"CON MONTAJE\", \"cp\": \"7198\", \"importado\": \"09/06/2026\", \"recepcion\": {}, \"colchon\": {\"estado\": \"SIN_COLCHON\"}, \"nota\": \"\", \"subTipo\": \"PENDIENTE_POLIVAL\"}, {\"id\": 1750000003004, \"fecha\": \"03/06/2026\", \"plataforma\": \"CARREFOUR\", \"modelo\": \"CANAPE MONACO CEREZO 150X190 1150NW + COLLOU150X190 + ALMNOR150 - CON MONTAJE - COLCHÓN Y ALMOHADA **\", \"refPolival\": \"MC080FUR + STOCK + STOCK\", \"refs\": [{\"codigo\": \"MC080FUR\", \"desc\": \"\"}, {\"codigo\": \"STOCK\", \"desc\": \"\"}, {\"codigo\": \"STOCK\", \"desc\": \"\"}], \"pedido\": \"75524168-A\", \"cliente\": \"Virginia Otegui Pérez\", \"uds\": 3, \"entrega\": \"FURNITURE\", \"obs\": \"CON MONTAJE\", \"cp\": \"20400\", \"importado\": \"09/06/2026\", \"recepcion\": {}, \"colchon\": {\"estado\": \"DESCONTADO\"}, \"nota\": \"\", \"subTipo\": \"PENDIENTE_POLIVAL\"}, {\"id\": 1750000005997, \"fecha\": \"03/06/2026\", \"plataforma\": \"BEZEN\", \"modelo\": \"COLZSPRING135X190 - SOLO TRANSPORTE - COLCHON **\", \"refPolival\": \"STOCK\", \"refs\": [{\"codigo\": \"STOCK\", \"desc\": \"\"}], \"pedido\": \"BEZEN11669\", \"cliente\": \"Sheila motos Jiménez\", \"uds\": 1, \"entrega\": \"FURNITURE\", \"obs\": \"SOLO TRANSPORTE\", \"cp\": \"37008\", \"importado\": \"09/06/2026\", \"recepcion\": {}, \"colchon\": {\"estado\": \"DESCONTADO\"}, \"nota\": \"\", \"subTipo\": \"PENDIENTE_POLIVAL\"}, {\"id\": 1750000006513, \"fecha\": \"03/06/2026\", \"plataforma\": \"BEZEN\", \"modelo\": \"CANAPE INITIAL DUNA ALPACA BORDE DELUXE 180X200 GEMELOS - CON MONTAJE\", \"refPolival\": \"1015FUR\", \"refs\": [{\"codigo\": \"1015FUR\", \"desc\": \"\"}], \"pedido\": \"BEZEN11672\", \"cliente\": \"Sucemart Serveis i Mediambient SLU\", \"uds\": 1, \"entrega\": \"FURNITURE\", \"obs\": \"CON MONTAJE\", \"cp\": \"46260\", \"importado\": \"09/06/2026\", \"recepcion\": {}, \"colchon\": {\"estado\": \"SIN_COLCHON\"}, \"nota\": \"\", \"subTipo\": \"PENDIENTE_POLIVAL\"}, {\"id\": 1750000007538, \"fecha\": \"03/06/2026\", \"plataforma\": \"BEZEN\", \"modelo\": \"LATEX NATURA N15 H18 150x190 - CON RETIRADA DE COLCHON PARA DESECHAR\", \"refPolival\": \"1016FUR\", \"refs\": [{\"codigo\": \"1016FUR\", \"desc\": \"\"}], \"pedido\": \"BEZEN11674\", \"cliente\": \"Carmen Camino Lertxundi\", \"uds\": 1, \"entrega\": \"FURNITURE\", \"obs\": \"CON RETIRADA DE COLCHON PARA DESECHAR\", \"cp\": \"1010\", \"importado\": \"09/06/2026\", \"recepcion\": {}, \"colchon\": {\"estado\": \"POLIVAL\"}, \"nota\": \"\", \"subTipo\": \"PENDIENTE_POLIVAL\"}, {\"id\": 1750000008767, \"fecha\": \"04/06/2026\", \"plataforma\": \"LEROY\", \"modelo\": \"CANAPE POLIPIEL NEGRO 150X200 - CON MONTAJE\", \"refPolival\": \"1017FUR\", \"refs\": [{\"codigo\": \"1017FUR\", \"desc\": \"\"}], \"pedido\": \"002-26154L36450-A\", \"cliente\": \"JULIÁN ALBURQUERQUE SANTOS\", \"uds\": 1, \"entrega\": \"FURNITURE\", \"obs\": \"CON MONTAJE\", \"cp\": \"1230\", \"importado\": \"09/06/2026\", \"recepcion\": {}, \"colchon\": {\"estado\": \"SIN_COLCHON\"}, \"nota\": \"\", \"subTipo\": \"PENDIENTE_POLIVAL\"}, {\"id\": 1750000009515, \"fecha\": \"04/06/2026\", \"plataforma\": \"LEROY\", \"modelo\": \"CANAPE TELA BEIGE 150X190 - CON MONTAJE - DISTANCIA +50KM\", \"refPolival\": \"1018FUR\", \"refs\": [{\"codigo\": \"1018FUR\", \"desc\": \"\"}], \"pedido\": \"002-26155L16488-A\", \"cliente\": \"OLIVER FOX\", \"uds\": 1, \"entrega\": \"FURNITURE\", \"obs\": \"CON MONTAJE\", \"cp\": \"3193\", \"importado\": \"09/06/2026\", \"recepcion\": {}, \"colchon\": {\"estado\": \"SIN_COLCHON\"}, \"nota\": \"\", \"subTipo\": \"PENDIENTE_POLIVAL\"}, {\"id\": 1750000010839, \"fecha\": \"04/06/2026\", \"plataforma\": \"GROUPON\", \"modelo\": \"BASE NEGRA 90X200 - SIN MONTAJE\", \"refPolival\": \"1019FUR\", \"refs\": [{\"codigo\": \"1019FUR\", \"desc\": \"\"}], \"pedido\": \"1181997376\", \"cliente\": \"IMANE DAROUICHE MHIL\", \"uds\": 1, \"entrega\": \"FURNITURE\", \"obs\": \"SIN MONTAJE\", \"cp\": \"8140\", \"importado\": \"09/06/2026\", \"recepcion\": {}, \"colchon\": {\"estado\": \"SIN_COLCHON\"}, \"nota\": \"\", \"subTipo\": \"PENDIENTE_POLIVAL\"}, {\"id\": 1750000011706, \"fecha\": \"04/06/2026\", \"plataforma\": \"GROUPON\", \"modelo\": \"BASE BLANCA 150X190 - SIN MONTAJE\", \"refPolival\": \"1020FUR\", \"refs\": [{\"codigo\": \"1020FUR\", \"desc\": \"\"}], \"pedido\": \"1181997926\", \"cliente\": \"JAVIER SOTO MARCHAL\", \"uds\": 1, \"entrega\": \"FURNITURE\", \"obs\": \"SIN MONTAJE\", \"cp\": \"21400\", \"importado\": \"09/06/2026\", \"recepcion\": {}, \"colchon\": {\"estado\": \"SIN_COLCHON\"}, \"nota\": \"\", \"subTipo\": \"PENDIENTE_POLIVAL\"}, {\"id\": 1750000012082, \"fecha\": \"04/06/2026\", \"plataforma\": \"BEZEN\", \"modelo\": \"CANAPE TELA BEIGE 135X180 + COLPARIS135X180 - CON MONTAJE  -COLCHON PEDIDO PARA VENIR - LO QUIERE JUNTO\", \"refPolival\": \"1021FUR + PEDIDO\", \"refs\": [{\"codigo\": \"1021FUR\", \"desc\": \"\"}, {\"codigo\": \"PEDIDO\", \"desc\": \"\"}], \"pedido\": \"BEZEN11675\", \"cliente\": \"Virginia Izuzquiza\", \"uds\": 2, \"entrega\": \"FURNITURE\", \"obs\": \"CON MONTAJE\", \"cp\": \"20280\", \"importado\": \"09/06/2026\", \"recepcion\": {}, \"colchon\": {\"estado\": \"PENDIENTE_RECIBIR\"}, \"nota\": \"\", \"subTipo\": \"PENDIENTE_POLIVAL\"}, {\"id\": 1750000013615, \"fecha\": \"04/06/2026\", \"plataforma\": \"VENTAS PARTICULARES\", \"modelo\": \"CANMONGRIS150X190 1150NW + COLZNIR150X190 - CON MONTAJE\", \"refPolival\": \"MG046FUR + STOCK\", \"refs\": [{\"codigo\": \"MG046FUR\", \"desc\": \"\"}, {\"codigo\": \"STOCK\", \"desc\": \"\"}], \"pedido\": \"PART10210\", \"cliente\": \"Isabel María Ramírez Rincón\", \"uds\": 2, \"entrega\": \"FURNITURE\", \"obs\": \"CON MONTAJE\", \"cp\": \"41807\", \"importado\": \"09/06/2026\", \"recepcion\": {}, \"colchon\": {\"estado\": \"PENDIENTE_CONFIRMAR\"}, \"nota\": \"\", \"subTipo\": \"PENDIENTE_POLIVAL\"}, {\"id\": 1750000014146, \"fecha\": \"05/06/2026\", \"plataforma\": \"BEZEN\", \"modelo\": \"CANAPE TELA ROSA 105X190 + CABECERO ATENEA 105X190 + CANAPE POLIPIEL BLANCO 150X200\", \"refPolival\": \"1022FUR (CANAPE 105) + 1023FUR (CABECERO) + 1024FUR (150)\", \"refs\": [{\"codigo\": \"1022FUR\", \"desc\": \"CANAPE 105\"}, {\"codigo\": \"1023FUR\", \"desc\": \"CABECERO\"}, {\"codigo\": \"1024FUR\", \"desc\": \"150\"}], \"pedido\": \"BEZEN11679\", \"cliente\": \"Ángela María Ramos Nieto\", \"uds\": 3, \"entrega\": \"FURNITURE\", \"obs\": \"CON MONTAJE\", \"cp\": \"41500\", \"importado\": \"09/06/2026\", \"recepcion\": {}, \"colchon\": {\"estado\": \"SIN_COLCHON\"}, \"nota\": \"\", \"subTipo\": \"PENDIENTE_POLIVAL\"}, {\"id\": 1750000015559, \"fecha\": \"05/06/2026\", \"plataforma\": \"BEZEN\", \"modelo\": \"CANAPÉ TELA GRIS NIEBLA 150x190 + CABECERO IRIS 150X190 + CANAPE TELA DUNA ALPACA 150X190 + CABECERO ATENEA 160X190 PARTIDO - CON MONTAJE - DISTANCIA +50KM\", \"refPolival\": \"1025FUR(CANAPE 150) + 1026FUR (CABECERO 150) + 1027FUR (CANEPE 160) + 1028FUR (CABECERO 160)\", \"refs\": [{\"codigo\": \"1025FUR\", \"desc\": \"CANAPE 150\"}, {\"codigo\": \"1026FUR\", \"desc\": \"CABECERO 150\"}, {\"codigo\": \"1027FUR\", \"desc\": \"CANEPE 160\"}, {\"codigo\": \"1028FUR\", \"desc\": \"CABECERO 160\"}], \"pedido\": \"BEZEN116762\", \"cliente\": \"Florian Raicu\", \"uds\": 4, \"entrega\": \"FURNITURE\", \"obs\": \"CON MONTAJE\", \"cp\": \"3590\", \"importado\": \"09/06/2026\", \"recepcion\": {}, \"colchon\": {\"estado\": \"SIN_COLCHON\"}, \"nota\": \"\", \"subTipo\": \"PENDIENTE_POLIVAL\"}, {\"id\": 1750000016766, \"fecha\": \"05/06/2026\", \"plataforma\": \"BEZEN\", \"modelo\": \"CANAPE TELA DUNA ALPACA 160X200 PARTIDO 1150NW + CABECERO ATENEA 160X200 + COLZNIR 160X200 - CON MONTAJE, LO QUIERE JUNTO COLCHÓN **\", \"refPolival\": \"1029FUR (CANAPE) + 1030FUR (CABECERO) + STOCK\", \"refs\": [{\"codigo\": \"1029FUR\", \"desc\": \"CANAPE\"}, {\"codigo\": \"1030FUR\", \"desc\": \"CABECERO\"}, {\"codigo\": \"STOCK\", \"desc\": \"\"}], \"pedido\": \"BEZEN11677\", \"cliente\": \"Angel Castellano Delgado\", \"uds\": 3, \"entrega\": \"FURNITURE\", \"obs\": \"CON MONTAJE\", \"cp\": \"41300\", \"importado\": \"09/06/2026\", \"recepcion\": {}, \"colchon\": {\"estado\": \"DESCONTADO\"}, \"nota\": \"\", \"subTipo\": \"PENDIENTE_POLIVAL\"}]");
+  }
+  if(!localStorage.getItem('furni_otros') || localStorage.getItem('furni_otros') === '[]') {
+    localStorage.setItem('furni_otros', "[{\"id\": 1750000002084, \"fecha\": \"03/06/2026\", \"plataforma\": \"STOCK\", \"modelo\": \"ALMNOR150 - PEDIR A STOCK\", \"refPolival\": \"STOCK\", \"refs\": [{\"codigo\": \"STOCK\", \"desc\": \"\"}], \"pedido\": \"PEDIR A STOCK\", \"cliente\": \"\", \"uds\": 1, \"entrega\": \"\", \"obs\": \"\", \"cp\": \"\", \"importado\": \"09/06/2026\", \"recepcion\": {}, \"colchon\": {\"estado\": \"SIN_COLCHON\"}, \"nota\": \"\", \"subTipo\": \"SIN_ASIGNACION\", \"estadoOtros\": \"SIN_ASIGNACION\"}, {\"id\": 1750000004536, \"fecha\": \"03/06/2026\", \"plataforma\": \"BEZEN\", \"modelo\": \"PROBRU150X190 - SOLO TRANSPORTE\", \"refPolival\": \"1014\", \"refs\": [{\"codigo\": \"1014\", \"desc\": \"\"}], \"pedido\": \"BEZEN11667\", \"cliente\": \"Sonia Guti\u00e9rrez\", \"uds\": 1, \"entrega\": \"SEUR\", \"obs\": \"SOLO TRANSPORTE\", \"cp\": \"8970\", \"importado\": \"09/06/2026\", \"recepcion\": {}, \"colchon\": {\"estado\": \"SIN_COLCHON\"}, \"nota\": \"\", \"subTipo\": \"PENDIENTE_ENTREGA\", \"estadoOtros\": \"PENDIENTE_ENTREGA\"}]");
+  }
+})();
+
 async function _cargarDesdeLaNube() {
   // Solo cargar desde la nube si estamos en la URL de Cloudflare
   if (!_esNube) {
@@ -386,6 +397,17 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
         <div class="nav-subsection-body" id="sub-nacex">
           <div class="nav-item" onclick="showPage('nacex',this)"><i class="ti ti-truck-delivery"></i> Solicitud envíos</div>
           <div class="nav-item" onclick="showPage('nacex-export',this)"><i class="ti ti-file-download"></i> Exportar listado envíos</div>
+        </div>
+
+        <!-- FURNITURE -->
+        <div class="nav-subsection-header" onclick="navToggle('sub-furniture',this)">
+          <span>FURNITURE</span>
+          <i class="ti ti-chevron-down chevron"></i>
+        </div>
+        <div class="nav-subsection-body" id="sub-furniture">
+          <div class="nav-item" onclick="showPage('furniture-pedidos',this)"><i class="ti ti-armchair"></i> Pedidos Furniture</div>
+          <div class="nav-item" onclick="showPage('furniture-cargas',this)"><i class="ti ti-truck"></i> Cargas</div>
+          <div class="nav-item" onclick="showPage('furniture-otros',this)"><i class="ti ti-package"></i> Otros tapicería</div>
         </div>
 
       </div>
@@ -1952,6 +1974,93 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
       </div>
     </div>
 
+
+    <!-- FURNITURE: PEDIDOS -->
+    <!-- FURNITURE: PEDIDOS -->
+    <div class="page" id="page-furniture-pedidos" style="margin:-28px -32px;padding:28px 32px;max-width:none;width:calc(100% + 64px)">
+      <div class="page-header">
+        <h2>FURNITURE · Pedidos tapicería</h2>
+        <p>Gestiona la recepción de mercancía de Polival y las cargas semanales.</p>
+      </div>
+      <div class="card" style="margin-bottom:16px">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:12px">
+          <div style="font-size:13px;font-weight:600;color:#3B4A2F"><i class="ti ti-upload" style="margin-right:6px"></i>Importar Excel cuaderno tapicería</div>
+          <div style="display:flex;gap:8px">
+            <button onclick="furniImportar()" style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;background:#7c3aed;border:none;color:white"><i class="ti ti-file-spreadsheet"></i> Subir Excel</button>
+            <button onclick="furniLimpiarTodo()" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;background:white;border:1px solid #d1d5db;color:#6b7280"><i class="ti ti-trash"></i> Limpiar todo</button>
+          </div>
+        </div>
+        <input type="file" id="furni-file-input" accept=".xlsx,.xls" style="display:none" onchange="furniProcesarExcel(event)">
+        <div id="furni-import-status"></div>
+      </div>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px">
+        <div id="furni-stats" style="display:flex;gap:10px;flex-wrap:wrap"></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+          <input type="text" id="furni-filtro" placeholder="Buscar cliente, modelo, ref..." oninput="furniRender()" style="padding:7px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:12px;width:220px;outline:none" onfocus="this.style.borderColor='#7c3aed'" onblur="this.style.borderColor='#d1d5db'">
+          <select id="furni-filtro-estado" onchange="furniRender()" style="padding:7px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:12px;outline:none">
+            <option value="TODOS" selected>Todos</option>
+            <option value="LISTO">Listo para cargar</option>
+            <option value="PARCIAL">Recepción parcial</option>
+            <option value="PENDIENTE_POLIVAL">Pendiente recepción</option>
+            <option value="ESPERA_CLIENTE">En espera cliente</option>
+            <option value="EN_CARGA">En carga</option>
+            <option value="ENTREGADO">Entregados</option>
+            <option value="CANCELADO">Cancelados</option>
+          </select>
+        </div>
+      </div>
+      <div id="furni-content"></div>
+    </div>
+
+    <!-- FURNITURE: CARGAS -->
+    <div class="page" id="page-furniture-cargas" style="margin:-28px -32px;padding:28px 32px;max-width:none;width:calc(100% + 64px)">
+      <div class="page-header">
+        <h2>FURNITURE · Cargas</h2>
+        <p>Cargas de miércoles y viernes. Agrupa los pedidos listos y genera el listado para Furniture.</p>
+      </div>
+      <div class="card" style="margin-bottom:16px">
+        <div style="font-size:13px;font-weight:600;color:#3B4A2F;margin-bottom:12px"><i class="ti ti-plus" style="margin-right:6px"></i>Nueva carga</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end">
+          <div>
+            <div class="section-label" style="margin-top:0">Fecha de carga</div>
+            <input type="date" id="furni-carga-fecha" style="padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none" onfocus="this.style.borderColor='#7c3aed'" onblur="this.style.borderColor='#d1d5db'">
+          </div>
+          <div>
+            <div class="section-label" style="margin-top:0">Día</div>
+            <select id="furni-carga-dia" style="padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none">
+              <option value="MIÉRCOLES">Miércoles</option>
+              <option value="VIERNES">Viernes</option>
+            </select>
+          </div>
+          <button onclick="furniCrearCarga()" style="display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;background:#7c3aed;border:none;color:white"><i class="ti ti-truck"></i> Crear carga</button>
+        </div>
+      </div>
+      <div id="furni-cargas-content"></div>
+    </div>
+
+    <!-- FURNITURE: OTROS TAPICERÍA -->
+    <div class="page" id="page-furniture-otros">
+      <div class="page-header">
+        <h2>OTROS TAPICERÍA · Pendientes</h2>
+        <p>Almohadas, protectores, toppers sueltos y pedidos de stock. Pueden salir por SEUR.</p>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:12px">
+        <div id="furni-otros-stats" style="display:flex;gap:10px;flex-wrap:wrap"></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+          <input type="text" id="furni-otros-filtro" placeholder="Buscar..." oninput="furniOtrosRender()" style="padding:7px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:12px;width:220px;outline:none" onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
+          <select id="furni-otros-filtro-estado" onchange="furniOtrosRender()" style="padding:7px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:12px;outline:none">
+            <option value="TODOS">Todos</option>
+            <option value="PENDIENTE_ENTREGA">Pendiente entrega</option>
+            <option value="SIN_ASIGNACION">Sin asignación (stock)</option>
+            <option value="ENTREGADO">Entregados</option>
+          </select>
+          <button onclick="furniLimpiar('otros')" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;background:white;border:1px solid #d1d5db;color:#6b7280"><i class="ti ti-trash"></i> Limpiar</button>
+        </div>
+      </div>
+      <div id="furni-otros-content"></div>
+    </div>
+
     <!-- GESTOR CONTRASEÑAS -->
     <!-- ADMIN: USUARIOS Y PERMISOS -->
     <div class="page" id="page-admin-usuarios">
@@ -3474,6 +3583,17 @@ function procesarExcel(data){
   }
   if(pinkRow===-1){pinkRow=Math.max(rows.length-30,1);}
   showStatus(`✓ Separador encontrado en fila ${pinkRow+1}. Procesando ${rows.length-pinkRow-1} pedidos pendientes.`,'info');
+
+  // Guardar filas originales en FURNITURE/OTROS automáticamente
+  const hdr=rows[0]||[];
+  const idxCol={fecha:0,plataforma:1,modelo:2,refPolival:3,pedido:4,cliente:5,uds:6,entrega:7,obs:8,cp:9};
+  const filasOriginales=rows.slice(pinkRow+1).filter(row=>{
+    const modelo=String(row[idxCol.modelo]||'').trim();
+    const ref=String(row[idxCol.refPolival]||'').trim();
+    return modelo&&ref&&ref!=='nan'&&!modelo.toLowerCase().startsWith('dejar')&&!modelo.toLowerCase().startsWith('significa');
+  });
+  furniGuardarDesdePolival(filasOriginales, idxCol);
+
   const resultado=[];
   rows.slice(pinkRow+1).forEach(row=>{
     const modelo=String(row[2]||'').trim(),ref=String(row[3]||'').trim(),plataforma=String(row[1]||'').trim();
@@ -3597,6 +3717,9 @@ function showPage(id,el){
   if(id==='seur-tabla'){tablaRender();}
   if(id==='admin-usuarios') adminRenderUsuarios();
   if(id==='admin-log') adminRenderLog();
+  if(id==='furniture-pedidos'){furniRender();}
+  if(id==='furniture-cargas'){furniCargasRender();}
+  if(id==='furniture-otros'){furniOtrosRender();}
 }
 
 document.getElementById('fileInput').addEventListener('change',e=>{
@@ -5484,6 +5607,599 @@ function histRender(){
     </div>`;
   }).join('');
 }
+
+
+// ─── FURNITURE · TAPICERÍA ───────────────────────────────────
+
+const FURNI_TAPIZ = ['CANAPÉ','CANAPE','BASE TAPIZADA','BASE NEGRA','BASE BLANCA','BASE BEIGE','CABECERO'];
+const FURNI_COLCHON_KW = ['COLZ','COLNAT','COLPARIS','COLGEZ','COLMUR','COLZNAT','COLZMAN','COLCARB','COLLOU','COLZNIR','COLPHARS','LATEX','NATPRE','COLFITS','COLFIT'];
+const FURNI_COMP_KW = ['ALMNOR','ALMANT','ALMSEA','ALMZEN','PROPOL','TOPPERV5','PROANT','PROBRU','PROSEN'];
+
+function furniEsTapiceria(m) {
+  return FURNI_TAPIZ.some(k => m.includes(k));
+}
+function furniTieneColchon(m) {
+  return FURNI_COLCHON_KW.some(k => m.includes(k));
+}
+function furniEsSoloComplemento(m) {
+  return !furniEsTapiceria(m) && !furniTieneColchon(m) && FURNI_COMP_KW.some(k => m.includes(k));
+}
+
+function furniClasificarFila(fila) {
+  const m = (fila.modelo||'').toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  const plat = (fila.plataforma||'').toUpperCase();
+  // STOCK sin asignación → OTROS (especial: sin venta)
+  if(plat === 'STOCK') return {tipo:'otros', subTipo:'STOCK_SIN_VENTA'};
+  // Solo complementos sueltos (sin tapicería, sin colchón) → OTROS
+  if(furniEsSoloComplemento(m) && !furniEsTapiceria(m) && !furniTieneColchon(m)) return {tipo:'otros', subTipo:'PENDIENTE_ENTREGA'};
+  // Todo lo demás (tapicería, colchón solo, colchón+complementos) → FURNITURE
+  return {tipo:'furniture', subTipo:'PENDIENTE_POLIVAL'};
+}
+
+function furniParsearRefs(refPolival) {
+  if(!refPolival || refPolival.trim() === '') return [];
+  return refPolival.split(/[+]/).map(parte => {
+    parte = parte.trim();
+    const match = parte.match(/^([^(]+?)\s*(\(([^)]+)\))?\s*$/);
+    if(match) return { codigo: match[1].trim(), desc: match[3]||'' };
+    return { codigo: parte, desc: '' };
+  }).filter(r => r.codigo && r.codigo !== '');
+}
+
+function furniDetectarColchon(modelo) {
+  const m = (modelo||'').toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  const tieneColchon = furniTieneColchon(m);
+  if(!tieneColchon) return {estado:'SIN_COLCHON'};
+  if(m.includes('**')) return {estado:'DESCONTADO'};
+  if(m.includes('PEDIDO PARA VENIR') || m.includes('PEDIDO A VENIR')) return {estado:'PENDIENTE_RECIBIR'};
+  return {estado:'PENDIENTE_CONFIRMAR'};
+}
+
+// ── GUARDAR DESDE POLIVAL ──────────────────────────────────
+
+function furniGuardarDesdePolival(filas, idxCol) {
+  let furniture = JSON.parse(localStorage.getItem('furni_pedidos')||'[]');
+  let otros = JSON.parse(localStorage.getItem('furni_otros')||'[]');
+  let addFurni=0, addOtros=0;
+
+  filas.forEach(row => {
+    const modelo     = String(row[idxCol.modelo]   ||'').trim();
+    const plataforma = String(row[idxCol.plataforma]||'').trim();
+    const refPolival = String(row[idxCol.refPolival]||'').trim();
+    const pedido     = String(row[idxCol.pedido]    ||'').trim();
+    const cliente    = String(row[idxCol.cliente]   ||'').trim();
+    const uds        = parseInt(row[idxCol.uds]||1)||1;
+    const entrega    = String(row[idxCol.entrega]   ||'').trim();
+    const obs        = String(row[idxCol.obs]       ||'').trim();
+    const cp         = String(row[idxCol.cp]        ||'').trim();
+
+    let fecha = '';
+    const fechaRaw = row[idxCol.fecha]||'';
+    if(typeof fechaRaw === 'number' && fechaRaw > 40000) {
+      const d = new Date(Math.round((fechaRaw - 25569)*86400*1000));
+      fecha = d.toLocaleDateString('es-ES');
+    } else { fecha = String(fechaRaw).trim(); }
+
+    const refs = furniParsearRefs(refPolival);
+    const colchonInfo = furniDetectarColchon(modelo);
+    const fila = { id: Date.now()+Math.random(), fecha, plataforma, modelo, refPolival, refs, pedido, cliente, uds, entrega, obs, cp, importado: new Date().toLocaleDateString('es-ES'), recepcion: {}, colchon: colchonInfo, nota: '' };
+    const {tipo, subTipo} = furniClasificarFila(fila);
+    fila.subTipo = subTipo;
+    const clave = (refPolival+'||'+modelo).toLowerCase();
+
+    if(tipo === 'furniture') {
+      if(!furniture.some(x => (x.refPolival+'||'+x.modelo).toLowerCase() === clave)) { furniture.push(fila); addFurni++; }
+    } else {
+      fila.estadoOtros = subTipo === 'STOCK_SIN_VENTA' ? 'SIN_ASIGNACION' : 'PENDIENTE_ENTREGA';
+      if(!otros.some(x => (x.refPolival+'||'+x.modelo).toLowerCase() === clave)) { otros.push(fila); addOtros++; }
+    }
+  });
+
+  localStorage.setItem('furni_pedidos', JSON.stringify(furniture));
+  localStorage.setItem('furni_otros', JSON.stringify(otros));
+  if(addFurni+addOtros > 0) showStatus(`✓ Guardado automático: ${addFurni} líneas FURNITURE · ${addOtros} OTROS TAPICERÍA`, 'success');
+}
+
+// ── IMPORTAR EXCEL DIRECTO EN FURNITURE ───────────────────
+
+function furniImportar() { document.getElementById('furni-file-input').click(); }
+
+function furniProcesarExcel(event) {
+  const file = event.target.files[0];
+  if(!file) return;
+  const statusEl = document.getElementById('furni-import-status');
+  statusEl.innerHTML = '<div class="status-box" style="background:#EFF6FF;border-color:#bfdbfe;color:#1e40af">Leyendo Excel...</div>';
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const wb = XLSX.read(ev.target.result, {type:'binary', cellDates:true});
+      const sheetName = wb.SheetNames.find(n => n.toUpperCase().includes('ACTUAL'))||wb.SheetNames[0];
+      const ws = wb.Sheets[sheetName];
+      const rows = XLSX.utils.sheet_to_json(ws, {defval:'', header:1});
+      // Detectar cabecera
+      const hdr = rows[0]||[];
+      const idxCol = {fecha:0,plataforma:1,modelo:2,refPolival:3,pedido:4,cliente:5,uds:6,entrega:7,obs:8,cp:9};
+      const filas = rows.slice(1).filter(row => {
+        const m = String(row[idxCol.modelo]||'').trim();
+        const r = String(row[idxCol.refPolival]||'').trim();
+        return m && r && m !== 'MODELO';
+      });
+      furniGuardarDesdePolival(filas, idxCol);
+      const furniture = JSON.parse(localStorage.getItem('furni_pedidos')||'[]');
+      const otros = JSON.parse(localStorage.getItem('furni_otros')||'[]');
+      statusEl.innerHTML = `<div class="status-box" style="background:#F0FDF4;border-color:#86efac;color:#166534">✓ Total: ${furniture.length} en FURNITURE · ${otros.length} en OTROS TAPICERÍA</div>`;
+      furniRender();
+      event.target.value = '';
+    } catch(e) {
+      statusEl.innerHTML = `<div class="status-box status-error">Error: ${e.message}</div>`;
+    }
+  };
+  reader.readAsBinaryString(file);
+}
+
+// ── ESTADO DE UN PEDIDO FURNITURE ─────────────────────────
+
+function furniGetEstado(pedido) {
+  const estados = JSON.parse(localStorage.getItem('furni_estados')||'{}');
+  const est = estados[String(pedido.id)];
+  if(est === 'ENTREGADO') return 'ENTREGADO';
+  if(est === 'EN_CARGA')  return 'EN_CARGA';
+  if(est === 'ESPERA_CLIENTE') return 'ESPERA_CLIENTE';
+  if(est === 'CANCELADO') return 'CANCELADO';
+  if(est === 'LISTO')     return 'LISTO';
+
+  const refs = (pedido.refs||[]).filter(r => r.codigo && r.codigo !== 'STOCK' && r.codigo !== 'PEDIDO');
+  const rec = pedido.recepcion||{};
+  const colchon = (pedido.colchon||{}).estado;
+  const tieneTapiz = furniEsTapiceria((pedido.modelo||'').toUpperCase().normalize('NFD').replace(/[̀-ͯ]/g,''));
+
+  // Sin tapicería + colchón descontado → LISTO directamente
+  if(!tieneTapiz && colchon === 'DESCONTADO') return 'LISTO';
+
+  // Sin refs de Polival válidas
+  if(!refs.length) {
+    if(colchon === 'DESCONTADO') return 'LISTO';
+    return 'PENDIENTE_POLIVAL';
+  }
+
+  const todasRecibidas = refs.every(r => rec[r.codigo]);
+  if(todasRecibidas) return 'LISTO';
+  if(refs.some(r => rec[r.codigo])) return 'PARCIAL';
+  return 'PENDIENTE_POLIVAL';
+}
+
+function furniToggleRef(pedidoId, codigoRef) {
+  let furniture = JSON.parse(localStorage.getItem('furni_pedidos')||'[]');
+  const idx = furniture.findIndex(x => String(x.id) === String(pedidoId));
+  if(idx === -1) return;
+  if(!furniture[idx].recepcion) furniture[idx].recepcion = {};
+  furniture[idx].recepcion[codigoRef] = !furniture[idx].recepcion[codigoRef];
+  localStorage.setItem('furni_pedidos', JSON.stringify(furniture));
+  furniRender();
+}
+
+function furniSetEstado(pedidoId, nuevoEstado) {
+  const estados = JSON.parse(localStorage.getItem('furni_estados')||'{}');
+  if(nuevoEstado === 'AUTO') { delete estados[String(pedidoId)]; }
+  else { estados[String(pedidoId)] = nuevoEstado; }
+  localStorage.setItem('furni_estados', JSON.stringify(estados));
+  furniRender();
+  furniCargasRender();
+}
+
+function furniGuardarNota(pedidoId, nota) {
+  let furniture = JSON.parse(localStorage.getItem('furni_pedidos')||'[]');
+  const idx = furniture.findIndex(x => String(x.id) === String(pedidoId));
+  if(idx === -1) return;
+  furniture[idx].nota = nota;
+  localStorage.setItem('furni_pedidos', JSON.stringify(furniture));
+}
+
+function furniLimpiar(tipo) {
+  if(!confirm('¿Eliminar todos los registros?')) return;
+  if(tipo === 'otros') { localStorage.removeItem('furni_otros'); furniOtrosRender(); }
+}
+
+function furniLimpiarTodo() {
+  if(!confirm('¿Eliminar todos los pedidos Furniture importados?')) return;
+  localStorage.removeItem('furni_pedidos');
+  localStorage.removeItem('furni_estados');
+  furniRender();
+}
+
+// ── RENDER PRINCIPAL FURNITURE ─────────────────────────────
+
+function furniRender() {
+  const todos = JSON.parse(localStorage.getItem('furni_pedidos')||'[]');
+  const filtroEst = document.getElementById('furni-filtro-estado')?.value||'TODOS';
+  const q = ((document.getElementById('furni-filtro')?.value)||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  const norm = s => (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+
+  // Stats
+  const counts = {PENDIENTE_POLIVAL:0,PARCIAL:0,LISTO:0,ESPERA_CLIENTE:0,EN_CARGA:0,ENTREGADO:0,CANCELADO:0};
+  todos.forEach(x => { const e = furniGetEstado(x); counts[e] = (counts[e]||0)+1; });
+
+  const statsEl = document.getElementById('furni-stats');
+  const furniStatClick = v => { const sel=document.getElementById('furni-filtro-estado'); if(sel){sel.value=v;} furniRender(); };
+  if(statsEl) statsEl.innerHTML = `
+    <div class="stat-card" style="border-left:3px solid #ef4444;cursor:pointer" onclick="furniStatClick('PENDIENTE_POLIVAL')"><div class="label">Pte. Polival</div><div class="value" style="color:#991b1b">${counts.PENDIENTE_POLIVAL}</div></div>
+    <div class="stat-card" style="border-left:3px solid #f59e0b;cursor:pointer" onclick="furniStatClick('PARCIAL')"><div class="label">Parcial</div><div class="value" style="color:#92400e">${counts.PARCIAL}</div></div>
+    <div class="stat-card" style="border-left:3px solid #16A34A;cursor:pointer" onclick="furniStatClick('LISTO')"><div class="label">Listo</div><div class="value" style="color:#065F46">${counts.LISTO}</div></div>
+    <div class="stat-card" style="border-left:3px solid #6b7280;cursor:pointer" onclick="furniStatClick('ESPERA_CLIENTE')"><div class="label">Espera cliente</div><div class="value" style="color:#374151">${counts.ESPERA_CLIENTE}</div></div>
+    <div class="stat-card" style="border-left:3px solid #1d4ed8;cursor:pointer" onclick="furniStatClick('EN_CARGA')"><div class="label">En carga</div><div class="value" style="color:#1d4ed8">${counts.EN_CARGA}</div></div>
+    <div class="stat-card" style="border-left:3px solid #16A34A;cursor:pointer" onclick="furniStatClick('ENTREGADO')"><div class="label">Entregados</div><div class="value" style="color:#065F46">${counts.ENTREGADO}</div></div>
+    <div class="stat-card" style="border-left:3px solid #9ca3af;cursor:pointer" onclick="furniStatClick('CANCELADO')"><div class="label">Cancelados</div><div class="value" style="color:#6b7280">${counts.CANCELADO}</div></div>
+    <div class="stat-card" style="border-left:3px solid #3B4A2F;cursor:pointer" onclick="furniStatClick('TODOS')"><div class="label">Todos</div><div class="value" style="color:#3B4A2F">${todos.length}</div></div>`;
+
+  const ordenEstado = {LISTO:0, PARCIAL:1, PENDIENTE_POLIVAL:2, ESPERA_CLIENTE:3, EN_CARGA:4, ENTREGADO:5, CANCELADO:6};
+  let lista = [...todos].sort((a,b) => (ordenEstado[furniGetEstado(a)]||9) - (ordenEstado[furniGetEstado(b)]||9));
+  if(filtroEst !== 'TODOS') lista = lista.filter(x => furniGetEstado(x) === filtroEst);
+  if(q) lista = lista.filter(x => norm(x.cliente).includes(q)||norm(x.modelo).includes(q)||norm(x.refPolival).includes(q)||norm(x.pedido).includes(q));
+
+  const contentEl = document.getElementById('furni-content');
+  if(!contentEl) return;
+  if(!lista.length) { contentEl.innerHTML = '<div class="empty-state"><i class="ti ti-armchair"></i><p>No hay pedidos en este estado.</p></div>'; return; }
+
+  // Buscar en pedidos clientes para colchones con FUR
+  const ventasColchon = JSON.parse(localStorage.getItem('colch_ventas')||'[]');
+  const estadosColchon = JSON.parse(localStorage.getItem('colch_ventas_estado')||'{}');
+
+  contentEl.innerHTML = lista.map(x => {
+    const est = furniGetEstado(x);
+    const rec = x.recepcion||{};
+    const refs = (x.refs||[]).filter(r => r.codigo && r.codigo !== 'STOCK' && r.codigo !== 'PEDIDO');
+    const colchon = x.colchon||{};
+
+    // Config visual por estado
+    const cfg = {
+      PENDIENTE_POLIVAL: {border:'#fca5a5',bg:'#FFF5F5',hbg:'#FEE2E2',badge:`<span style="background:#FEE2E2;color:#991b1b;font-size:10px;font-weight:700;padding:2px 10px;border-radius:10px">⏳ PENDIENTE POLIVAL</span>`},
+      PARCIAL:           {border:'#fcd34d',bg:'#FFFBEB',hbg:'#FEF3C7',badge:`<span style="background:#FEF3C7;color:#92400e;font-size:10px;font-weight:700;padding:2px 10px;border-radius:10px">📦 RECEPCIÓN PARCIAL</span>`},
+      LISTO:             {border:'#86efac',bg:'#F0FDF4',hbg:'#DCFCE7',badge:`<span style="background:#DCFCE7;color:#065F46;font-size:10px;font-weight:700;padding:2px 10px;border-radius:10px">✓ LISTO PARA CARGAR</span>`},
+      ESPERA_CLIENTE:    {border:'#d1d5db',bg:'#F9FAFB',hbg:'#F3F4F6',badge:`<span style="background:#F3F4F6;color:#374151;font-size:10px;font-weight:700;padding:2px 10px;border-radius:10px">⏸ ESPERA CLIENTE</span>`},
+      EN_CARGA:          {border:'#93c5fd',bg:'#EFF6FF',hbg:'#DBEAFE',badge:`<span style="background:#DBEAFE;color:#1d4ed8;font-size:10px;font-weight:700;padding:2px 10px;border-radius:10px">🚛 EN CARGA</span>`},
+      ENTREGADO:         {border:'#86efac',bg:'#F0FDF4',hbg:'#DCFCE7',badge:`<span style="background:#DCFCE7;color:#065F46;font-size:10px;font-weight:700;padding:2px 10px;border-radius:10px">✓ ENTREGADO</span>`},
+      CANCELADO:         {border:'#e5e7eb',bg:'#F9FAFB',hbg:'#F3F4F6',badge:`<span style="background:#F3F4F6;color:#9ca3af;font-size:10px;font-weight:700;padding:2px 10px;border-radius:10px">✕ CANCELADO</span>`},
+    };
+    const c = cfg[est]||cfg.PENDIENTE_POLIVAL;
+
+    // Badge de colchón
+    let colchonBadge = '';
+    if(colchon.estado === 'DESCONTADO') {
+      colchonBadge = `<span style="background:#DCFCE7;color:#065F46;font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px">🛏 Colchón ✓ stock</span>`;
+    } else if(colchon.estado === 'PENDIENTE_RECIBIR') {
+      // Buscar en pedidos clientes colchones
+      const refFur = 'FUR'+(x.pedido||'').toUpperCase();
+      const ventaColchon = ventasColchon.find(v => (v.ref||'').toUpperCase() === refFur);
+      const estColchon = ventaColchon ? (estadosColchon[String(ventaColchon.id)]||'PENDIENTE') : null;
+      if(ventaColchon) {
+        colchonBadge = `<span style="background:#DBEAFE;color:#1d4ed8;font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px">🛏 Colchón en pedidos · ${estColchon}</span>`;
+      } else {
+        colchonBadge = `<span style="background:#FEE2E2;color:#991b1b;font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px">🛏 Colchón pendiente recibir</span>`;
+      }
+    } else if(colchon.estado === 'PENDIENTE_CONFIRMAR') {
+      colchonBadge = `<span style="background:#FEF3C7;color:#92400e;font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px">⚠️ Colchón sin confirmar</span>`;
+    } else if(colchon.estado === 'POLIVAL') {
+      colchonBadge = `<span style="background:#F4F6F1;color:#3B4A2F;font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px">🛏 Fabricado por Polival</span>`;
+    }
+
+    // Refs con botones de recepción (solo las que no son STOCK/PEDIDO)
+    const refsHtml = refs.length ? `
+      <div style="margin-top:6px;padding-top:6px;border-top:1px solid #e5e7eb">
+        <div style="font-size:9px;font-weight:700;color:#9ca3af;text-transform:uppercase;margin-bottom:5px">Referencias Polival · marcar al recibir</div>
+        <div style="display:flex;flex-wrap:wrap;gap:5px">
+          ${refs.map(r => {
+            const recibida = !!rec[r.codigo];
+            return `<button onclick="furniToggleRef('${x.id}','${r.codigo}')" style="display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;border:2px solid ${recibida?'#16A34A':'#d1d5db'};background:${recibida?'#F0FDF4':'white'};color:${recibida?'#065F46':'#6b7280'}">
+              <i class="ti ti-${recibida?'check':'circle'}" style="font-size:11px"></i>
+              <span style="font-family:monospace">${r.codigo}</span>${r.desc?`<span style="font-size:9px;color:#9ca3af;margin-left:2px">(${r.desc})</span>`:''}
+            </button>`;
+          }).join('')}
+        </div>
+      </div>` : '';
+
+    // Aviso colchón sin confirmar
+    const avisoColchon = (colchon.estado === 'PENDIENTE_CONFIRMAR') ? `
+      <div style="margin-top:10px;padding:10px 14px;background:#FFFBEB;border:2px solid #F59E0B;border-radius:8px;display:flex;align-items:center;gap:8px">
+        <i class="ti ti-alert-triangle" style="color:#92400e;font-size:18px;flex-shrink:0"></i>
+        <div>
+          <div style="font-size:12px;font-weight:700;color:#92400e">⚠️ Estado del colchón sin confirmar</div>
+          <div style="font-size:11px;color:#92400e;margin-top:2px">Esta línea tiene colchón pero no indica si está descontado (<strong>**</strong>) o pendiente de recibir (<strong>PEDIDO PARA VENIR</strong>). Revisa y actualiza el Excel.</div>
+        </div>
+      </div>` : '';
+
+    // Nota del cliente
+    const notaHtml = `<div style="margin-top:10px;padding-top:10px;border-top:1px solid #e5e7eb">
+      <div style="font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;margin-bottom:6px">Nota cliente</div>
+      <input type="text" value="${(x.nota||'').replace(/"/g,'&quot;')}" placeholder="Ej: No servir hasta aviso · Entregar el 15/07..." onchange="furniGuardarNota('${x.id}',this.value)"
+        style="width:100%;padding:7px 10px;border:1px solid #e5e7eb;border-radius:7px;font-size:12px;outline:none;background:${est==='CANCELADO'?'#f9fafb':'white'}"
+        onfocus="this.style.borderColor='#7c3aed'" onblur="this.style.borderColor='#e5e7eb'" ${est==='CANCELADO'?'disabled':''}>
+    </div>`;
+
+    // Botones de acción
+    let botonesHtml = '';
+    if(est === 'LISTO') {
+      botonesHtml = `
+        <button onclick="furniSetEstado('${x.id}','ESPERA_CLIENTE')" style="padding:5px 12px;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;background:#F3F4F6;border:1px solid #d1d5db;color:#374151"><i class="ti ti-clock-pause"></i> Espera cliente</button>
+        <button onclick="furniAnadirACarga('${x.id}')" style="padding:5px 14px;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;background:#7c3aed;border:none;color:white"><i class="ti ti-truck"></i> Añadir a carga</button>`;
+    } else if(est === 'ESPERA_CLIENTE') {
+      botonesHtml = `<button onclick="furniSetEstado('${x.id}','AUTO')" style="padding:5px 12px;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;background:#EDE9FE;border:1px solid #C4B5FD;color:#7c3aed"><i class="ti ti-arrow-back-up"></i> Reactivar</button>`;
+    } else if(est === 'EN_CARGA') {
+      botonesHtml = `<button onclick="furniSetEstado('${x.id}','ENTREGADO')" style="padding:5px 14px;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;background:#16A34A;border:none;color:white"><i class="ti ti-check"></i> Marcar entregado</button>`;
+    } else if(est === 'ENTREGADO' || est === 'CANCELADO') {
+      botonesHtml = `<button onclick="furniSetEstado('${x.id}','AUTO')" style="padding:5px 12px;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;background:white;border:1px solid #d1d5db;color:#6b7280"><i class="ti ti-arrow-back-up"></i> Reactivar</button>`;
+    }
+    if(est !== 'CANCELADO' && est !== 'ENTREGADO') {
+      botonesHtml += `<button onclick="furniSetEstado('${x.id}','CANCELADO')" style="padding:5px 10px;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;background:white;border:1px solid #fca5a5;color:#991b1b" title="Cancelar pedido"><i class="ti ti-x"></i></button>`;
+    }
+
+    return `<div style="border:1px solid ${c.border};border-radius:8px;margin-bottom:6px;overflow:hidden;background:${c.bg};${est==='CANCELADO'?'opacity:0.55':''}">
+      <div style="background:${c.hbg};padding:7px 12px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px">
+        <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;min-width:0;flex:1">
+          ${c.badge}
+          <span style="font-weight:700;font-size:12px;color:#3B4A2F;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:400px" title="${x.modelo}">${x.modelo}</span>
+          <span style="font-size:11px;color:#6b7280;white-space:nowrap">${x.uds} ud${x.uds!==1?'s':''}</span>
+          ${x.plataforma?`<span style="background:rgba(0,0,0,0.07);color:#374151;font-size:10px;font-weight:600;padding:1px 7px;border-radius:8px;white-space:nowrap">${x.plataforma}</span>`:''}
+          ${colchonBadge}
+        </div>
+        <div style="display:flex;gap:5px;flex-wrap:wrap;flex-shrink:0">${botonesHtml}</div>
+      </div>
+      <div style="padding:6px 12px;display:flex;gap:16px;flex-wrap:wrap;align-items:center">
+        <div style="display:flex;gap:4px;align-items:center">
+          <span style="font-size:11px;font-weight:700;color:#374151">${x.cliente||'—'}</span>
+          ${x.cp?`<span style="font-size:10px;color:#9ca3af">· CP ${x.cp}</span>`:''}
+        </div>
+        <div style="font-family:monospace;font-size:11px;color:#3730A3;font-weight:600">${x.pedido||'—'}</div>
+        <div style="font-size:10px;color:#9ca3af">${x.fecha||'—'}</div>
+        <div style="font-size:10px;color:#6b7280">${x.obs||x.entrega||'—'}</div>
+        ${x.nota?`<div style="font-size:10px;color:#7c3aed;font-weight:600">📝 ${x.nota}</div>`:''}
+      </div>
+      ${avisoColchon||refsHtml||(!x.nota?`<div style="padding:0 12px 6px">
+        <input type="text" value="" placeholder="📝 Nota cliente..." onchange="furniGuardarNota('${x.id}',this.value)"
+          style="width:100%;padding:4px 8px;border:1px solid #e5e7eb;border-radius:6px;font-size:11px;outline:none;background:${est==='CANCELADO'?'#f9fafb':'white'};color:#6b7280"
+          onfocus="this.style.borderColor='#7c3aed'" onblur="this.style.borderColor='#e5e7eb'" ${est==='CANCELADO'?'disabled':''}></div>`:'')
+      ? `<div style="padding:0 12px 8px">
+        ${avisoColchon}
+        ${refsHtml}
+        ${x.nota?'':`<input type="text" value="" placeholder="📝 Nota cliente..." onchange="furniGuardarNota('${x.id}',this.value)"
+          style="width:100%;padding:4px 8px;border:1px solid #e5e7eb;border-radius:6px;font-size:11px;outline:none;margin-top:4px"
+          onfocus="this.style.borderColor='#7c3aed'" onblur="this.style.borderColor='#e5e7eb'" ${est==='CANCELADO'?'disabled':''}>`}
+      </div>` : ''}
+    </div>`;
+  }).join('');
+}
+
+// ── CARGAS ─────────────────────────────────────────────────
+
+function furniAnadirACarga(pedidoId) {
+  const cargas = JSON.parse(localStorage.getItem('furni_cargas')||'[]');
+  const abiertas = cargas.filter(c => c.estado === 'ABIERTA');
+
+  // Crear overlay modal
+  const overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:9999;display:flex;align-items:center;justify-content:center';
+
+  const hoy = new Date();
+  const hoyISO = `${hoy.getFullYear()}-${String(hoy.getMonth()+1).padStart(2,'0')}-${String(hoy.getDate()).padStart(2,'0')}`;
+
+  const cargasHtml = abiertas.length
+    ? abiertas.map(c => `<button onclick="furniAsignarCargaYCerrarModal('${pedidoId}','${c.id}',this)" style="width:100%;text-align:left;padding:10px 14px;border-radius:8px;border:2px solid #C4B5FD;background:white;cursor:pointer;font-size:13px;font-weight:600;color:#4c1d95;margin-bottom:6px;display:flex;align-items:center;gap:8px">
+        <i class="ti ti-truck" style="color:#7c3aed"></i> ${c.dia} · ${c.fecha}
+        <span style="font-size:11px;font-weight:400;color:#9ca3af;margin-left:auto">${c.pedidos.length} pedido${c.pedidos.length!==1?'s':''}</span>
+      </button>`).join('')
+    : '<div style="font-size:12px;color:#9ca3af;margin-bottom:12px;padding:10px;background:#f9fafb;border-radius:8px;text-align:center">No hay cargas abiertas. Crea una nueva abajo.</div>';
+
+  overlay.innerHTML = `
+    <div style="background:white;border-radius:14px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,0.25);width:360px;max-width:95vw">
+      <div style="font-size:15px;font-weight:700;color:#3B4A2F;margin-bottom:4px"><i class="ti ti-truck" style="color:#7c3aed"></i> Añadir a carga</div>
+      <div style="font-size:12px;color:#6b7280;margin-bottom:16px">Elige una carga existente o crea una nueva.</div>
+      ${cargasHtml}
+      <div style="border-top:1px solid #e5e7eb;margin-top:12px;padding-top:12px">
+        <div style="font-size:11px;font-weight:700;color:#374151;margin-bottom:8px">Nueva carga</div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <input type="date" id="modal-carga-fecha" value="${hoyISO}" style="flex:1;padding:7px 10px;border:1px solid #d1d5db;border-radius:7px;font-size:12px;outline:none">
+          <select id="modal-carga-dia" style="padding:7px 10px;border:1px solid #d1d5db;border-radius:7px;font-size:12px;outline:none">
+            <option value="MIÉRCOLES">Miércoles</option>
+            <option value="VIERNES">Viernes</option>
+          </select>
+        </div>
+        <button onclick="furniCrearYAsignar('${pedidoId}')" style="width:100%;margin-top:8px;padding:9px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;background:#7c3aed;border:none;color:white">
+          <i class="ti ti-plus"></i> Crear carga y añadir
+        </button>
+      </div>
+      <button onclick="this.closest('[style*=fixed]').remove()" style="width:100%;margin-top:8px;padding:8px;border-radius:8px;font-size:12px;cursor:pointer;background:white;border:1px solid #d1d5db;color:#6b7280">Cancelar</button>
+    </div>`;
+
+  document.body.appendChild(overlay);
+  overlay.addEventListener('click', e => { if(e.target === overlay) overlay.remove(); });
+}
+
+function furniAsignarCargaYCerrarModal(pedidoId, cargaId, btn) {
+  btn.closest('[style*=fixed]').remove();
+  furniAsignarCarga(pedidoId, cargaId);
+}
+
+function furniCrearYAsignar(pedidoId) {
+  const fecha = document.getElementById('modal-carga-fecha').value;
+  const dia = document.getElementById('modal-carga-dia').value;
+  if(!fecha) { alert('Selecciona una fecha.'); return; }
+  const [y,m,d] = fecha.split('-');
+  const fechaStr = `${d}/${m}/${y}`;
+  const cargas = JSON.parse(localStorage.getItem('furni_cargas')||'[]');
+  const nuevaCarga = { id: Date.now(), fecha: fechaStr, dia, pedidos: [], estado: 'ABIERTA', creada: new Date().toLocaleDateString('es-ES') };
+  cargas.unshift(nuevaCarga);
+  localStorage.setItem('furni_cargas', JSON.stringify(cargas));
+  // Cerrar modal
+  document.querySelector('[style*="position:fixed"][style*="9999"]')?.remove();
+  furniAsignarCarga(pedidoId, nuevaCarga.id);
+}
+
+function furniAsignarCarga(pedidoId, cargaId) {
+  const cargas = JSON.parse(localStorage.getItem('furni_cargas')||'[]');
+  const carga = cargas.find(c => String(c.id) === String(cargaId));
+  if(!carga) return;
+  if(!carga.pedidos.includes(String(pedidoId))) carga.pedidos.push(String(pedidoId));
+  localStorage.setItem('furni_cargas', JSON.stringify(cargas));
+  furniSetEstado(pedidoId, 'EN_CARGA');
+  furniCargasRender();
+}
+
+function furniCrearCarga() {
+  const fecha = document.getElementById('furni-carga-fecha').value;
+  const dia = document.getElementById('furni-carga-dia').value;
+  if(!fecha) { alert('Selecciona una fecha para la carga.'); return; }
+  const [y,m,d] = fecha.split('-');
+  const fechaStr = `${d}/${m}/${y}`;
+  const cargas = JSON.parse(localStorage.getItem('furni_cargas')||'[]');
+  cargas.unshift({ id: Date.now(), fecha: fechaStr, dia, pedidos: [], estado: 'ABIERTA', creada: new Date().toLocaleDateString('es-ES') });
+  localStorage.setItem('furni_cargas', JSON.stringify(cargas));
+  furniCargasRender();
+}
+
+function furniCerrarCarga(cargaId) {
+  const cargas = JSON.parse(localStorage.getItem('furni_cargas')||'[]');
+  const carga = cargas.find(c => String(c.id) === String(cargaId));
+  if(!carga || !confirm(`¿Cerrar la carga del ${carga.dia} ${carga.fecha}?`)) return;
+  carga.estado = 'CERRADA';
+  localStorage.setItem('furni_cargas', JSON.stringify(cargas));
+  furniCargasRender();
+}
+
+function furniQuitarDeCarga(pedidoId, cargaId) {
+  const cargas = JSON.parse(localStorage.getItem('furni_cargas')||'[]');
+  const carga = cargas.find(c => String(c.id) === String(cargaId));
+  if(!carga) return;
+  carga.pedidos = carga.pedidos.filter(p => String(p) !== String(pedidoId));
+  localStorage.setItem('furni_cargas', JSON.stringify(cargas));
+  furniSetEstado(pedidoId, 'AUTO');
+  furniCargasRender();
+}
+
+function furniCargasRender() {
+  const contentEl = document.getElementById('furni-cargas-content');
+  if(!contentEl) return;
+  const cargas = JSON.parse(localStorage.getItem('furni_cargas')||'[]');
+  const pedidos = JSON.parse(localStorage.getItem('furni_pedidos')||'[]');
+
+  if(!cargas.length) { contentEl.innerHTML = '<div class="empty-state"><i class="ti ti-truck"></i><p>No hay cargas. Crea la primera arriba.</p></div>'; return; }
+
+  contentEl.innerHTML = cargas.map(carga => {
+    const esCerrada = carga.estado === 'CERRADA';
+    const lineas = carga.pedidos.map(pid => pedidos.find(p => String(p.id) === pid)).filter(Boolean);
+    const totalUds = lineas.reduce((s,p) => s+(p.uds||0), 0);
+
+    const lineasHtml = lineas.length ? lineas.map(p => `
+      <tr style="border-bottom:1px solid #f3f4f6">
+        <td style="padding:8px 12px;font-size:12px;font-weight:600;color:#374151">${p.cliente||'—'}</td>
+        <td style="padding:8px 12px;font-size:12px;color:#3B4A2F">${p.modelo||'—'}</td>
+        <td style="padding:8px 12px;font-family:monospace;font-size:11px;color:#6b7280">${p.refPolival||'—'}</td>
+        <td style="padding:8px 12px;font-size:11px;color:#374151">${p.cp||'—'}</td>
+        <td style="padding:8px 12px;font-size:11px;color:#6b7280">${p.obs||p.entrega||'—'}</td>
+        <td style="padding:8px 12px;text-align:center;font-size:12px">${p.uds||1}</td>
+        ${!esCerrada?`<td style="padding:8px 8px;text-align:right"><button onclick="furniQuitarDeCarga('${p.id}','${carga.id}')" style="padding:3px 10px;border-radius:6px;font-size:10px;cursor:pointer;background:white;border:1px solid #d1d5db;color:#6b7280">Quitar</button></td>`:'<td></td>'}
+      </tr>`).join('')
+      : '<tr><td colspan="7" style="padding:16px;text-align:center;color:#9ca3af;font-size:12px">Sin pedidos en esta carga</td></tr>';
+
+    return `<div style="border:1px solid ${esCerrada?'#d1d5db':'#C4B5FD'};border-radius:12px;margin-bottom:16px;overflow:hidden">
+      <div style="background:${esCerrada?'#F3F4F6':'#EDE9FE'};padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <i class="ti ti-truck" style="font-size:18px;color:${esCerrada?'#6b7280':'#7c3aed'}"></i>
+          <div>
+            <div style="font-size:14px;font-weight:700;color:${esCerrada?'#374151':'#4c1d95'}">${carga.dia} · ${carga.fecha}</div>
+            <div style="font-size:11px;color:#9ca3af">${lineas.length} pedido${lineas.length!==1?'s':''} · ${totalUds} uds · ${esCerrada?'CERRADA':'ABIERTA'}</div>
+          </div>
+        </div>
+        ${!esCerrada?`<button onclick="furniCerrarCarga(${carga.id})" style="padding:6px 14px;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;background:white;border:1px solid #C4B5FD;color:#7c3aed"><i class="ti ti-lock"></i> Cerrar carga</button>`:''}
+      </div>
+      <div style="overflow-x:auto">
+        <table style="width:100%;border-collapse:collapse">
+          <thead><tr style="background:#f9fafb">
+            <th style="padding:8px 12px;font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;text-align:left">Cliente</th>
+            <th style="padding:8px 12px;font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;text-align:left">Modelo</th>
+            <th style="padding:8px 12px;font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;text-align:left">Ref Polival</th>
+            <th style="padding:8px 12px;font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;text-align:left">CP</th>
+            <th style="padding:8px 12px;font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;text-align:left">Montaje</th>
+            <th style="padding:8px 12px;font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;text-align:center">Uds</th>
+            <th></th>
+          </tr></thead>
+          <tbody>${lineasHtml}</tbody>
+        </table>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── OTROS TAPICERÍA ────────────────────────────────────────
+
+function furniOtrosRender() {
+  const todos = JSON.parse(localStorage.getItem('furni_otros')||'[]');
+  const filtroEst = document.getElementById('furni-otros-filtro-estado')?.value||'TODOS';
+  const q = ((document.getElementById('furni-otros-filtro')?.value)||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  const norm = s => (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+
+  const sinAsig = todos.filter(x => x.estadoOtros === 'STOCK_SIN_VENTA' || x.estadoOtros === 'SIN_ASIGNACION').length;
+  const pendEnt = todos.filter(x => x.estadoOtros === 'PENDIENTE_ENTREGA').length;
+  const entregados = todos.filter(x => x.estadoOtros === 'ENTREGADO').length;
+
+  const statsEl = document.getElementById('furni-otros-stats');
+  if(statsEl) statsEl.innerHTML = `
+    <div class="stat-card"><div class="label">Total</div><div class="value">${todos.length}</div></div>
+    <div class="stat-card" style="border-left:3px solid #16A34A"><div class="label">Sin asignación</div><div class="value" style="color:#065F46">${sinAsig}</div></div>
+    <div class="stat-card" style="border-left:3px solid #1d4ed8"><div class="label">Pte. entrega</div><div class="value" style="color:#1d4ed8">${pendEnt}</div></div>
+    <div class="stat-card" style="border-left:3px solid #9ca3af"><div class="label">Entregados</div><div class="value" style="color:#6b7280">${entregados}</div></div>`;
+
+  let lista = todos;
+  if(filtroEst === 'SIN_ASIGNACION') lista = lista.filter(x => x.estadoOtros === 'SIN_ASIGNACION' || x.estadoOtros === 'STOCK_SIN_VENTA');
+  else if(filtroEst === 'PENDIENTE_ENTREGA') lista = lista.filter(x => x.estadoOtros === 'PENDIENTE_ENTREGA');
+  else if(filtroEst === 'ENTREGADO') lista = lista.filter(x => x.estadoOtros === 'ENTREGADO');
+  if(q) lista = lista.filter(x => norm(x.cliente).includes(q)||norm(x.modelo).includes(q)||norm(x.refPolival).includes(q)||norm(x.pedido).includes(q));
+
+  const contentEl = document.getElementById('furni-otros-content');
+  if(!contentEl) return;
+  if(!lista.length) { contentEl.innerHTML = '<div class="empty-state"><i class="ti ti-package"></i><p>No hay registros.</p></div>'; return; }
+
+  contentEl.innerHTML = lista.map(x => {
+    const esSinAsig = x.estadoOtros === 'SIN_ASIGNACION' || x.estadoOtros === 'STOCK_SIN_VENTA';
+    const esEntregado = x.estadoOtros === 'ENTREGADO';
+    const border = esSinAsig ? '#86efac' : esEntregado ? '#d1d5db' : '#93c5fd';
+    const hbg = esSinAsig ? '#F0FDF4' : esEntregado ? '#F3F4F6' : '#EFF6FF';
+    const badge = esSinAsig
+      ? `<span style="background:#DCFCE7;color:#065F46;font-size:10px;font-weight:700;padding:2px 10px;border-radius:10px">✓ STOCK SIN ASIGNACIÓN</span>`
+      : esEntregado
+        ? `<span style="background:#F3F4F6;color:#6b7280;font-size:10px;font-weight:700;padding:2px 10px;border-radius:10px">✓ ENTREGADO</span>`
+        : `<span style="background:#DBEAFE;color:#1d4ed8;font-size:10px;font-weight:700;padding:2px 10px;border-radius:10px">🔵 PENDIENTE ENTREGA</span>`;
+
+    const botones = esSinAsig ? '' : esEntregado
+      ? `<button onclick="furniOtroEstado('${x.id}','PENDIENTE_ENTREGA')" style="padding:5px 12px;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;background:white;border:1px solid #d1d5db;color:#6b7280"><i class="ti ti-arrow-back-up"></i> Reactivar</button>`
+      : `<button onclick="furniOtroEstado('${x.id}','ENTREGADO')" style="padding:5px 14px;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;background:#16A34A;border:none;color:white"><i class="ti ti-check"></i> Marcar entregado</button>`;
+
+    return `<div style="border:1px solid ${border};border-radius:10px;margin-bottom:8px;overflow:hidden;background:white">
+      <div style="background:${hbg};padding:10px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+          ${badge}
+          <span style="font-weight:700;font-size:13px;color:#3B4A2F">${x.modelo}</span>
+          <span style="font-size:12px;color:#6b7280">${x.uds||1} ud${(x.uds||1)!==1?'s':''}</span>
+          ${x.plataforma&&x.plataforma!=='STOCK'?`<span style="background:rgba(0,0,0,0.06);color:#374151;font-size:10px;font-weight:600;padding:2px 8px;border-radius:10px">${x.plataforma}</span>`:''}
+        </div>
+        <div>${botones}</div>
+      </div>
+      <div style="padding:10px 16px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+        <div><div style="font-size:10px;font-weight:600;color:#9ca3af;text-transform:uppercase;margin-bottom:3px">Cliente</div><div style="font-size:13px;font-weight:600;color:#374151">${x.cliente||'Sin asignar'}</div>${x.cp?`<div style="font-size:11px;color:#6b7280">CP: ${x.cp}</div>`:''}</div>
+        <div><div style="font-size:10px;font-weight:600;color:#9ca3af;text-transform:uppercase;margin-bottom:3px">Ref Polival</div><div style="font-family:monospace;font-size:11px;color:#374151">${x.refPolival||'—'}</div><div style="font-size:11px;color:#6b7280;margin-top:2px">Pedido: ${x.pedido||'—'}</div></div>
+        <div><div style="font-size:10px;font-weight:600;color:#9ca3af;text-transform:uppercase;margin-bottom:3px">Observaciones</div><div style="font-size:11px;color:#6b7280">${x.obs||'—'}</div><div style="font-size:10px;color:#d1d5db;margin-top:4px">Importado: ${x.importado||'—'}</div></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function furniOtroEstado(id, estado) {
+  let otros = JSON.parse(localStorage.getItem('furni_otros')||'[]');
+  const idx = otros.findIndex(x => String(x.id) === String(id));
+  if(idx === -1) return;
+  otros[idx].estadoOtros = estado;
+  localStorage.setItem('furni_otros', JSON.stringify(otros));
+  furniOtrosRender();
+}
+
 
 // ─── NACEX EXPORTAR ──────────────────────────────────────────
 let nacexExpFiltrado=[];
