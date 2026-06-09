@@ -2013,6 +2013,15 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
         </div>
       </div>
       <div id="furni-content"></div>
+
+      <!-- No asociados -->
+      <div id="furni-no-asociados-section" style="display:none;margin-top:20px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+          <div style="font-size:13px;font-weight:700;color:#92400e"><i class="ti ti-alert-triangle"></i> Líneas de Furniture sin asociar</div>
+          <button onclick="furniLimpiarNoAsociados()" style="padding:4px 12px;border-radius:6px;font-size:11px;cursor:pointer;background:white;border:1px solid #d1d5db;color:#6b7280">Limpiar</button>
+        </div>
+        <div id="furni-no-asociados-content"></div>
+      </div>
     </div>
 
     <!-- FURNITURE: CARGAS -->
@@ -2037,6 +2046,9 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
           </div>
           <button onclick="furniCrearCarga()" style="display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;background:#7c3aed;border:none;color:white"><i class="ti ti-truck"></i> Crear carga</button>
         </div>
+      </div>
+      <div style="margin-bottom:14px">
+        <input type="text" id="furni-cargas-buscar" placeholder="🔍 Buscar por referencia, cliente, modelo o ref Polival..." oninput="furniCargasRender()" style="width:100%;padding:9px 14px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none" onfocus="this.style.borderColor='#7c3aed'" onblur="this.style.borderColor='#d1d5db'">
       </div>
       <div id="furni-cargas-content"></div>
     </div>
@@ -3719,7 +3731,7 @@ function showPage(id,el){
   if(id==='seur-tabla'){tablaRender();}
   if(id==='admin-usuarios') adminRenderUsuarios();
   if(id==='admin-log') adminRenderLog();
-  if(id==='furniture-pedidos'){furniRender();}
+  if(id==='furniture-pedidos'){furniRender();furniRenderNoAsociados();}
   if(id==='furniture-cargas'){furniCargasRender();}
   if(id==='furniture-otros'){furniOtrosRender();}
 }
@@ -5820,6 +5832,49 @@ function furniLimpiarTodo() {
 
 // ── RENDER PRINCIPAL FURNITURE ─────────────────────────────
 
+function furniRenderNoAsociados() {
+  const lista = JSON.parse(localStorage.getItem('furni_no_asociados')||'[]');
+  const section = document.getElementById('furni-no-asociados-section');
+  const content = document.getElementById('furni-no-asociados-content');
+  if(!section || !content) return;
+  if(!lista.length) { section.style.display='none'; return; }
+  section.style.display='block';
+  const iconos={'INCIDENCIA':'⚠️','REPOSICION':'🔄','MONTAJE':'🔧','RECOGIDA':'📦','PRINCIPAL':'📋'};
+  content.innerHTML = `<div style="border:1px solid #FDE68A;border-radius:10px;overflow:hidden">
+    <table style="width:100%;border-collapse:collapse">
+      <thead><tr style="background:#FEF3C7">
+        <th style="padding:8px 12px;font-size:10px;font-weight:700;color:#92400e;text-align:left">Albarán Furniture</th>
+        <th style="padding:8px 12px;font-size:10px;font-weight:700;color:#92400e;text-align:left">Tipo</th>
+        <th style="padding:8px 12px;font-size:10px;font-weight:700;color:#92400e;text-align:left">Estado</th>
+        <th style="padding:8px 12px;font-size:10px;font-weight:700;color:#92400e;text-align:left">Fecha</th>
+        <th style="padding:8px 12px;font-size:10px;font-weight:700;color:#92400e;text-align:left">Seguimiento</th>
+        <th style="padding:8px 12px;font-size:10px;font-weight:700;color:#92400e;text-align:center">Acción</th>
+      </tr></thead>
+      <tbody>${lista.map((n,i) => `<tr style="border-top:1px solid #FDE68A;background:${i%2?'white':'#FFFBEB'}">
+        <td style="padding:7px 12px;font-family:monospace;font-size:11px;font-weight:600;color:#374151">${n.albaran}</td>
+        <td style="padding:7px 12px;font-size:11px;color:#6b7280">${iconos[n.tipo]||'➕'} ${n.tipo}</td>
+        <td style="padding:7px 12px;font-size:11px;color:#374151">${n.estado}</td>
+        <td style="padding:7px 12px;font-size:11px;color:#6b7280">${n.ultimaFecha||'—'}</td>
+        <td style="padding:7px 12px">${n.seguimiento?`<a href="${n.seguimiento}" target="_blank" style="color:#1d4ed8;font-size:11px;font-weight:600">🔗 Ver</a>`:'—'}</td>
+        <td style="padding:7px 12px;text-align:center"><button onclick="furniEliminarNoAsociado(${i})" style="padding:2px 8px;border-radius:5px;font-size:10px;cursor:pointer;background:white;border:1px solid #d1d5db;color:#6b7280">✕</button></td>
+      </tr>`).join('')}</tbody>
+    </table>
+  </div>`;
+}
+
+function furniEliminarNoAsociado(idx) {
+  const lista = JSON.parse(localStorage.getItem('furni_no_asociados')||'[]');
+  lista.splice(idx, 1);
+  localStorage.setItem('furni_no_asociados', JSON.stringify(lista));
+  furniRenderNoAsociados();
+}
+
+function furniLimpiarNoAsociados() {
+  if(!confirm('¿Eliminar todos los registros sin asociar?')) return;
+  localStorage.removeItem('furni_no_asociados');
+  furniRenderNoAsociados();
+}
+
 function furniStatClick(v) {
   const sel = document.getElementById('furni-filtro-estado');
   if(sel) sel.value = v;
@@ -5981,6 +6036,14 @@ function furniRender() {
             const link=x.seguimientoFurniture?` <a href="${x.seguimientoFurniture}" target="_blank" onclick="event.stopPropagation()" style="color:${col};text-decoration:underline;font-size:10px">🔗</a>`:'';
             return `<span style="background:${bg};color:${col};font-size:10px;font-weight:700;padding:2px 10px;border-radius:8px;border:1px solid ${col}40">🚛 ${ef}${fecha}${link}</span>`;
           })():''}
+          ${(x.historialFurniture||[]).map(h=>{
+            const iconos={'INCIDENCIA':'⚠️','REPOSICION':'🔄','MONTAJE':'🔧','RECOGIDA':'📦'};
+            const icono=iconos[h.tipo]||'➕';
+            const hbg=h.tipo==='INCIDENCIA'?'#FEE2E2':h.tipo==='REPOSICION'?'#DBEAFE':h.tipo==='MONTAJE'?'#F3E8FF':'#F3F4F6';
+            const hcol=h.tipo==='INCIDENCIA'?'#991b1b':h.tipo==='REPOSICION'?'#1d4ed8':h.tipo==='MONTAJE'?'#6b21a8':'#374151';
+            const hlink=h.seguimiento?` <a href="${h.seguimiento}" target="_blank" onclick="event.stopPropagation()" style="color:${hcol};text-decoration:underline;font-size:10px">🔗</a>`:'';
+            return `<span style="background:${hbg};color:${hcol};font-size:10px;font-weight:700;padding:2px 10px;border-radius:8px;border:1px solid ${hcol}40">${icono} ${h.tipo} · ${h.estado}${h.ultimaFecha?' · '+h.ultimaFecha:''}${hlink}</span>`;
+          }).join('')}
         </div>
         <div style="display:flex;gap:5px;flex-wrap:wrap;flex-shrink:0">${botonesHtml}</div>
       </div>
@@ -6252,6 +6315,7 @@ function furniProcesarNotas(event) {
 
       let furniture = JSON.parse(localStorage.getItem('furni_pedidos')||'[]');
       let actualizados = 0, noEncontrados = 0;
+      let noAsociados = [];
 
       rows.forEach(row => {
         const celdas = Array.from(row.querySelectorAll('td'));
@@ -6272,31 +6336,64 @@ function furniProcesarNotas(event) {
 
         if(!albaran || !estado) return;
 
-        // Buscar en furniture por referencia de pedido (campo pedido)
-        const idx = furniture.findIndex(p => {
-          const ref = (p.pedido||'').trim();
-          // Comparar directamente o si el albarán contiene la ref o viceversa
-          return ref === albaran ||
-                 albaran.includes(ref) ||
-                 ref.includes(albaran) ||
-                 // También buscar en refPolival
-                 (p.refPolival||'').includes(albaran);
-        });
+        // Detectar prefijo del albarán
+        const prefMatch = albaran.match(/^(INCI|INC|MON|REP|REC|RECOG)(.+)/i);
+        const prefijo = prefMatch ? prefMatch[1].toUpperCase() : '';
+        const refBase = prefMatch ? prefMatch[2].trim() : albaran;
+
+        // Etiquetar el tipo de línea
+        const tipoLinea = prefijo === 'INCI' || prefijo === 'INC' ? 'INCIDENCIA'
+                        : prefijo === 'MON' ? 'MONTAJE'
+                        : prefijo === 'REP' ? 'REPOSICION'
+                        : prefijo === 'REC' || prefijo === 'RECOG' ? 'RECOGIDA'
+                        : 'PRINCIPAL';
+
+        // Buscar pedido: coincidencia exacta con la ref base
+        const idx = furniture.findIndex(p => (p.pedido||'').trim() === refBase);
 
         if(idx >= 0) {
-          furniture[idx].estadoFurniture = estado;
-          furniture[idx].ultimaFechaFurniture = ultimaFecha;
-          furniture[idx].seguimientoFurniture = seguimiento;
-          furniture[idx].ultimaActualizacionFurniture = new Date().toLocaleDateString('es-ES');
+          if(tipoLinea === 'PRINCIPAL') {
+            // Actualizar datos principales
+            furniture[idx].estadoFurniture = estado;
+            furniture[idx].ultimaFechaFurniture = ultimaFecha;
+            furniture[idx].seguimientoFurniture = seguimiento;
+            furniture[idx].ultimaActualizacionFurniture = new Date().toLocaleDateString('es-ES');
+          } else {
+            // Añadir como entrada adicional en el historial del pedido
+            if(!furniture[idx].historialFurniture) furniture[idx].historialFurniture = [];
+            // Evitar duplicados por albarán
+            const yaExiste = furniture[idx].historialFurniture.some(h => h.albaran === albaran);
+            if(!yaExiste) {
+              furniture[idx].historialFurniture.push({
+                albaran, tipo: tipoLinea, estado, ultimaFecha, seguimiento,
+                fecha: new Date().toLocaleDateString('es-ES')
+              });
+            } else {
+              // Actualizar si ya existe
+              const hi = furniture[idx].historialFurniture.findIndex(h => h.albaran === albaran);
+              if(hi >= 0) furniture[idx].historialFurniture[hi] = {albaran, tipo: tipoLinea, estado, ultimaFecha, seguimiento, fecha: new Date().toLocaleDateString('es-ES')};
+            }
+          }
           actualizados++;
         } else {
+          // No encontrado → guardar en lista de no asociados
+          noAsociados.push({albaran, tipo: tipoLinea, estado, ultimaFecha, seguimiento});
           noEncontrados++;
         }
       });
 
       localStorage.setItem('furni_pedidos', JSON.stringify(furniture));
-      const msg = `✓ ${actualizados} pedido${actualizados!==1?'s':''} actualizado${actualizados!==1?'s':''}${noEncontrados?' · '+noEncontrados+' no encontrado'+(noEncontrados!==1?'s':''):''}`;
+      // Guardar no asociados para revisión
+      const prevNoAsoc = JSON.parse(localStorage.getItem('furni_no_asociados')||'[]');
+      // Añadir nuevos sin duplicar por albarán
+      noAsociados.forEach(n => {
+        if(!prevNoAsoc.some(x => x.albaran === n.albaran)) prevNoAsoc.push(n);
+        else { const i = prevNoAsoc.findIndex(x => x.albaran === n.albaran); if(i>=0) prevNoAsoc[i]=n; }
+      });
+      localStorage.setItem('furni_no_asociados', JSON.stringify(prevNoAsoc));
+      const msg = `✓ ${actualizados} actualizado${actualizados!==1?'s':''}${noEncontrados?' · '+noEncontrados+' sin asociar (ver listado abajo)':''}`;
       statusEl.innerHTML = `<div class="status-box" style="background:#F0FDF4;border-color:#86efac;color:#166534">${msg}</div>`;
+      furniRenderNoAsociados();
       furniRender();
       event.target.value = '';
     } catch(e) {
@@ -6311,6 +6408,8 @@ function furniCargasRender() {
   if(!contentEl) return;
   const cargas = JSON.parse(localStorage.getItem('furni_cargas')||'[]');
   const pedidos = JSON.parse(localStorage.getItem('furni_pedidos')||'[]');
+  const q = ((document.getElementById('furni-cargas-buscar')?.value)||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  const norm = s => (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
 
   if(!cargas.length) { contentEl.innerHTML = '<div class="empty-state"><i class="ti ti-truck"></i><p>No hay cargas. Crea la primera arriba.</p></div>'; return; }
 
@@ -6318,8 +6417,15 @@ function furniCargasRender() {
     const esCerrada = carga.estado === 'CERRADA';
     const lineas = carga.pedidos.map(pid => pedidos.find(p => String(p.id) === pid)).filter(Boolean);
     const totalUds = lineas.reduce((s,p) => s+(p.uds||0), 0);
+    // Aplicar filtro de búsqueda a las líneas
+    const lineasFiltradas = q ? lineas.filter(p =>
+      norm(p.pedido).includes(q) || norm(p.cliente).includes(q) ||
+      norm(p.modelo).includes(q) || norm(p.refPolival).includes(q)
+    ) : lineas;
+    // Si hay búsqueda y esta carga no tiene coincidencias, ocultarla
+    if(q && !lineasFiltradas.length) return '';
 
-    const lineasHtml = lineas.length ? lineas.map(p => `
+    const lineasHtml = lineasFiltradas.length ? lineasFiltradas.map(p => `
       <tr style="border-bottom:1px solid #f3f4f6">
         <td style="padding:8px 12px;font-size:12px;font-weight:600;color:#374151">${p.cliente||'—'}</td>
         <td style="padding:8px 12px;font-size:12px;color:#3B4A2F">${p.modelo||'—'}</td>
@@ -6328,6 +6434,13 @@ function furniCargasRender() {
         <td style="padding:8px 12px;font-size:11px;color:#374151">${p.cp||'—'}</td>
         <td style="padding:8px 12px;font-size:11px;color:#6b7280">${p.obs||p.entrega||'—'}</td>
         <td style="padding:8px 12px;text-align:center;font-size:12px">${p.uds||1}</td>
+        <td style="padding:8px 12px">${p.estadoFurniture?(()=>{
+          const ef=p.estadoFurniture;
+          const bg=ef==='ENTREGADO OK'?'#DCFCE7':ef==='PENDIENTE DE ENTREGA'?'#FEF3C7':ef==='NO ENTREGADO'?'#FEE2E2':ef.includes('INCIDENCIA')?'#F3E8FF':'#F3F4F6';
+          const col=ef==='ENTREGADO OK'?'#065F46':ef==='PENDIENTE DE ENTREGA'?'#92400e':ef==='NO ENTREGADO'?'#991b1b':ef.includes('INCIDENCIA')?'#6b21a8':'#374151';
+          const link=p.seguimientoFurniture?` <a href="${p.seguimientoFurniture}" target="_blank" style="color:${col};font-size:10px">🔗</a>`:'';
+          return `<span style="background:${bg};color:${col};font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;white-space:nowrap">${ef}${p.ultimaFechaFurniture?' · '+p.ultimaFechaFurniture:''}${link}</span>`;
+        })():'—'}</td>
         ${!esCerrada?`<td style="padding:8px 8px;text-align:right"><button onclick="furniQuitarDeCarga('${p.id}','${carga.id}')" style="padding:3px 10px;border-radius:6px;font-size:10px;cursor:pointer;background:white;border:1px solid #d1d5db;color:#6b7280">Quitar</button></td>`:'<td></td>'}
       </tr>`).join('')
       : '<tr><td colspan="7" style="padding:16px;text-align:center;color:#9ca3af;font-size:12px">Sin pedidos en esta carga</td></tr>';
@@ -6355,6 +6468,7 @@ function furniCargasRender() {
             <th style="padding:8px 12px;font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;text-align:left">CP</th>
             <th style="padding:8px 12px;font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;text-align:left">Montaje</th>
             <th style="padding:8px 12px;font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;text-align:center">Uds</th>
+            <th style="padding:8px 12px;font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;text-align:left">Estado Furniture</th>
             <th></th>
           </tr></thead>
           <tbody>${lineasHtml}</tbody>
