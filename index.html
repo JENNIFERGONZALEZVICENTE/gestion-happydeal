@@ -5787,6 +5787,15 @@ function furniSetEstado(pedidoId, nuevoEstado) {
   furniCargasRender();
 }
 
+function furniGuardarNotaInterna(pedidoId, nota) {
+  let furniture = JSON.parse(localStorage.getItem('furni_pedidos')||'[]');
+  const idx = furniture.findIndex(x => String(x.id) === String(pedidoId));
+  if(idx === -1) return;
+  furniture[idx].notaInterna = nota;
+  localStorage.setItem('furni_pedidos', JSON.stringify(furniture));
+  furniRender();
+}
+
 function furniGuardarNota(pedidoId, nota) {
   let furniture = JSON.parse(localStorage.getItem('furni_pedidos')||'[]');
   const idx = furniture.findIndex(x => String(x.id) === String(pedidoId));
@@ -5809,6 +5818,12 @@ function furniLimpiarTodo() {
 
 // ── RENDER PRINCIPAL FURNITURE ─────────────────────────────
 
+function furniStatClick(v) {
+  const sel = document.getElementById('furni-filtro-estado');
+  if(sel) sel.value = v;
+  furniRender();
+}
+
 function furniRender() {
   const todos = JSON.parse(localStorage.getItem('furni_pedidos')||'[]');
   const filtroEst = document.getElementById('furni-filtro-estado')?.value||'TODOS';
@@ -5820,7 +5835,6 @@ function furniRender() {
   todos.forEach(x => { const e = furniGetEstado(x); counts[e] = (counts[e]||0)+1; });
 
   const statsEl = document.getElementById('furni-stats');
-  const furniStatClick = v => { const sel=document.getElementById('furni-filtro-estado'); if(sel){sel.value=v;} furniRender(); };
   if(statsEl) statsEl.innerHTML = `
     <div class="stat-card" style="border-left:3px solid #ef4444;cursor:pointer" onclick="furniStatClick('PENDIENTE_POLIVAL')"><div class="label">Pte. Polival</div><div class="value" style="color:#991b1b">${counts.PENDIENTE_POLIVAL}</div></div>
     <div class="stat-card" style="border-left:3px solid #f59e0b;cursor:pointer" onclick="furniStatClick('PARCIAL')"><div class="label">Parcial</div><div class="value" style="color:#92400e">${counts.PARCIAL}</div></div>
@@ -5832,7 +5846,13 @@ function furniRender() {
     <div class="stat-card" style="border-left:3px solid #3B4A2F;cursor:pointer" onclick="furniStatClick('TODOS')"><div class="label">Todos</div><div class="value" style="color:#3B4A2F">${todos.length}</div></div>`;
 
   const ordenEstado = {LISTO:0, PARCIAL:1, PENDIENTE_POLIVAL:2, ESPERA_CLIENTE:3, EN_CARGA:4, ENTREGADO:5, CANCELADO:6};
-  let lista = [...todos].sort((a,b) => (ordenEstado[furniGetEstado(a)]||9) - (ordenEstado[furniGetEstado(b)]||9));
+  let lista = [...todos].sort((a,b) => {
+    // Primero los que tienen nota interna
+    const aNota = (a.notaInterna||'').trim() ? 0 : 1;
+    const bNota = (b.notaInterna||'').trim() ? 0 : 1;
+    if(aNota !== bNota) return aNota - bNota;
+    return (ordenEstado[furniGetEstado(a)]||9) - (ordenEstado[furniGetEstado(b)]||9);
+  });
   if(filtroEst !== 'TODOS') lista = lista.filter(x => furniGetEstado(x) === filtroEst);
   if(q) lista = lista.filter(x => norm(x.cliente).includes(q)||norm(x.modelo).includes(q)||norm(x.refPolival).includes(q)||norm(x.pedido).includes(q));
 
@@ -5855,7 +5875,7 @@ function furniRender() {
       PENDIENTE_POLIVAL: {border:'#fca5a5',bg:'#FFF5F5',hbg:'#FEE2E2',badge:`<span style="background:#FEE2E2;color:#991b1b;font-size:10px;font-weight:700;padding:2px 10px;border-radius:10px">⏳ PENDIENTE POLIVAL</span>`},
       PARCIAL:           {border:'#fcd34d',bg:'#FFFBEB',hbg:'#FEF3C7',badge:`<span style="background:#FEF3C7;color:#92400e;font-size:10px;font-weight:700;padding:2px 10px;border-radius:10px">📦 RECEPCIÓN PARCIAL</span>`},
       LISTO:             {border:'#86efac',bg:'#F0FDF4',hbg:'#DCFCE7',badge:`<span style="background:#DCFCE7;color:#065F46;font-size:10px;font-weight:700;padding:2px 10px;border-radius:10px">✓ LISTO PARA CARGAR</span>`},
-      ESPERA_CLIENTE:    {border:'#d1d5db',bg:'#F9FAFB',hbg:'#F3F4F6',badge:`<span style="background:#F3F4F6;color:#374151;font-size:10px;font-weight:700;padding:2px 10px;border-radius:10px">⏸ ESPERA CLIENTE</span>`},
+      ESPERA_CLIENTE:    {border:'#d1d5db',bg:'#F9FAFB',hbg:'#F3F4F6',badge:(()=>{const ed=JSON.parse(localStorage.getItem('furni_espera')||'{}')[String(x.id)]||{};const f=ed.fecha?(' · hasta '+ed.fecha.split('-').reverse().join('/')):'';return `<span style="background:#F3F4F6;color:#374151;font-size:10px;font-weight:700;padding:2px 10px;border-radius:10px">⏸ ESPERA CLIENTE${ed.motivo?' · '+ed.motivo:''}${f}</span>`})()},
       EN_CARGA:          {border:'#93c5fd',bg:'#EFF6FF',hbg:'#DBEAFE',badge:`<span style="background:#DBEAFE;color:#1d4ed8;font-size:10px;font-weight:700;padding:2px 10px;border-radius:10px">🚛 EN CARGA</span>`},
       ENTREGADO:         {border:'#86efac',bg:'#F0FDF4',hbg:'#DCFCE7',badge:`<span style="background:#DCFCE7;color:#065F46;font-size:10px;font-weight:700;padding:2px 10px;border-radius:10px">✓ ENTREGADO</span>`},
       CANCELADO:         {border:'#e5e7eb',bg:'#F9FAFB',hbg:'#F3F4F6',badge:`<span style="background:#F3F4F6;color:#9ca3af;font-size:10px;font-weight:700;padding:2px 10px;border-radius:10px">✕ CANCELADO</span>`},
@@ -5919,10 +5939,10 @@ function furniRender() {
     let botonesHtml = '';
     if(est === 'LISTO') {
       botonesHtml = `
-        <button onclick="furniSetEstado('${x.id}','ESPERA_CLIENTE')" style="padding:5px 12px;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;background:#F3F4F6;border:1px solid #d1d5db;color:#374151"><i class="ti ti-clock-pause"></i> Espera cliente</button>
+        <button onclick="furniModalEspera('${x.id}')" style="padding:5px 12px;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;background:#F3F4F6;border:1px solid #d1d5db;color:#374151"><i class="ti ti-clock-pause"></i> Espera cliente</button>
         <button onclick="furniAnadirACarga('${x.id}')" style="padding:5px 14px;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;background:#7c3aed;border:none;color:white"><i class="ti ti-truck"></i> Añadir a carga</button>`;
     } else if(est === 'ESPERA_CLIENTE') {
-      botonesHtml = `<button onclick="furniSetEstado('${x.id}','AUTO')" style="padding:5px 12px;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;background:#EDE9FE;border:1px solid #C4B5FD;color:#7c3aed"><i class="ti ti-arrow-back-up"></i> Reactivar</button>`;
+      botonesHtml = `<button onclick="furniReactivarDeEspera('${x.id}')" style="padding:5px 12px;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;background:#EDE9FE;border:1px solid #C4B5FD;color:#7c3aed"><i class="ti ti-arrow-back-up"></i> Reactivar</button>`;
     } else if(est === 'EN_CARGA') {
       botonesHtml = `<button onclick="furniSetEstado('${x.id}','ENTREGADO')" style="padding:5px 14px;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;background:#16A34A;border:none;color:white"><i class="ti ti-check"></i> Marcar entregado</button>`;
     } else if(est === 'ENTREGADO' || est === 'CANCELADO') {
@@ -5940,6 +5960,7 @@ function furniRender() {
           <span style="font-size:11px;color:#6b7280;white-space:nowrap">${x.uds} ud${x.uds!==1?'s':''}</span>
           ${x.plataforma?`<span style="background:rgba(0,0,0,0.07);color:#374151;font-size:10px;font-weight:600;padding:1px 7px;border-radius:8px;white-space:nowrap">${x.plataforma}</span>`:''}
           ${colchonBadge}
+          ${(x.notaInterna||'').trim()?`<span style="background:#F59E0B;color:white;font-size:11px;font-weight:700;padding:3px 12px;border-radius:8px">📌 ${x.notaInterna}</span>`:''}
         </div>
         <div style="display:flex;gap:5px;flex-wrap:wrap;flex-shrink:0">${botonesHtml}</div>
       </div>
@@ -5953,22 +5974,82 @@ function furniRender() {
         <div style="font-size:10px;color:#6b7280">${x.obs||x.entrega||'—'}</div>
         ${x.nota?`<div style="font-size:10px;color:#7c3aed;font-weight:600">📝 ${x.nota}</div>`:''}
       </div>
-      ${avisoColchon||refsHtml||(!x.nota?`<div style="padding:0 12px 6px">
-        <input type="text" value="" placeholder="📝 Nota cliente..." onchange="furniGuardarNota('${x.id}',this.value)"
-          style="width:100%;padding:4px 8px;border:1px solid #e5e7eb;border-radius:6px;font-size:11px;outline:none;background:${est==='CANCELADO'?'#f9fafb':'white'};color:#6b7280"
-          onfocus="this.style.borderColor='#7c3aed'" onblur="this.style.borderColor='#e5e7eb'" ${est==='CANCELADO'?'disabled':''}></div>`:'')
-      ? `<div style="padding:0 12px 8px">
+      <div style="padding:0 12px 8px">
         ${avisoColchon}
         ${refsHtml}
-        ${x.nota?'':`<input type="text" value="" placeholder="📝 Nota cliente..." onchange="furniGuardarNota('${x.id}',this.value)"
-          style="width:100%;padding:4px 8px;border:1px solid #e5e7eb;border-radius:6px;font-size:11px;outline:none;margin-top:4px"
-          onfocus="this.style.borderColor='#7c3aed'" onblur="this.style.borderColor='#e5e7eb'" ${est==='CANCELADO'?'disabled':''}>`}
-      </div>` : ''}
+        ${(x.notaInterna||'').trim()?`
+        <div style="background:#FEF3C7;border-top:2px solid #F59E0B;border-bottom:2px solid #F59E0B;padding:8px 12px;display:flex;align-items:center;gap:8px;margin:6px -12px">
+          <i class="ti ti-alert-triangle" style="color:#92400e;font-size:16px;flex-shrink:0"></i>
+          <input type="text" value="${(x.notaInterna||'').replace(/"/g,'&quot;')}" onchange="furniGuardarNotaInterna('${x.id}',this.value)"
+            style="flex:1;padding:4px 8px;border:1px solid #FCD34D;border-radius:6px;font-size:13px;font-weight:700;color:#92400e;outline:none;background:transparent"
+            onfocus="this.style.background='white'" onblur="this.style.background='transparent'" ${est==='CANCELADO'?'disabled':''}>
+        </div>`:`
+        <input type="text" value="" placeholder="📌 Añadir aviso interno..." onchange="furniGuardarNotaInterna('${x.id}',this.value)"
+          style="width:100%;padding:3px 8px;border:1px dashed #FCD34D;border-radius:6px;font-size:11px;outline:none;background:transparent;color:#92400e;margin-top:4px"
+          onfocus="this.style.borderStyle='solid';this.style.background='#FFFBEB'" onblur="this.style.borderStyle='dashed';this.style.background='transparent'" ${est==='CANCELADO'?'disabled':''}>`}
+        <input type="text" value="${(x.nota||'').replace(/"/g,'&quot;')}" placeholder="📝 Nota cliente..." onchange="furniGuardarNota('${x.id}',this.value)"
+          style="width:100%;padding:4px 8px;border:1px solid #e5e7eb;border-radius:6px;font-size:11px;outline:none;background:${est==='CANCELADO'?'#f9fafb':'white'};margin-top:4px"
+          onfocus="this.style.borderColor='#7c3aed'" onblur="this.style.borderColor='#e5e7eb'" ${est==='CANCELADO'?'disabled':''}>
+      </div>
     </div>`;
   }).join('');
 }
 
 // ── CARGAS ─────────────────────────────────────────────────
+
+function furniReactivarDeEspera(pedidoId) {
+  const espDatos = JSON.parse(localStorage.getItem('furni_espera')||'{}');
+  delete espDatos[String(pedidoId)];
+  localStorage.setItem('furni_espera', JSON.stringify(espDatos));
+  furniSetEstado(pedidoId, 'AUTO');
+}
+
+function furniModalEspera(pedidoId) {
+  const espDatos = JSON.parse(localStorage.getItem('furni_espera')||'{}');
+  const prev = espDatos[String(pedidoId)]||{};
+  const hoy = new Date();
+  const hoyISO = `${hoy.getFullYear()}-${String(hoy.getMonth()+1).padStart(2,'0')}-${String(hoy.getDate()).padStart(2,'0')}`;
+
+  const overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:9999;display:flex;align-items:center;justify-content:center';
+  overlay.innerHTML = `
+    <div style="background:white;border-radius:14px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,0.25);width:380px;max-width:95vw">
+      <div style="font-size:15px;font-weight:700;color:#3B4A2F;margin-bottom:4px"><i class="ti ti-clock-pause" style="color:#6b7280"></i> Poner en espera</div>
+      <div style="font-size:12px;color:#6b7280;margin-bottom:16px">El pedido queda pendiente hasta que el cliente confirme.</div>
+
+      <div style="font-size:11px;font-weight:700;color:#374151;margin-bottom:6px">Motivo</div>
+      <input type="text" id="furni-espera-motivo" value="${prev.motivo||''}" placeholder="Ej: En obras · Cliente avisa · Fecha por confirmar..."
+        style="width:100%;padding:8px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;margin-bottom:12px"
+        onfocus="this.style.borderColor='#6b7280'" onblur="this.style.borderColor='#d1d5db'">
+
+      <div style="font-size:11px;font-weight:700;color:#374151;margin-bottom:6px">Fecha estimada (opcional)</div>
+      <input type="date" id="furni-espera-fecha" value="${prev.fecha||''}"
+        style="width:100%;padding:8px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;margin-bottom:16px"
+        onfocus="this.style.borderColor='#6b7280'" onblur="this.style.borderColor='#d1d5db'">
+
+      <div style="display:flex;gap:8px">
+        <button onclick="furniConfirmarEspera('${pedidoId}')" style="flex:1;padding:10px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;background:#374151;border:none;color:white">
+          <i class="ti ti-clock-pause"></i> Poner en espera
+        </button>
+        <button onclick="this.closest('[style*=fixed]').remove()" style="padding:10px 16px;border-radius:8px;font-size:13px;cursor:pointer;background:white;border:1px solid #d1d5db;color:#374151">
+          Cancelar
+        </button>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+  overlay.addEventListener('click', e => { if(e.target === overlay) overlay.remove(); });
+  setTimeout(() => document.getElementById('furni-espera-motivo')?.focus(), 100);
+}
+
+function furniConfirmarEspera(pedidoId) {
+  const motivo = document.getElementById('furni-espera-motivo')?.value?.trim()||'';
+  const fecha = document.getElementById('furni-espera-fecha')?.value||'';
+  const espDatos = JSON.parse(localStorage.getItem('furni_espera')||'{}');
+  espDatos[String(pedidoId)] = { motivo, fecha };
+  localStorage.setItem('furni_espera', JSON.stringify(espDatos));
+  document.querySelector('[style*="position:fixed"][style*="9999"]')?.remove();
+  furniSetEstado(pedidoId, 'ESPERA_CLIENTE');
+}
 
 function furniAnadirACarga(pedidoId) {
   const cargas = JSON.parse(localStorage.getItem('furni_cargas')||'[]');
