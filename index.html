@@ -407,6 +407,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
         <div class="nav-subsection-body" id="sub-furniture">
           <div class="nav-item" onclick="showPage('furniture-pedidos',this)"><i class="ti ti-armchair"></i> Pedidos Furniture</div>
           <div class="nav-item" onclick="showPage('furniture-cargas',this)"><i class="ti ti-truck"></i> Cargas</div>
+          <div class="nav-item" onclick="showPage('furniture-sin-asociar',this)" id="nav-furni-sin-asociar"><i class="ti ti-alert-triangle"></i> Líneas sin asociar <span id="badge-furni-sin-asociar" style="display:none;background:#FEF3C7;color:#92400e;font-size:10px;font-weight:700;padding:1px 6px;border-radius:8px;margin-left:4px">0</span></div>
           <div class="nav-item" onclick="showPage('furniture-otros',this)"><i class="ti ti-package"></i> Otros tapicería</div>
         </div>
 
@@ -2018,14 +2019,6 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
       </div>
       <div id="furni-content"></div>
 
-      <!-- No asociados -->
-      <div id="furni-no-asociados-section" style="display:none;margin-top:20px">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-          <div style="font-size:13px;font-weight:700;color:#92400e"><i class="ti ti-alert-triangle"></i> Líneas de Furniture sin asociar</div>
-          <button onclick="furniLimpiarNoAsociados()" style="padding:4px 12px;border-radius:6px;font-size:11px;cursor:pointer;background:white;border:1px solid #d1d5db;color:#6b7280">Limpiar</button>
-        </div>
-        <div id="furni-no-asociados-content"></div>
-      </div>
     </div>
 
     <!-- FURNITURE: CARGAS -->
@@ -2055,6 +2048,19 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
         <input type="text" id="furni-cargas-buscar" placeholder="🔍 Buscar por referencia, cliente, modelo o ref Polival..." oninput="furniCargasRender()" style="width:100%;padding:9px 14px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none" onfocus="this.style.borderColor='#7c3aed'" onblur="this.style.borderColor='#d1d5db'">
       </div>
       <div id="furni-cargas-content"></div>
+    </div>
+
+    <!-- FURNITURE: SIN ASOCIAR -->
+    <div class="page" id="page-furniture-sin-asociar" style="margin:-28px -32px;padding:28px 32px;max-width:none;width:calc(100% + 64px)">
+      <div class="page-header">
+        <h2>FURNITURE · Líneas sin asociar</h2>
+        <p>Líneas del listado de Furniture que no se han podido asociar a ningún pedido del sistema.</p>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+        <div id="furni-sin-asociar-stats" style="display:flex;gap:10px;flex-wrap:wrap"></div>
+        <button onclick="furniLimpiarNoAsociados()" style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;background:white;border:1px solid #d1d5db;color:#6b7280"><i class="ti ti-trash"></i> Limpiar todo</button>
+      </div>
+      <div id="furni-no-asociados-content"></div>
     </div>
 
     <!-- FURNITURE: OTROS TAPICERÍA -->
@@ -3735,8 +3741,9 @@ function showPage(id,el){
   if(id==='seur-tabla'){tablaRender();}
   if(id==='admin-usuarios') adminRenderUsuarios();
   if(id==='admin-log') adminRenderLog();
-  if(id==='furniture-pedidos'){furniRender();furniRenderNoAsociados();}
+  if(id==='furniture-pedidos'){furniRender();}
   if(id==='furniture-cargas'){furniCargasRender();}
+  if(id==='furniture-sin-asociar'){furniRenderNoAsociados();}
   if(id==='furniture-otros'){furniOtrosRender();}
 }
 
@@ -5878,11 +5885,18 @@ function furniLimpiarTodo() {
 
 function furniRenderNoAsociados() {
   const lista = JSON.parse(localStorage.getItem('furni_no_asociados')||'[]');
-  const section = document.getElementById('furni-no-asociados-section');
-  const content = document.getElementById('furni-no-asociados-content');
-  if(!section || !content) return;
-  if(!lista.length) { section.style.display='none'; return; }
-  section.style.display='block';
+  const contentEl = document.getElementById('furni-no-asociados-content');
+  // Actualizar badge del menú
+  const badge = document.getElementById('badge-furni-sin-asociar');
+  if(badge) { badge.textContent=lista.length; badge.style.display=lista.length?'inline':'none'; }
+  // Stats
+  const statsEl = document.getElementById('furni-sin-asociar-stats');
+  if(statsEl) statsEl.innerHTML = lista.length
+    ? `<div class="stat-card" style="border-left:3px solid #f59e0b"><div class="label">Sin asociar</div><div class="value" style="color:#92400e">${lista.length}</div></div>`
+    : '';
+  if(!contentEl) return;
+  const content = contentEl;
+  if(!lista.length) { content.innerHTML='<div class="empty-state"><i class="ti ti-check"></i><p>No hay líneas sin asociar.</p></div>'; return; }
   const iconos={'INCIDENCIA':'⚠️','REPOSICION':'🔄','MONTAJE':'🔧','RECOGIDA':'📦','PRINCIPAL':'📋'};
   content.innerHTML = `<div style="border:1px solid #FDE68A;border-radius:10px;overflow:hidden">
     <table style="width:100%;border-collapse:collapse;table-layout:fixed">
