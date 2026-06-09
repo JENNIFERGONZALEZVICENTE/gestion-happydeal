@@ -2989,7 +2989,7 @@ function pcEditar(id){
         ].map(([campo,label,val])=>`
           <div>
             <div style="font-size:11px;font-weight:700;color:#374151;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.4px">${label}</div>
-            <input type="${campo==='unidades'?'number':'text'}" id="edit-${campo}" value="${String(val).replace(/"/g,'&quot;')}"
+            <input type="${campo==='unidades'?'number':'text'}" id="edit-${campo}" value="${String(val).replace(/"/g,'"')}"
               style="width:100%;padding:8px 10px;border:1px solid #d1d5db;border-radius:7px;font-size:12px;outline:none;box-sizing:border-box"
               onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
           </div>`).join('')}
@@ -4459,7 +4459,7 @@ function pendRenderPorPedido(pedsPendOrig,contentEl,pedsCompletos=[]){let pedsPe
               }).join('');
             })()}</div>
             <div style="width:90px;text-align:center">${l.recibido>0?`<div><span class="badge-recibido">${l.recibido}</span>${l.fechaRecepcion?`<div style="font-size:9px;color:#6b7280;margin-top:2px">${l.fechaRecepcion}</div>`:''}</div>`:''}</div>
-            <div style="width:36px;text-align:center">${l.recibido>0?`<button onclick="pendEditarRecibido('${p.id}','${l.modelo.replace(/'/g,'&apos;')}','${l.medida}')" title="Corregir cantidad recibida" style="background:none;border:none;cursor:pointer;color:#9ca3af;font-size:15px;padding:2px" onmouseover="this.style.color='#3B4A2F'" onmouseout="this.style.color='#9ca3af'"><i class='ti ti-edit'></i></button>`:''}
+            <div style="width:36px;text-align:center">${l.recibido>0?`<button onclick="pendEditarRecibido('${p.id}','${l.modelo.replace(/'/g,'\\u0027')}','${l.medida}')" title="Corregir cantidad recibida" style="background:none;border:none;cursor:pointer;color:#9ca3af;font-size:15px;padding:2px" onmouseover="this.style.color='#3B4A2F'" onmouseout="this.style.color='#9ca3af'"><i class='ti ti-edit'></i></button>`:''}
             </div>
             ${authGetUsuarioActual()==='JENNIFER'&&(l.prov==='NEW MATTRESS'||l.prov==='LUSOCOLCHAO')?`<div style="width:90px;text-align:right;padding-right:8px">${l.precioCompra?`<span style="font-size:11px;font-weight:700;color:#7c3aed">${l.precioCompra.toFixed(2)} €</span>`:`<span style="font-size:10px;color:#d1d5db">—</span>`}</div>`:''}
             ${authGetUsuarioActual()==='JENNIFER'&&(l.prov==='NEW MATTRESS'||l.prov==='LUSOCOLCHAO')?`<div style="width:90px;text-align:right;padding-right:8px">${l.precioCompra?`<span style="font-size:11px;font-weight:700;color:#5b21b6">${(l.precioCompra*(l.cantidad-l.recibido)).toFixed(2)} €</span>`:`<span style="font-size:10px;color:#d1d5db">—</span>`}</div>`:''}
@@ -4505,7 +4505,7 @@ function pendRenderPorPedido(pedsPendOrig,contentEl,pedsCompletos=[]){let pedsPe
               ${l.fechaRecepcion?`<span style="margin-right:8px"><i class="ti ti-calendar" style="font-size:10px"></i> ${l.fechaRecepcion}</span>`:''}
               ${(p.albaranes&&p.albaranes.length)?`<span><i class="ti ti-file" style="font-size:10px"></i> ${p.albaranes.map(a=>a.ref).join(', ')}</span>`:''}
             </div>
-            <div style="width:36px;text-align:center"><button onclick="pendEditarRecibido('${p.id}','${l.modelo.replace(/'/g,'&apos;')}','${l.medida}')" title="Corregir cantidad recibida" style="background:none;border:none;cursor:pointer;color:#9ca3af;font-size:15px;padding:2px" onmouseover="this.style.color='#3B4A2F'" onmouseout="this.style.color='#9ca3af'"><i class='ti ti-edit'></i></button></div>
+            <div style="width:36px;text-align:center"><button onclick="pendEditarRecibido('${p.id}','${l.modelo.replace(/'/g,'\\u0027')}','${l.medida}')" title="Corregir cantidad recibida" style="background:none;border:none;cursor:pointer;color:#9ca3af;font-size:15px;padding:2px" onmouseover="this.style.color='#3B4A2F'" onmouseout="this.style.color='#9ca3af'"><i class='ti ti-edit'></i></button></div>
           </div>`).join('')}
         </div>
       </div>`).join('')}
@@ -5982,7 +5982,7 @@ function pendEditarRecibido(pedId, modelo, medida){
         <div style="font-size:11px;color:#9ca3af;margin-top:4px;text-align:center">Entre 0 y ${linea.cantidad} uds pedidas</div>
       </div>
       <div style="display:flex;gap:8px">
-        <button onclick="pendEditarConfirmar('${pedId}','${modelo.replace(/'/g,'&apos;')}','${medida}')"
+        <button onclick="pendEditarConfirmar('${pedId}','${modelo.replace(/'/g,'\\u0027')}','${medida}')"
           style="flex:1;padding:11px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;background:#3B4A2F;border:none;color:white">
           <i class="ti ti-check"></i> Guardar y recalcular
         </button>
@@ -6783,7 +6783,7 @@ function spsRender(){
     const agBg=agencia==='FURNITURE'?'#EDE9FE':agencia==='VIENE A RECOGER'?'#D1FAE5':'#EFF6FF';
     const obs=pcGetObs(v.id);
     const espDat=(JSON.parse(localStorage.getItem('colch_ventas_espera')||'{}'))[String(v.id)]||{};
-    return `<div style="border:1px solid #FDE68A;border-radius:10px;margin-bottom:10px;overflow:hidden;background:#FFFBEB">
+    return `<div id="sps-card-${v.id}" style="border:1px solid #FDE68A;border-radius:10px;margin-bottom:10px;overflow:hidden;background:#FFFBEB">
       <div style="background:#FEF3C7;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
         <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
           <span style="background:#F59E0B;color:white;font-size:10px;font-weight:700;padding:2px 10px;border-radius:10px">✓ LISTO PARA SERVIR</span>
@@ -6841,7 +6841,26 @@ function spsReactivar(id){
 }
 
 function spsConfirmarUno(id){
-  pcMarcarServido(id);
+  // Guardar referencia a la tarjeta antes de abrir el modal
+  const card=document.getElementById(`sps-card-${id}`);
+  pcMarcarServido(id, ()=>{
+    // Callback tras confirmar: transformar tarjeta a verde
+    if(card){
+      card.style.border='1px solid #86EFAC';
+      card.style.background='#F0FDF4';
+      const cabecera=card.querySelector('div');
+      if(cabecera){
+        cabecera.style.background='#DCFCE7';
+        // Cambiar badge y botones
+        const badge=cabecera.querySelector('span');
+        if(badge){badge.style.background='#16A34A';badge.textContent='✓ SERVIDO';}
+        // Ocultar botones
+        const btnWrap=cabecera.querySelector('div:last-child');
+        if(btnWrap) btnWrap.innerHTML='<span style="font-size:12px;font-weight:600;color:#16A34A"><i class="ti ti-circle-check"></i> Marcado como servido</span>';
+      }
+    }
+    spsUpdateBadge();
+  });
 }
 
 function spsConfirmarTodos(){
@@ -7183,7 +7202,7 @@ function pcRender(){
   }).join('');
 }
 
-function pcMarcarServido(id){
+function pcMarcarServido(id, onConfirmado){
   const hoy=new Date();
   const hoyISO=`${hoy.getFullYear()}-${String(hoy.getMonth()+1).padStart(2,'0')}-${String(hoy.getDate()).padStart(2,'0')}`;
 
@@ -7221,6 +7240,7 @@ function pcMarcarServido(id){
     fechas[String(id)]=fechaStr;
     localStorage.setItem('colch_ventas_fecha_servido',JSON.stringify(fechas));
     overlay.remove();
+    if(typeof onConfirmado==='function') onConfirmado();
     pcRender(); pcUpdateBadge();
   };
 }
@@ -7940,9 +7960,12 @@ async function albLeerPDF(input){
     _albPdfB64Luso=btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
     const pdfDoc=await pdfjsLib.getDocument({data:arrayBuffer}).promise;
     const lineasPDF=[];
+    let paginasSaltadas=0;
     for(let p=1;p<=pdfDoc.numPages;p++){
       const page=await pdfDoc.getPage(p);
       const tc=await page.getTextContent();
+      const textoCompleto=tc.items.map(i=>i.str).join(' ').toUpperCase();
+      if(textoCompleto.includes('DUPLICADO')||textoCompleto.includes('TRIPLICADO')){paginasSaltadas++;continue;}
       const porY=new Map();
       tc.items.forEach(item=>{
         const y=Math.round(item.transform[5]/2)*2; // redondear a 2px
@@ -7954,6 +7977,7 @@ async function albLeerPDF(input){
         if(linea) lineasPDF.push(linea);
       });
     }
+    if(paginasSaltadas>0) st.textContent=`Leyendo PDF… (${paginasSaltadas} páginas de copia ignoradas)`;
 
     // Parsear líneas con referencia LUSOCOLCHÃO
     // Formato real: "49V1190150 COLCHÃO SPRING ZEN 1,90X1,50 1,000 UN 217,5500 0,0%..."
@@ -9562,25 +9586,25 @@ function albHistRender(){
   const filtroProv=document.getElementById('albhist-filtro-prov')?.value||'';
   const filtroRef=(document.getElementById('albhist-filtro-ref')?.value||'').trim().toLowerCase();
 
-  const normFecha=f=&gt;{
+  const normFecha=f=>{
     if(!f) return '';
     if(f.includes('-')) return f;
     const[d,m,y]=f.split('/');
     return `${y}-${m.padStart(2,'0')}-${d.padStart(2,'0')}`;
   };
 
-  const filtrados=albaranes.filter(a=&gt;{
-    if(filtroFecha &amp;&amp; normFecha(a.fecha)!==filtroFecha) return false;
-    if(filtroProv &amp;&amp; a.proveedor!==filtroProv) return false;
-    if(filtroRef &amp;&amp; !(a.ref||'').toLowerCase().includes(filtroRef)) return false;
+  const filtrados=albaranes.filter(a=>{
+    if(filtroFecha && normFecha(a.fecha)!==filtroFecha) return false;
+    if(filtroProv && a.proveedor!==filtroProv) return false;
+    if(filtroRef && !(a.ref||'').toLowerCase().includes(filtroRef)) return false;
     return true;
   });
 
   const stats=document.getElementById('albhist-stats');
   const content=document.getElementById('albhist-content');
 
-  const totalUds=filtrados.reduce((sum,a)=&gt;{
-    return sum+(a.lineas||[]).reduce((s,l)=&gt;s+(parseInt(l.cantidad)||0),0);
+  const totalUds=filtrados.reduce((sum,a)=>{
+    return sum+(a.lineas||[]).reduce((s,l)=>s+(parseInt(l.cantidad)||0),0);
   },0);
 
   stats.innerHTML=`
@@ -9593,26 +9617,26 @@ function albHistRender(){
     return;
   }
 
-  content.innerHTML=filtrados.map((a,idx)=&gt;{
+  content.innerHTML=filtrados.map((a,idx)=>{
     const provColor=a.proveedor==='NEW MATTRESS'?'#3730A3':'#3B4A2F';
     const provBg=a.proveedor==='NEW MATTRESS'?'#EEF2FF':'#F4F6F1';
     const provLabel=a.proveedor==='NEW MATTRESS'?'NEW MATTRESS':a.proveedor==='LUSOCOLCHAO'?'LUSOCOLCHÃO':a.proveedor||'—';
-    const totalUdsAlb=(a.lineas||[]).reduce((s,l)=&gt;s+(parseInt(l.cantidad)||0),0);
+    const totalUdsAlb=(a.lineas||[]).reduce((s,l)=>s+(parseInt(l.cantidad)||0),0);
 
     // ── Tabla de líneas con detalle de pedidos asociados ──
-    const lineasSrc=a.detalleLineas||((a.lineas||[]).map(l=&gt;({...l,pedidos:[],sinPedido:0})));
-    const lineasHTML=lineasSrc.map(l=&gt;{
-      const pedidosHTML=(l.pedidos||[]).length&gt;0
-        ? (l.pedidos||[]).map(p=&gt;`<span style="display:inline-block;margin:1px 3px 1px 0;font-size:10px;background:#EEF2FF;color:#3730A3;padding:1px 7px;border-radius:8px;font-weight:600">${p.pedidoId}${p.fechaPedido?' · '+p.fechaPedido:''} · ${p.uds}ud</span>`).join('')
+    const lineasSrc=a.detalleLineas||((a.lineas||[]).map(l=>({...l,pedidos:[],sinPedido:0})));
+    const lineasHTML=lineasSrc.map(l=>{
+      const pedidosHTML=(l.pedidos||[]).length>0
+        ? (l.pedidos||[]).map(p=>`<span style="display:inline-block;margin:1px 3px 1px 0;font-size:10px;background:#EEF2FF;color:#3730A3;padding:1px 7px;border-radius:8px;font-weight:600">${p.pedidoId}${p.fechaPedido?' · '+p.fechaPedido:''} · ${p.uds}ud</span>`).join('')
         : '';
-      const sinPedidoHTML=l.sinPedido&gt;0
+      const sinPedidoHTML=l.sinPedido>0
         ? `<span style="display:inline-block;margin:1px 0;font-size:10px;background:#FEF3C7;color:#92400e;padding:1px 7px;border-radius:8px;font-weight:600">${l.sinPedido}ud sin pedido</span>`
         : '';
       return `
         ${l.modelo||'—'}
         ${l.medida||'—'}
         ${l.cantidad||0}
-        ${pedidosHTML}${sinPedidoHTML}${!pedidosHTML&amp;&amp;!sinPedidoHTML?'<span style="color:#d1d5db;font-size:11px">—</span>':''}
+        ${pedidosHTML}${sinPedidoHTML}${!pedidosHTML&&!sinPedidoHTML?'<span style="color:#d1d5db;font-size:11px">—</span>':''}
       `;
     }).join('');
 
@@ -9765,14 +9789,14 @@ function albHistLimpiarFiltros(){
       <!-- Modelo con autocomplete -->
       <div style="position:relative">
         <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:5px">Modelo</label>
-        <input type="text" id="modal-entrada-modelo" placeholder="Escribe para buscar…" autocomplete="off" oninput="stockAutocomplete(&#39;modelo&#39;)" onblur="setTimeout(()=&gt;document.getElementById(&#39;ac-modelo&#39;).style.display=&#39;none&#39;,200)" style="width:100%;padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;box-sizing:border-box" onfocus="this.style.borderColor=&#39;#3730A3&#39;;stockAutocomplete(&#39;modelo&#39;)">
+        <input type="text" id="modal-entrada-modelo" placeholder="Escribe para buscar…" autocomplete="off" oninput="stockAutocomplete(&#39;modelo&#39;)" onblur="setTimeout(()=>document.getElementById(&#39;ac-modelo&#39;).style.display=&#39;none&#39;,200)" style="width:100%;padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;box-sizing:border-box" onfocus="this.style.borderColor=&#39;#3730A3&#39;;stockAutocomplete(&#39;modelo&#39;)">
         <div id="ac-modelo" style="display:none;position:absolute;top:100%;left:0;right:0;background:white;border:1px solid #d1d5db;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.1);z-index:100;max-height:180px;overflow-y:auto"></div>
       </div>
 
       <!-- Medida con autocomplete -->
       <div style="position:relative">
         <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:5px">Medida</label>
-        <input type="text" id="modal-entrada-medida" placeholder="Ej: 150x200" autocomplete="off" oninput="stockAutocomplete(&#39;medida&#39;)" onblur="setTimeout(()=&gt;document.getElementById(&#39;ac-medida&#39;).style.display=&#39;none&#39;,200)" style="width:100%;padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;box-sizing:border-box" onfocus="this.style.borderColor=&#39;#3730A3&#39;;stockAutocomplete(&#39;medida&#39;)">
+        <input type="text" id="modal-entrada-medida" placeholder="Ej: 150x200" autocomplete="off" oninput="stockAutocomplete(&#39;medida&#39;)" onblur="setTimeout(()=>document.getElementById(&#39;ac-medida&#39;).style.display=&#39;none&#39;,200)" style="width:100%;padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;box-sizing:border-box" onfocus="this.style.borderColor=&#39;#3730A3&#39;;stockAutocomplete(&#39;medida&#39;)">
         <div id="ac-medida" style="display:none;position:absolute;top:100%;left:0;right:0;background:white;border:1px solid #d1d5db;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.1);z-index:100;max-height:180px;overflow-y:auto"></div>
       </div>
 
