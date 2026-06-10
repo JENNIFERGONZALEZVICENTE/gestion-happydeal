@@ -8427,6 +8427,12 @@ function pcRender(){
     acumPorKey.set(k,antes+v.unidades);
   });
 
+  const _sinRecepMap=JSON.parse(localStorage.getItem('colch_sin_recepcion')||'{}');
+  const _fechasServido=JSON.parse(localStorage.getItem('colch_ventas_fecha_servido')||'{}');
+  const _esperaMap=JSON.parse(localStorage.getItem('colch_ventas_espera')||'{}');
+  const _excluidas=new Set(JSON.parse(localStorage.getItem('colch_sps_excluidas')||'[]').map(String));
+  const _auditMap=JSON.parse(localStorage.getItem('colch_ventas_audit')||'{}');
+  const _auditArr=JSON.parse(localStorage.getItem('colch_ventas_audit')||'[]');
   content.innerHTML=ventas.map(v=>{
     const obs=pcGetObs(v.id);
     const agencia=pcGetAgencia(v.id,v.ref);
@@ -8434,12 +8440,12 @@ function pcRender(){
     const esServido=estado==='SERVIDO';
     const esCancelado=estado==='CANCELADO';
     const esEspera=estado==='EN ESPERA';
-    const fechasServido=JSON.parse(localStorage.getItem('colch_ventas_fecha_servido')||'{}');
+    const fechasServido=_fechasServido;
     const fechaServido=fechasServido[String(v.id)]||'';
     const agColor=agencia==='FURNITURE'?'#7C3AED':agencia==='VIENE A RECOGER'?'#065F46':agencia==='SEUR'?'#1d4ed8':'#374151';
     const agBg=agencia==='FURNITURE'?'#EDE9FE':agencia==='VIENE A RECOGER'?'#D1FAE5':agencia==='SEUR'?'#EFF6FF':'#F3F4F6';
-    const espDat=(JSON.parse(localStorage.getItem('colch_ventas_espera')||'{}'))[String(v.id)]||{};
-    const esExcluida=(JSON.parse(localStorage.getItem('colch_sps_excluidas')||'[]')).includes(String(v.id));
+    const espDat=(_esperaMap)[String(v.id)]||{};
+    const esExcluida=_excluidas.has(String(v.id));
     const infoPed=pcInfoPedido(v.modelo,v.medida);
     const infoPrev=pcInfoPrevision(v.modelo,v.medida);
     const provCorto=p=>p==='LUSOCOLCHAO'?'LUSO':p==='NEW MATTRESS'?'NEW M.':p||'';
@@ -8460,8 +8466,7 @@ function pcRender(){
     } else if(sinCobertura>0){
       pedidoHTML=`<span style="background:#FEF3C7;color:#92400e;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px">⚠ ${conCobertura} ok · ${sinCobertura} SIN STOCK — PEDIR</span>`;
     } else {
-      const sinRecep=(JSON.parse(localStorage.getItem('colch_sin_recepcion')||'{}')); 
-      const tieneSinRecep=sinRecep[String(v.id)];
+      const tieneSinRecep=_sinRecepMap[String(v.id)];
       if(tieneSinRecep){
         pedidoHTML=`<span style="background:#F3F4F6;color:#6b7280;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;cursor:pointer" onclick="pcReactivarRecepcion('${v.id}')" title="Reactivar asociación al albarán">↩ Sin recepción válida · ${tieneSinRecep}</span>`;
       } else {
@@ -8482,7 +8487,7 @@ function pcRender(){
       :esCancelado
       ?`<span style="background:#FEE2E2;color:#991b1b;font-size:10px;font-weight:700;padding:2px 10px;border-radius:10px">✕ CANCELADO</span>`
       :esEspera
-      ?`<span style="background:#EDE9FE;color:#7c3aed;font-size:10px;font-weight:700;padding:2px 10px;border-radius:10px">⏸ EN ESPERA${(()=>{const d=(JSON.parse(localStorage.getItem('colch_ventas_espera')||'{}'))[String(v.id)]||{};const mot={'FECHA':'📅 Fecha programada','CANCELAR':'❌ Posible cancelación','CAMBIO':'🔄 Cambio medida/modelo'}[d.motivo]||'';const f=d.fecha?(' · '+d.fecha.split('-').reverse().join('/')):'';return mot?' · '+mot+f:'';})()}</span>`
+      ?`<span style="background:#EDE9FE;color:#7c3aed;font-size:10px;font-weight:700;padding:2px 10px;border-radius:10px">⏸ EN ESPERA${(()=>{const d=(_esperaMap)[String(v.id)]||{};const mot={'FECHA':'📅 Fecha programada','CANCELAR':'❌ Posible cancelación','CAMBIO':'🔄 Cambio medida/modelo'}[d.motivo]||'';const f=d.fecha?(' · '+d.fecha.split('-').reverse().join('/')):'';return mot?' · '+mot+f:'';})()}</span>`
       :`<span style="background:#FEF3C7;color:#92400e;font-size:10px;font-weight:700;padding:2px 10px;border-radius:10px">PENDIENTE</span>`;
 
     return `<div style="border:1px solid ${esCancelado?'#FECACA':esServido?'#BBF7D0':esEspera?'#DDD6FE':'#e2e6dc'};border-radius:10px;margin-bottom:10px;overflow:hidden;opacity:${esCancelado||esServido?'0.65':'1'}">
@@ -8564,7 +8569,7 @@ function pcRender(){
         </div>
       </div>
       ${(()=>{
-        const cambios=(JSON.parse(localStorage.getItem('colch_ventas_audit')||'[]')).filter(c=>String(c.ventaId)===String(v.id));
+        const cambios=(_auditArr).filter(c=>String(c.ventaId)===String(v.id));
         if(!cambios.length) return '';
         return '<div style="border-top:1px solid #e2e6dc"><details style="padding:0"><summary style="padding:8px 16px;font-size:11px;font-weight:700;color:#6b7280;cursor:pointer;list-style:none;display:flex;align-items:center;gap:6px;background:#fafaf9"><i class="ti ti-history" style="font-size:12px"></i> '+cambios.length+' cambio'+(cambios.length!==1?'s':'')+' registrado'+(cambios.length!==1?'s':'')+'<i class="ti ti-chevron-down" style="font-size:11px;margin-left:auto"></i></summary><div style="padding:10px 16px;background:#fafaf9"><table style="width:100%;font-size:11px;border-collapse:collapse"><thead><tr style="color:#9ca3af;font-weight:700;text-transform:uppercase;font-size:10px"><th style="padding:4px 8px;text-align:left">Fecha</th><th style="padding:4px 8px;text-align:left">Usuario</th><th style="padding:4px 8px;text-align:left">Campo</th><th style="padding:4px 8px;text-align:left">Antes</th><th style="padding:4px 8px;text-align:left">Después</th></tr></thead><tbody>'+cambios.map(c=>'<tr style="border-top:1px solid #f3f4f6"><td style="padding:4px 8px;color:#6b7280;white-space:nowrap">'+c.fecha+'</td><td style="padding:4px 8px;font-weight:600;color:#3B4A2F">'+c.usuario+'</td><td style="padding:4px 8px;font-weight:600;color:#374151">'+c.campo+'</td><td style="padding:4px 8px;color:#991b1b;text-decoration:line-through">'+(c.antes||'—')+'</td><td style="padding:4px 8px;color:#065F46;font-weight:600">'+(c.despues||'—')+'</td></tr>').join('')+'</tbody></table></div></details></div>';
       })()}
