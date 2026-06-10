@@ -8648,17 +8648,52 @@ function pcMarcarServido(id, onConfirmado){
 function pcMarcarServidoFecha(id, onConfirmado){
   const hoy=new Date();
   const hoyISO=`${hoy.getFullYear()}-${String(hoy.getMonth()+1).padStart(2,'0')}-${String(hoy.getDate()).padStart(2,'0')}`;
+  const ventas=JSON.parse(localStorage.getItem('colch_ventas')||'[]');
+  const venta=ventas.find(v=>String(v.id)===String(id));
   const overlay=document.createElement('div');
   overlay.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:9999;display:flex;align-items:center;justify-content:center';
   overlay.innerHTML=`
-    <div style="background:white;border-radius:14px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,0.25);min-width:280px;text-align:center">
-      <div style="font-size:14px;font-weight:700;color:#3B4A2F;margin-bottom:6px">¿En qué fecha se sirve?</div>
-      <div style="font-size:12px;color:#6b7280;margin-bottom:16px">Por defecto hoy. Cámbiala si es necesario.</div>
+    <div style="background:white;border-radius:14px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,0.25);width:400px;max-width:95vw">
+      <div style="font-size:14px;font-weight:700;color:#3B4A2F;margin-bottom:6px;text-align:center">¿En qué fecha se sirve?</div>
+      <div style="font-size:12px;color:#6b7280;margin-bottom:16px;text-align:center">Por defecto hoy. Cámbiala si es necesario.</div>
       <input type="date" id="pc-fecha-servido" value="${hoyISO}"
         style="padding:9px 14px;border:2px solid #3B4A2F;border-radius:8px;font-size:14px;outline:none;width:100%;margin-bottom:16px">
+      <div style="margin-bottom:14px;padding:14px;background:#F9FAFB;border-radius:10px;border:1px solid #e5e7eb">
+        <div style="font-size:12px;font-weight:700;color:#374151;margin-bottom:10px">¿Se sirve el modelo pedido?</div>
+        <div style="display:flex;gap:16px;margin-bottom:10px">
+          <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;font-weight:600;color:#374151">
+            <input type="radio" name="pc-cambio-tipo" value="no" checked style="accent-color:#16A34A;width:14px;height:14px">
+            Sí, modelo pedido
+          </label>
+          <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;font-weight:600;color:#d97706">
+            <input type="radio" name="pc-cambio-tipo" value="si" style="accent-color:#d97706;width:14px;height:16px">
+            No, cambio de modelo
+          </label>
+        </div>
+        <div id="pc-cambio-wrap" style="display:none">
+          <div style="font-size:11px;color:#92400e;background:#FEF3C7;border-radius:6px;padding:7px 10px;margin-bottom:10px">
+            El modelo servido se descontará del stock
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+            <div>
+              <label style="font-size:11px;font-weight:600;color:#374151;display:block;margin-bottom:4px">Modelo servido</label>
+              <input type="text" id="pc-cambio-modelo" placeholder="Ej: COLZNIR" style="width:100%;padding:8px 10px;border:1.5px solid #d97706;border-radius:7px;font-size:13px;outline:none;text-transform:uppercase">
+            </div>
+            <div>
+              <label style="font-size:11px;font-weight:600;color:#374151;display:block;margin-bottom:4px">Medida</label>
+              <input type="text" id="pc-cambio-medida" placeholder="Ej: 150x190" style="width:100%;padding:8px 10px;border:1.5px solid #d97706;border-radius:7px;font-size:13px;outline:none">
+            </div>
+          </div>
+          <div>
+            <label style="font-size:11px;font-weight:600;color:#374151;display:block;margin-bottom:4px">Nota (opcional)</label>
+            <textarea id="pc-cambio-nota" rows="2" placeholder="Ej: Cliente acepta cambio por falta de stock..."
+              style="width:100%;padding:8px 10px;border:1.5px solid #d1d5db;border-radius:7px;font-size:12px;resize:vertical;outline:none"></textarea>
+          </div>
+        </div>
+      </div>
       <div style="display:flex;gap:8px">
         <button id="pc-btn-confirmar-servido" style="flex:1;padding:10px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;background:#16A34A;border:none;color:white">
-          <i class="ti ti-check"></i> Confirmar
+          Confirmar
         </button>
         <button id="pc-btn-cancelar-servido" style="padding:10px 16px;border-radius:8px;font-size:13px;cursor:pointer;background:white;border:1px solid #d1d5db;color:#374151">
           Cancelar
@@ -8666,21 +8701,47 @@ function pcMarcarServidoFecha(id, onConfirmado){
       </div>
     </div>`;
   document.body.appendChild(overlay);
-  document.getElementById('pc-btn-cancelar-servido').addEventListener('click',()=>overlay.remove());
-  overlay.addEventListener('click',(e)=>{if(e.target===overlay)overlay.remove();});
-  document.getElementById('pc-btn-confirmar-servido').addEventListener('click',()=>{
+  overlay.querySelectorAll('input[name="pc-cambio-tipo"]').forEach(function(r){
+    r.addEventListener('change',function(){
+      var esCambio=overlay.querySelector('input[name="pc-cambio-tipo"]:checked').value==='si';
+      document.getElementById('pc-cambio-wrap').style.display=esCambio?'block':'none';
+    });
+  });
+  var modeloInput=document.getElementById('pc-cambio-modelo');
+  if(modeloInput) modeloInput.addEventListener('input',function(){ this.value=this.value.toUpperCase(); });
+  document.getElementById('pc-btn-cancelar-servido').addEventListener('click',function(){overlay.remove();});
+  overlay.addEventListener('click',function(e){if(e.target===overlay)overlay.remove();});
+  document.getElementById('pc-btn-confirmar-servido').addEventListener('click',function(){
     const fechaISO=document.getElementById('pc-fecha-servido').value;
-    const[y,m,d]=fechaISO.split('-');
-    const fechaStr=`${d}/${m}/${y}`;
+    const parts=fechaISO.split('-');
+    const fechaStr=parts[2]+'/'+parts[1]+'/'+parts[0];
+    var esCambio=overlay.querySelector('input[name="pc-cambio-tipo"]:checked').value==='si';
+    if(esCambio){
+      var modeloCambio=(document.getElementById('pc-cambio-modelo').value||'').trim().toUpperCase();
+      var medidaCambio=(document.getElementById('pc-cambio-medida').value||'').trim();
+      if(!modeloCambio||!medidaCambio){ alert('Indica el modelo y medida del colchón servido.'); return; }
+      var stockActual=stockGetActual();
+      var udsPedido=venta?parseInt(venta.unidades)||1:1;
+      var disponible=stockActual.get(modeloCambio+'||'+medidaCambio)||0;
+      if(udsPedido>disponible){
+        if(!confirm('Solo hay '+disponible+' uds de '+modeloCambio+' '+medidaCambio+' en stock. ¿Continuar igualmente?')) return;
+      }
+      var notaCambio=(document.getElementById('pc-cambio-nota').value||'').trim();
+      var refSalida='Cambio de modelo · Pedido '+(venta?venta.ref||id:id)+(notaCambio?' · '+notaCambio:'');
+      stockRegistrarMovimiento('SALIDA',modeloCambio,medidaCambio,udsPedido,refSalida);
+      var obsMap=JSON.parse(localStorage.getItem('colch_ventas_obs')||'{}');
+      var notaGuardar='[CAMBIO MODELO] Servido: '+modeloCambio+' '+medidaCambio+(notaCambio?' - '+notaCambio:'');
+      obsMap[String(id)]=(obsMap[String(id)]?obsMap[String(id)]+' | ':'')+notaGuardar;
+      localStorage.setItem('colch_ventas_obs',JSON.stringify(obsMap));
+      authRegistrarAccion('Cambio de modelo al servir','Pedido '+(venta?venta.ref||id:id)+' -> '+modeloCambio+' '+medidaCambio+' descontado de stock');
+    }
     const est=JSON.parse(localStorage.getItem('colch_ventas_estado')||'{}');
-    auditGuardar(id,'Estado',est[String(id)]||'PENDIENTE','SERVIDO · '+fechaStr);
+    auditGuardar(id,'Estado',est[String(id)]||'PENDIENTE','SERVIDO · '+fechaStr+(esCambio?' (cambio modelo)':''));
     est[String(id)]='SERVIDO';
     localStorage.setItem('colch_ventas_estado',JSON.stringify(est));
     const fechas=JSON.parse(localStorage.getItem('colch_ventas_fecha_servido')||'{}');
     fechas[String(id)]=fechaStr;
     localStorage.setItem('colch_ventas_fecha_servido',JSON.stringify(fechas));
-    const ventas=JSON.parse(localStorage.getItem('colch_ventas')||'[]');
-    const venta=ventas.find(v=>String(v.id)===String(id));
     if(venta && (venta.ref||'').toUpperCase().startsWith('FUR')) {
       const refFurni=(venta.ref||'').substring(3);
       let furniture=JSON.parse(localStorage.getItem('furni_pedidos')||'[]');
@@ -8689,7 +8750,7 @@ function pcMarcarServidoFecha(id, onConfirmado){
     }
     overlay.remove();
     if(typeof onConfirmado==='function') onConfirmado();
-    pcRender(); pcUpdateBadge();
+    pcRender(); pcUpdateBadge(); stockBadgeUpdate();
   });
 }
 
