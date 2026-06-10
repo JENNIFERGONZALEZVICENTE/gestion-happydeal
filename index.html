@@ -8460,9 +8460,15 @@ function pcRender(){
     } else if(sinCobertura>0){
       pedidoHTML=`<span style="background:#FEF3C7;color:#92400e;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px">⚠ ${conCobertura} ok · ${sinCobertura} SIN STOCK — PEDIR</span>`;
     } else {
-      pedidoHTML=infoPed.pedido
-        ?`<span style="background:#D1FAE5;color:#065F46;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px">✓ ${provCorto(infoPed.prov)}${infoPed.fechaRecepcion?' · Rec. '+infoPed.fechaRecepcion:''}</span>`
-        :`<span style="background:#FEE2E2;color:#991b1b;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px">⚠ NO PEDIDO</span>`;
+      const sinRecep=(JSON.parse(localStorage.getItem('colch_sin_recepcion')||'{}')); 
+      const tieneSinRecep=sinRecep[String(v.id)];
+      if(tieneSinRecep){
+        pedidoHTML=`<span style="background:#F3F4F6;color:#6b7280;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;cursor:pointer" onclick="pcReactivarRecepcion('${v.id}')" title="Reactivar asociación al albarán">↩ Sin recepción válida · ${tieneSinRecep}</span>`;
+      } else {
+        pedidoHTML=infoPed.pedido
+          ?`<span style="background:#D1FAE5;color:#065F46;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;cursor:pointer" onclick="pcDesasociarRecepcion('${v.id}','${infoPed.prov}','${infoPed.fechaRecepcion}')" title="Haz clic para desasociar este albarán">✓ ${provCorto(infoPed.prov)}${infoPed.fechaRecepcion?' · Rec. '+infoPed.fechaRecepcion:''}</span>`
+          :`<span style="background:#FEE2E2;color:#991b1b;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px">⚠ NO PEDIDO</span>`;
+      }
     }
 
     const esSF=!infoPrev?.fechaEntrega||infoPrev?.fechaEntrega==='Sin confirmar';
@@ -8752,6 +8758,31 @@ function pcMarcarServidoFecha(id, onConfirmado){
     if(typeof onConfirmado==='function') onConfirmado();
     pcRender(); pcUpdateBadge(); stockBadgeUpdate();
   });
+}
+
+function pcDesasociarRecepcion(id, prov, fechaRec){
+  if(!confirm('¿Desasociar este pedido del albarán de '+prov+(fechaRec?' del '+fechaRec:'')+' ? El pedido quedará como pendiente normal y se guardará el historial.')) return;
+  var sinRecep=JSON.parse(localStorage.getItem('colch_sin_recepcion')||'{}');
+  sinRecep[String(id)]=prov+(fechaRec?' '+fechaRec:'');
+  localStorage.setItem('colch_sin_recepcion',JSON.stringify(sinRecep));
+  // Excluir también de Se pueden servir
+  var excluidas=JSON.parse(localStorage.getItem('colch_sps_excluidas')||'[]');
+  if(!excluidas.includes(String(id))) excluidas.push(String(id));
+  localStorage.setItem('colch_sps_excluidas',JSON.stringify(excluidas));
+  auditGuardar(id,'Recepción','Asociado a '+prov+(fechaRec?' '+fechaRec:''),'Desasociado manualmente - sin recepción válida');
+  pcRender(); spsRender(); spsUpdateBadge(); pcUpdateBadge();
+}
+
+function pcReactivarRecepcion(id){
+  if(!confirm('¿Reactivar la asociación al albarán para este pedido?')) return;
+  var sinRecep=JSON.parse(localStorage.getItem('colch_sin_recepcion')||'{}');
+  delete sinRecep[String(id)];
+  localStorage.setItem('colch_sin_recepcion',JSON.stringify(sinRecep));
+  // Quitar también de excluidas SPS
+  var excluidas=JSON.parse(localStorage.getItem('colch_sps_excluidas')||'[]');
+  localStorage.setItem('colch_sps_excluidas',JSON.stringify(excluidas.filter(function(x){ return x!==String(id); })));
+  auditGuardar(id,'Recepción','Sin recepción válida','Reactivado manualmente');
+  pcRender(); spsRender(); spsUpdateBadge(); pcUpdateBadge();
 }
 
 function pcMarcarEspera(id){
