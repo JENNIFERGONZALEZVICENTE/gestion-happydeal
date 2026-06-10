@@ -413,6 +413,15 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
 
       </div>
 
+      <!-- MARKETING -->
+      <div class="nav-section-header" onclick="navToggle('sec-marketing',this)">
+        <span>Marketing</span>
+        <i class="ti ti-chevron-down chevron"></i>
+      </div>
+      <div class="nav-section-body" id="sec-marketing">
+        <div class="nav-item" onclick="showPage('mkt-dashboard',this)"><i class="ti ti-chart-bar"></i> Dashboard Ads</div>
+      </div>
+
       <!-- SEGURIDAD -->
       <div class="nav-section-header" onclick="navToggle(&#39;sec-seguridad&#39;,this)">
         <span>Seguridad</span>
@@ -2128,6 +2137,96 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
       </div>
     </div>
 
+    <!-- MARKETING: DASHBOARD ADS -->
+    <div class="page" id="page-mkt-dashboard">
+      <div class="page-header">
+        <h2><i class="ti ti-chart-bar" style="color:#3B4A2F;margin-right:8px"></i>Dashboard Ads</h2>
+        <p>Seguimiento diario de ventas, publicidad y rentabilidad</p>
+      </div>
+
+      <!-- ENTRADA DE DATOS -->
+      <div class="card" style="margin-bottom:16px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+          <div style="font-size:14px;font-weight:600;color:#1a1a1a">Registro diario</div>
+          <div style="font-size:12px;color:#6b7280" id="mkt-fecha-hoy"></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+          <div>
+            <label style="font-size:11px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:6px">Ventas totales brutas (€ con IVA) <span id="mkt-periodo-label" style="font-weight:400;color:#9ca3af;text-transform:none;letter-spacing:0"></span></label>
+            <input type="number" id="mkt-input-ventas" placeholder="Ej: 33628" step="0.01" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;outline:none" onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'" oninput="mktCalcularPreview()">
+          </div>
+          <div>
+            <label style="font-size:11px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:6px">Gasto en Ads (€)</label>
+            <input type="number" id="mkt-input-ads" placeholder="Ej: 5541" step="0.01" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;outline:none" onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'" oninput="mktCalcularPreview()">
+          </div>
+        </div>
+        <div style="margin-bottom:16px">
+          <label style="font-size:11px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:6px">ROAS Triple Whale <span style="font-weight:400;color:#9ca3af;text-transform:none;letter-spacing:0">(dato bruto — referencia externa)</span></label>
+          <input type="number" id="mkt-input-roas-tw" placeholder="Ej: 6.43" step="0.01" style="width:220px;padding:10px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;outline:none" onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
+        </div>
+
+        <!-- PREVIEW CÁLCULO -->
+        <div id="mkt-preview" style="display:none;background:#F4F6F1;border-radius:10px;padding:16px;margin-bottom:16px">
+          <div style="font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px">Cálculo en tiempo real</div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+            <div style="text-align:center">
+              <div style="font-size:11px;color:#6b7280;margin-bottom:4px">Ventas netas (sin IVA)</div>
+              <div style="font-size:20px;font-weight:700;color:#1a1a1a" id="mkt-prev-netas">—</div>
+            </div>
+            <div style="text-align:center">
+              <div style="font-size:11px;color:#6b7280;margin-bottom:4px">% Ads sobre ventas netas</div>
+              <div style="font-size:20px;font-weight:700" id="mkt-prev-pct">—</div>
+            </div>
+            <div style="text-align:center">
+              <div style="font-size:11px;color:#6b7280;margin-bottom:4px">ROAS real (neto)</div>
+              <div style="font-size:20px;font-weight:700;color:#1a1a1a" id="mkt-prev-roas">—</div>
+            </div>
+          </div>
+          <!-- SEMÁFORO -->
+          <div id="mkt-semaforo" style="margin-top:14px;padding:10px 14px;border-radius:8px;font-size:13px;font-weight:600;text-align:center"></div>
+        </div>
+
+        <button class="btn btn-primary" onclick="mktGuardarHoy()" style="width:100%"><i class="ti ti-device-floppy"></i> Guardar registro de hoy</button>
+        <div class="status-box" id="mkt-status" style="margin-top:10px"></div>
+      </div>
+
+      <!-- UMBRALES DE REFERENCIA -->
+      <div class="card" style="margin-bottom:16px">
+        <div style="font-size:13px;font-weight:600;margin-bottom:12px">Umbrales de referencia</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;font-size:12px">
+          <div style="background:#FEF2F2;border-radius:8px;padding:12px;text-align:center;border:1px solid #fecaca">
+            <div style="font-size:18px;margin-bottom:4px">🔴</div>
+            <div style="font-weight:700;color:#991b1b">Peligro</div>
+            <div style="color:#6b7280;margin-top:4px">% Ads &gt; 23%</div>
+            <div style="color:#6b7280">ROAS &lt; 4,35</div>
+          </div>
+          <div style="background:#FEF3C7;border-radius:8px;padding:12px;text-align:center;border:1px solid #fcd34d">
+            <div style="font-size:18px;margin-bottom:4px">🟡</div>
+            <div style="font-weight:700;color:#92400e">Mejorable</div>
+            <div style="color:#6b7280;margin-top:4px">% Ads 21–23%</div>
+            <div style="color:#6b7280">ROAS 4,35–4,76</div>
+          </div>
+          <div style="background:#F0FDF4;border-radius:8px;padding:12px;text-align:center;border:1px solid #bbf7d0">
+            <div style="font-size:18px;margin-bottom:4px">🟢</div>
+            <div style="font-weight:700;color:#166534">Óptimo</div>
+            <div style="color:#6b7280;margin-top:4px">% Ads &lt; 21%</div>
+            <div style="color:#6b7280">ROAS &gt; 4,76</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HISTÓRICO -->
+      <div class="card">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+          <div style="font-size:13px;font-weight:600">Histórico de registros</div>
+          <button class="btn" onclick="mktExportarExcel()" style="font-size:12px;padding:6px 12px"><i class="ti ti-file-download"></i> Exportar Excel</button>
+        </div>
+        <div id="mkt-historico-content">
+          <div style="text-align:center;color:#9ca3af;font-size:13px;padding:32px 0">Sin registros aún</div>
+        </div>
+      </div>
+    </div>
+
     <div class="page" id="page-passwords">
       <div class="page-header">
         <h2>Gestor de contraseñas</h2>
@@ -3745,6 +3844,7 @@ function showPage(id,el){
   if(id==='furniture-cargas'){furniCargasRender();}
   if(id==='furniture-sin-asociar'){furniRenderNoAsociados();}
   if(id==='furniture-otros'){furniOtrosRender();}
+  if(id==='mkt-dashboard'){mktRender();}
 }
 
 document.getElementById('fileInput').addEventListener('change',e=>{
@@ -10854,6 +10954,175 @@ function seurLimpiar(){
   const p=document.getElementById('seur-pais');
   if(b)b.value='';if(p)p.value='todos';
   seurBuscar();
+}
+
+// ─── MARKETING: DASHBOARD ADS ─────────────────────────────────
+const MKT_KEY = 'mkt_registros';
+
+function mktGetRegistros(){
+  return JSON.parse(localStorage.getItem(MKT_KEY)||'[]');
+}
+function mktSaveRegistros(arr){
+  localStorage.setItem(MKT_KEY, JSON.stringify(arr));
+}
+
+function mktGetPeriodo(fechaRef){
+  // fechaRef: objeto Date del día de registro
+  // El acumulativo es desde el 01 del mes hasta el día anterior
+  const ayer = new Date(fechaRef);
+  ayer.setDate(ayer.getDate()-1);
+  const inicio = new Date(fechaRef.getFullYear(), fechaRef.getMonth(), 1);
+  const fmt = d => d.toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit',year:'numeric'});
+  return { str: `${fmt(inicio)} – ${fmt(ayer)}`, inicio: fmt(inicio), fin: fmt(ayer) };
+}
+
+function mktRender(){
+  // Mostrar fecha de hoy
+  const hoy = new Date();
+  const fechaStr = hoy.toLocaleDateString('es-ES',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  const el = document.getElementById('mkt-fecha-hoy');
+  if(el) el.textContent = fechaStr.charAt(0).toUpperCase()+fechaStr.slice(1);
+  // Mostrar período acumulativo
+  const periodo = mktGetPeriodo(hoy);
+  const labelPeriodo = document.getElementById('mkt-periodo-label');
+  if(labelPeriodo) labelPeriodo.textContent = `· Acumulado ${periodo.str}`;
+  // Precargar si ya hay registro de hoy
+  const registros = mktGetRegistros();
+  const fechaHoy = hoy.toISOString().slice(0,10);
+  const regHoy = registros.find(r=>r.fecha===fechaHoy);
+  if(regHoy){
+    document.getElementById('mkt-input-ventas').value = regHoy.ventas_brutas;
+    document.getElementById('mkt-input-ads').value = regHoy.ads;
+    if(regHoy.roas_tw) document.getElementById('mkt-input-roas-tw').value = regHoy.roas_tw;
+    mktCalcularPreview();
+  }
+  mktRenderHistorico();
+}
+
+function mktCalcularPreview(){
+  const ventas = parseFloat(document.getElementById('mkt-input-ventas').value)||0;
+  const ads = parseFloat(document.getElementById('mkt-input-ads').value)||0;
+  const prev = document.getElementById('mkt-preview');
+  if(!ventas && !ads){ prev.style.display='none'; return; }
+  prev.style.display='block';
+  const netas = ventas / 1.21;
+  const pct = ads>0&&netas>0 ? (ads/netas*100) : 0;
+  const roas = ads>0&&netas>0 ? (netas/ads) : 0;
+  document.getElementById('mkt-prev-netas').textContent = netas.toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';
+  const pctEl = document.getElementById('mkt-prev-pct');
+  pctEl.textContent = pct.toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})+'%';
+  document.getElementById('mkt-prev-roas').textContent = roas.toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2});
+  // Semáforo
+  const sem = document.getElementById('mkt-semaforo');
+  if(pct > 23){
+    pctEl.style.color='#991b1b';
+    sem.style.background='#FEF2F2'; sem.style.color='#991b1b'; sem.style.border='1px solid #fecaca';
+    sem.textContent='🔴 PELIGRO — El gasto en ads supera el 23% de las ventas netas';
+  } else if(pct >= 21){
+    pctEl.style.color='#92400e';
+    sem.style.background='#FEF3C7'; sem.style.color='#92400e'; sem.style.border='1px solid #fcd34d';
+    sem.textContent='🟡 MEJORABLE — Entre el 21% y 23%. Margen justo';
+  } else if(pct > 0){
+    pctEl.style.color='#166534';
+    sem.style.background='#F0FDF4'; sem.style.color='#166534'; sem.style.border='1px solid #bbf7d0';
+    sem.textContent='🟢 ÓPTIMO — Gasto en ads por debajo del 21%. Excelente rentabilidad';
+  } else {
+    pctEl.style.color='#1a1a1a';
+    sem.style.background='#F4F6F1'; sem.style.color='#6b7280'; sem.style.border='1px solid #e2e6dc';
+    sem.textContent='Introduce ambos valores para ver el diagnóstico';
+  }
+}
+
+function mktGuardarHoy(){
+  const ventas = parseFloat(document.getElementById('mkt-input-ventas').value)||0;
+  const ads = parseFloat(document.getElementById('mkt-input-ads').value)||0;
+  const roas_tw = parseFloat(document.getElementById('mkt-input-roas-tw').value)||null;
+  const st = document.getElementById('mkt-status');
+  if(!ventas||!ads){
+    st.className='status-box error'; st.style.display='block';
+    st.textContent='Introduce las ventas brutas y el gasto en ads antes de guardar.';
+    return;
+  }
+  const netas = ventas / 1.21;
+  const pct = ads/netas*100;
+  const roas = netas/ads;
+  const fechaHoy = new Date().toISOString().slice(0,10);
+  const periodo = mktGetPeriodo(new Date());
+  const registros = mktGetRegistros();
+  const idx = registros.findIndex(r=>r.fecha===fechaHoy);
+  const reg = {fecha:fechaHoy, periodo_inicio:periodo.inicio, periodo_fin:periodo.fin, ventas_brutas:ventas, ads, roas_tw, ventas_netas:Math.round(netas*100)/100, pct_ads:Math.round(pct*100)/100, roas_real:Math.round(roas*100)/100};
+  if(idx>=0) registros[idx]=reg; else registros.unshift(reg);
+  mktSaveRegistros(registros);
+  st.className='status-box success'; st.style.display='block';
+  st.textContent='✅ Registro guardado correctamente.';
+  setTimeout(()=>{ st.style.display='none'; },2500);
+  mktRenderHistorico();
+}
+
+function mktRenderHistorico(){
+  const registros = mktGetRegistros();
+  const cont = document.getElementById('mkt-historico-content');
+  if(!registros.length){
+    cont.innerHTML='<div style="text-align:center;color:#9ca3af;font-size:13px;padding:32px 0">Sin registros aún</div>';
+    return;
+  }
+  const filas = registros.map(r=>{
+    const fecha = new Date(r.fecha+'T00:00:00').toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit',year:'numeric'});
+    let badge;
+    if(r.pct_ads>23) badge='<span style="background:#FEF2F2;color:#991b1b;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">🔴 Peligro</span>';
+    else if(r.pct_ads>=21) badge='<span style="background:#FEF3C7;color:#92400e;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">🟡 Mejorable</span>';
+    else badge='<span style="background:#F0FDF4;color:#166534;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">🟢 Óptimo</span>';
+    return `<tr>
+      <td style="padding:10px 12px;border-bottom:1px solid #f3f4f6;font-size:13px;color:#6b7280">${fecha}</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #f3f4f6;font-size:12px;color:#6b7280">${r.periodo_inicio&&r.periodo_fin ? r.periodo_inicio+' – '+r.periodo_fin : '—'}</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #f3f4f6;font-size:13px;font-weight:600">${r.ventas_brutas.toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})} €</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #f3f4f6;font-size:13px">${r.ventas_netas.toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})} €</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #f3f4f6;font-size:13px">${r.ads.toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})} €</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #f3f4f6;font-size:13px;font-weight:600">${r.pct_ads.toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})}%</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #f3f4f6;font-size:13px">${r.roas_real.toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #f3f4f6;font-size:13px;color:#6b7280">${r.roas_tw ? r.roas_tw.toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2}) : '—'}</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #f3f4f6">${badge}</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #f3f4f6"><button onclick="mktEliminar('${r.fecha}')" style="background:none;border:none;cursor:pointer;color:#9ca3af;font-size:14px" title="Eliminar"><i class="ti ti-trash"></i></button></td>
+    </tr>`;
+  }).join('');
+  cont.innerHTML=`<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:13px">
+    <thead><tr style="background:#f9fafb">
+      <th style="padding:8px 12px;text-align:left;font-weight:600;color:#6b7280;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #e5e7eb">Fecha registro</th>
+      <th style="padding:8px 12px;text-align:left;font-weight:600;color:#6b7280;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #e5e7eb">Período acumulado</th>
+      <th style="padding:8px 12px;text-align:left;font-weight:600;color:#6b7280;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #e5e7eb">Ventas brutas</th>
+      <th style="padding:8px 12px;text-align:left;font-weight:600;color:#6b7280;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #e5e7eb">Ventas netas</th>
+      <th style="padding:8px 12px;text-align:left;font-weight:600;color:#6b7280;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #e5e7eb">Ads</th>
+      <th style="padding:8px 12px;text-align:left;font-weight:600;color:#6b7280;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #e5e7eb">% Ads</th>
+      <th style="padding:8px 12px;text-align:left;font-weight:600;color:#6b7280;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #e5e7eb">ROAS real</th>
+      <th style="padding:8px 12px;text-align:left;font-weight:600;color:#6b7280;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #e5e7eb">ROAS TW</th>
+      <th style="padding:8px 12px;text-align:left;font-weight:600;color:#6b7280;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #e5e7eb">Estado</th>
+      <th style="border-bottom:1px solid #e5e7eb"></th>
+    </tr></thead>
+    <tbody>${filas}</tbody>
+  </table></div>`;
+}
+
+function mktEliminar(fecha){
+  if(!confirm('¿Eliminar el registro del '+new Date(fecha+'T00:00:00').toLocaleDateString('es-ES')+'?')) return;
+  const registros = mktGetRegistros().filter(r=>r.fecha!==fecha);
+  mktSaveRegistros(registros);
+  mktRenderHistorico();
+}
+
+function mktExportarExcel(){
+  const registros = mktGetRegistros();
+  if(!registros.length){ alert('No hay registros que exportar.'); return; }
+  const wb = XLSX.utils.book_new();
+  const data = [['Fecha registro','Período acumulado','Ventas Brutas (€)','Ventas Netas (€)','Gasto Ads (€)','% Ads','ROAS Real','ROAS Triple Whale','Estado']];
+  registros.forEach(r=>{
+    const estado = r.pct_ads>23?'🔴 Peligro':r.pct_ads>=21?'🟡 Mejorable':'🟢 Óptimo';
+    const periodo = r.periodo_inicio&&r.periodo_fin ? r.periodo_inicio+' – '+r.periodo_fin : '';
+    data.push([r.fecha, periodo, r.ventas_brutas, r.ventas_netas, r.ads, r.pct_ads, r.roas_real, r.roas_tw||'', estado]);
+  });
+  const ws = XLSX.utils.aoa_to_sheet(data);
+  ws['!cols']=[{wch:12},{wch:22},{wch:18},{wch:18},{wch:16},{wch:10},{wch:12},{wch:18},{wch:16}];
+  XLSX.utils.book_append_sheet(wb, ws, 'Dashboard Ads');
+  XLSX.writeFile(wb, `Dashboard_Ads_${new Date().toISOString().slice(0,10)}.xlsx`);
 }
 
 </script>
