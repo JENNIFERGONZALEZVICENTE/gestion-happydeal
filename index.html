@@ -2182,6 +2182,11 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
               <div style="font-size:20px;font-weight:700;color:#1a1a1a" id="mkt-prev-roas">—</div>
             </div>
           </div>
+          <!-- DIFERENCIA PRESUPUESTADO VS REAL -->
+          <div id="mkt-diferencia" style="margin-top:12px;padding:10px 14px;border-radius:8px;font-size:13px;display:flex;align-items:center;justify-content:space-between;background:#F4F6F1;border:1px solid #e2e6dc">
+            <span style="color:#6b7280">Ads presupuestados (${MKT_PCT_PRESUPUESTADO}%) vs gastados:</span>
+            <span id="mkt-dif-valor" style="font-weight:700;font-size:15px"></span>
+          </div>
           <!-- SEMÁFORO -->
           <div id="mkt-semaforo" style="margin-top:14px;padding:10px 14px;border-radius:8px;font-size:13px;font-weight:600;text-align:center"></div>
         </div>
@@ -10958,6 +10963,7 @@ function seurLimpiar(){
 
 // ─── MARKETING: DASHBOARD ADS ─────────────────────────────────
 const MKT_KEY = 'mkt_registros';
+const MKT_PCT_PRESUPUESTADO = 23; // % de publicidad presupuestado por artículo
 
 function mktGetRegistros(){
   return JSON.parse(localStorage.getItem(MKT_KEY)||'[]');
@@ -11012,6 +11018,20 @@ function mktCalcularPreview(){
   const pctEl = document.getElementById('mkt-prev-pct');
   pctEl.textContent = pct.toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})+'%';
   document.getElementById('mkt-prev-roas').textContent = roas.toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2});
+  // Diferencia presupuestado vs real
+  const ads_presupuestados = netas * MKT_PCT_PRESUPUESTADO / 100;
+  const diferencia = ads_presupuestados - ads;
+  const difEl = document.getElementById('mkt-dif-valor');
+  if(diferencia > 0){
+    difEl.textContent = '+' + diferencia.toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2}) + ' € a favor';
+    difEl.style.color = '#166534';
+  } else if(diferencia < 0){
+    difEl.textContent = diferencia.toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2}) + ' € en negativo';
+    difEl.style.color = '#991b1b';
+  } else {
+    difEl.textContent = 'Exacto';
+    difEl.style.color = '#1a1a1a';
+  }
   // Semáforo
   const sem = document.getElementById('mkt-semaforo');
   if(pct > 23){
@@ -11046,11 +11066,13 @@ function mktGuardarHoy(){
   const netas = ventas / 1.21;
   const pct = ads/netas*100;
   const roas = netas/ads;
+  const ads_presupuestados = Math.round(netas * MKT_PCT_PRESUPUESTADO) / 100;
+  const diferencia = Math.round((ads_presupuestados - ads)*100)/100;
   const fechaHoy = new Date().toISOString().slice(0,10);
   const periodo = mktGetPeriodo(new Date());
   const registros = mktGetRegistros();
   const idx = registros.findIndex(r=>r.fecha===fechaHoy);
-  const reg = {fecha:fechaHoy, periodo_inicio:periodo.inicio, periodo_fin:periodo.fin, ventas_brutas:ventas, ads, roas_tw, ventas_netas:Math.round(netas*100)/100, pct_ads:Math.round(pct*100)/100, roas_real:Math.round(roas*100)/100};
+  const reg = {fecha:fechaHoy, periodo_inicio:periodo.inicio, periodo_fin:periodo.fin, ventas_brutas:ventas, ads, roas_tw, ventas_netas:Math.round(netas*100)/100, pct_ads:Math.round(pct*100)/100, roas_real:Math.round(roas*100)/100, ads_presupuestados, diferencia};
   if(idx>=0) registros[idx]=reg; else registros.unshift(reg);
   mktSaveRegistros(registros);
   st.className='status-box success'; st.style.display='block';
@@ -11081,6 +11103,7 @@ function mktRenderHistorico(){
       <td style="padding:10px 12px;border-bottom:1px solid #f3f4f6;font-size:13px;font-weight:600">${r.pct_ads.toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})}%</td>
       <td style="padding:10px 12px;border-bottom:1px solid #f3f4f6;font-size:13px">${r.roas_real.toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
       <td style="padding:10px 12px;border-bottom:1px solid #f3f4f6;font-size:13px;color:#6b7280">${r.roas_tw ? r.roas_tw.toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2}) : '—'}</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #f3f4f6;font-size:13px;font-weight:600;color:${r.diferencia>0?'#166534':r.diferencia<0?'#991b1b':'#1a1a1a'}">${r.diferencia!=null?(r.diferencia>0?'+':'')+r.diferencia.toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})+' €':'—'}</td>
       <td style="padding:10px 12px;border-bottom:1px solid #f3f4f6">${badge}</td>
       <td style="padding:10px 12px;border-bottom:1px solid #f3f4f6"><button onclick="mktEliminar('${r.fecha}')" style="background:none;border:none;cursor:pointer;color:#9ca3af;font-size:14px" title="Eliminar"><i class="ti ti-trash"></i></button></td>
     </tr>`;
@@ -11095,6 +11118,7 @@ function mktRenderHistorico(){
       <th style="padding:8px 12px;text-align:left;font-weight:600;color:#6b7280;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #e5e7eb">% Ads</th>
       <th style="padding:8px 12px;text-align:left;font-weight:600;color:#6b7280;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #e5e7eb">ROAS real</th>
       <th style="padding:8px 12px;text-align:left;font-weight:600;color:#6b7280;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #e5e7eb">ROAS TW</th>
+      <th style="padding:8px 12px;text-align:left;font-weight:600;color:#6b7280;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #e5e7eb">Diferencia (€)</th>
       <th style="padding:8px 12px;text-align:left;font-weight:600;color:#6b7280;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #e5e7eb">Estado</th>
       <th style="border-bottom:1px solid #e5e7eb"></th>
     </tr></thead>
@@ -11113,14 +11137,14 @@ function mktExportarExcel(){
   const registros = mktGetRegistros();
   if(!registros.length){ alert('No hay registros que exportar.'); return; }
   const wb = XLSX.utils.book_new();
-  const data = [['Fecha registro','Período acumulado','Ventas Brutas (€)','Ventas Netas (€)','Gasto Ads (€)','% Ads','ROAS Real','ROAS Triple Whale','Estado']];
+  const data = [['Fecha registro','Período acumulado','Ventas Brutas (€)','Ventas Netas (€)','Gasto Ads (€)','% Ads','Ads presupuestados (23%) (€)','Diferencia (€)','ROAS Real','ROAS Triple Whale','Estado']];
   registros.forEach(r=>{
     const estado = r.pct_ads>23?'🔴 Peligro':r.pct_ads>=21?'🟡 Mejorable':'🟢 Óptimo';
     const periodo = r.periodo_inicio&&r.periodo_fin ? r.periodo_inicio+' – '+r.periodo_fin : '';
-    data.push([r.fecha, periodo, r.ventas_brutas, r.ventas_netas, r.ads, r.pct_ads, r.roas_real, r.roas_tw||'', estado]);
+    data.push([r.fecha, periodo, r.ventas_brutas, r.ventas_netas, r.ads, r.pct_ads, r.ads_presupuestados||'', r.diferencia!=null?r.diferencia:'', r.roas_real, r.roas_tw||'', estado]);
   });
   const ws = XLSX.utils.aoa_to_sheet(data);
-  ws['!cols']=[{wch:12},{wch:22},{wch:18},{wch:18},{wch:16},{wch:10},{wch:12},{wch:18},{wch:16}];
+  ws['!cols']=[{wch:12},{wch:22},{wch:18},{wch:18},{wch:16},{wch:10},{wch:24},{wch:16},{wch:12},{wch:18},{wch:16}];
   XLSX.utils.book_append_sheet(wb, ws, 'Dashboard Ads');
   XLSX.writeFile(wb, `Dashboard_Ads_${new Date().toISOString().slice(0,10)}.xlsx`);
 }
