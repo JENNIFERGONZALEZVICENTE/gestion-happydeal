@@ -51,7 +51,7 @@ async function _flushWrites() {
 
 function _scheduleFlush() {
   clearTimeout(_syncTimer);
-  _syncTimer = setTimeout(_flushWrites, 800);
+  _syncTimer = setTimeout(_flushWrites, 2500);
 }
 
 // Guardar referencia al localStorage real antes de sobreescribirlo
@@ -8762,6 +8762,8 @@ function pcMarcarServidoFecha(id, onConfirmado){
     overlay.remove();
     if(typeof onConfirmado==='function') onConfirmado();
     pcRender(); pcUpdateBadge(); stockBadgeUpdate();
+    // Flush inmediato para garantizar sincronización
+    clearTimeout(_syncTimer); _flushWrites();
   });
 }
 
@@ -9103,7 +9105,8 @@ function pcEliminarConfirmar(id){
   }
 
   document.getElementById('pcElim-overlay')?.remove();
-  pcRender(); pcUpdateBadge(); spsUpdateBadge(); ssUpdateBadge();
+  pcRender(); pcUpdateBadge();
+  clearTimeout(_syncTimer); _flushWrites(); spsUpdateBadge(); ssUpdateBadge();
 }
 
 function pcExportarExcel(){
