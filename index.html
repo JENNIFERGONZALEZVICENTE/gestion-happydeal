@@ -8198,7 +8198,8 @@ function spsConfirmarUno(id){
         if(btnWrap) btnWrap.innerHTML='<span style="font-size:12px;font-weight:600;color:#16A34A"><i class="ti ti-circle-check"></i> Marcado como servido</span>';
       }
     }
-    spsUpdateBadge();
+    spsRender(); spsUpdateBadge();
+    clearTimeout(_syncTimer); _flushWrites();
   });
 }
 
