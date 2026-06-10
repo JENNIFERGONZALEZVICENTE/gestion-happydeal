@@ -8567,10 +8567,87 @@ function pcRender(){
 }
 
 function pcMarcarServido(id, onConfirmado){
+  const ventas=JSON.parse(localStorage.getItem('colch_ventas')||'[]');
+  const venta=ventas.find(v=>String(v.id)===String(id));
+  if(!venta) return;
+  const totalUds=parseInt(venta.unidades)||1;
+
+  if(totalUds>1){
+    const overlayParcial=document.createElement('div');
+    overlayParcial.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:9999;display:flex;align-items:center;justify-content:center';
+    overlayParcial.innerHTML=`
+      <div style="background:white;border-radius:14px;padding:28px;box-shadow:0 20px 60px rgba(0,0,0,0.25);width:380px;max-width:95vw">
+        <div style="font-size:15px;font-weight:700;color:#3B4A2F;margin-bottom:4px"><i class="ti ti-check"></i> Marcar servido</div>
+        <div style="font-size:12px;color:#6b7280;margin-bottom:20px">Este pedido tiene <strong>${totalUds} unidades</strong>. ¿Se sirven todas o solo una parte?</div>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px">
+          <label style="display:flex;align-items:center;gap:12px;padding:12px 16px;border:2px solid #e2e6dc;border-radius:9px;cursor:pointer;font-size:13px;font-weight:600;color:#374151">
+            <input type="radio" name="parcial-tipo" value="todas" checked style="accent-color:#16A34A;width:16px;height:16px">
+            <i class="ti ti-checks" style="color:#16A34A;font-size:16px"></i> Todas las unidades (${totalUds} uds)
+          </label>
+          <label style="display:flex;align-items:center;gap:12px;padding:12px 16px;border:2px solid #e2e6dc;border-radius:9px;cursor:pointer;font-size:13px;font-weight:600;color:#374151">
+            <input type="radio" name="parcial-tipo" value="parcial" style="accent-color:#d97706;width:16px;height:16px">
+            <i class="ti ti-adjustments-horizontal" style="color:#d97706;font-size:16px"></i> Servir parcialmente
+          </label>
+        </div>
+        <div id="parcial-uds-wrap" style="display:none;margin-bottom:20px;padding:14px;background:#FFFBEB;border-radius:8px;border:1px solid #fcd34d">
+          <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:6px">¿Cuántas unidades se sirven ahora?</label>
+          <input type="number" id="parcial-uds-input" min="1" max="${totalUds-1}" value="1"
+            style="width:100%;padding:9px 12px;border:1.5px solid #d97706;border-radius:8px;font-size:14px;outline:none;text-align:center">
+          <div style="font-size:11px;color:#92400e;margin-top:6px">Las <span id="parcial-resto">${totalUds-1}</span> restantes quedarán pendientes con referencia <strong>${(venta.ref||String(id))}2</strong></div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button id="parcial-btn-confirmar" style="flex:1;padding:10px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;background:#16A34A;border:none;color:white">
+            <i class="ti ti-check"></i> Continuar
+          </button>
+          <button id="parcial-btn-cancelar" style="padding:10px 18px;border-radius:8px;font-size:13px;cursor:pointer;background:white;border:1px solid #d1d5db;color:#374151">
+            Cancelar
+          </button>
+        </div>
+      </div>`;
+    document.body.appendChild(overlayParcial);
+
+    overlayParcial.querySelectorAll('input[name="parcial-tipo"]').forEach(r=>{
+      r.addEventListener('change',()=>{
+        const esParcial=overlayParcial.querySelector('input[name="parcial-tipo"]:checked').value==='parcial';
+        document.getElementById('parcial-uds-wrap').style.display=esParcial?'block':'none';
+      });
+    });
+    document.getElementById('parcial-uds-input').addEventListener('input',()=>{
+      const sirve=parseInt(document.getElementById('parcial-uds-input').value)||1;
+      document.getElementById('parcial-resto').textContent=totalUds-sirve;
+    });
+    document.getElementById('parcial-btn-cancelar').addEventListener('click',()=>overlayParcial.remove());
+    overlayParcial.addEventListener('click',e=>{if(e.target===overlayParcial)overlayParcial.remove();});
+    document.getElementById('parcial-btn-confirmar').addEventListener('click',()=>{
+      const tipo=overlayParcial.querySelector('input[name="parcial-tipo"]:checked').value;
+      if(tipo==='parcial'){
+        const udsSirve=parseInt(document.getElementById('parcial-uds-input').value)||1;
+        if(udsSirve<1||udsSirve>=totalUds){ alert('El número debe ser entre 1 y '+(totalUds-1)); return; }
+        const udsResto=totalUds-udsSirve;
+        const nuevaRef=(venta.ref||String(id))+'2';
+        const nuevoId=Date.now();
+        const ventaResto=Object.assign({},venta,{id:nuevoId,unidades:udsResto,ref:nuevaRef});
+        const ventasArr=JSON.parse(localStorage.getItem('colch_ventas')||'[]');
+        const idxOrig=ventasArr.findIndex(v=>String(v.id)===String(id));
+        if(idxOrig>=0) ventasArr[idxOrig].unidades=udsSirve;
+        ventasArr.push(ventaResto);
+        localStorage.setItem('colch_ventas',JSON.stringify(ventasArr));
+        authRegistrarAccion('Pedido dividido',`${venta.ref||id} → ${udsSirve} uds servidas + ${udsResto} uds pendientes (${nuevaRef})`);
+        overlayParcial.remove();
+        pcMarcarServidoFecha(id, onConfirmado);
+      } else {
+        overlayParcial.remove();
+        pcMarcarServidoFecha(id, onConfirmado);
+      }
+    });
+    return;
+  }
+  pcMarcarServidoFecha(id, onConfirmado);
+}
+
+function pcMarcarServidoFecha(id, onConfirmado){
   const hoy=new Date();
   const hoyISO=`${hoy.getFullYear()}-${String(hoy.getMonth()+1).padStart(2,'0')}-${String(hoy.getDate()).padStart(2,'0')}`;
-
-  // Crear mini modal de fecha
   const overlay=document.createElement('div');
   overlay.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:9999;display:flex;align-items:center;justify-content:center';
   overlay.innerHTML=`
@@ -8589,10 +8666,9 @@ function pcMarcarServido(id, onConfirmado){
       </div>
     </div>`;
   document.body.appendChild(overlay);
-
-  document.getElementById('pc-btn-cancelar-servido').onclick=()=>overlay.remove();
-  overlay.onclick=(e)=>{if(e.target===overlay)overlay.remove();};
-  document.getElementById('pc-btn-confirmar-servido').onclick=()=>{
+  document.getElementById('pc-btn-cancelar-servido').addEventListener('click',()=>overlay.remove());
+  overlay.addEventListener('click',(e)=>{if(e.target===overlay)overlay.remove();});
+  document.getElementById('pc-btn-confirmar-servido').addEventListener('click',()=>{
     const fechaISO=document.getElementById('pc-fecha-servido').value;
     const[y,m,d]=fechaISO.split('-');
     const fechaStr=`${d}/${m}/${y}`;
@@ -8603,24 +8679,18 @@ function pcMarcarServido(id, onConfirmado){
     const fechas=JSON.parse(localStorage.getItem('colch_ventas_fecha_servido')||'{}');
     fechas[String(id)]=fechaStr;
     localStorage.setItem('colch_ventas_fecha_servido',JSON.stringify(fechas));
-
-    // Si la referencia empieza por FUR → actualizar colchón en pedido Furniture
     const ventas=JSON.parse(localStorage.getItem('colch_ventas')||'[]');
     const venta=ventas.find(v=>String(v.id)===String(id));
     if(venta && (venta.ref||'').toUpperCase().startsWith('FUR')) {
-      const refFurni = (venta.ref||'').substring(3); // quitar FUR
+      const refFurni=(venta.ref||'').substring(3);
       let furniture=JSON.parse(localStorage.getItem('furni_pedidos')||'[]');
       const idx=furniture.findIndex(p=>(p.pedido||'').trim()===refFurni.trim());
-      if(idx>=0) {
-        furniture[idx].colchon={estado:'RECIBIDO', fechaRecibido: fechaStr};
-        localStorage.setItem('furni_pedidos',JSON.stringify(furniture));
-      }
+      if(idx>=0){ furniture[idx].colchon={estado:'RECIBIDO',fechaRecibido:fechaStr}; localStorage.setItem('furni_pedidos',JSON.stringify(furniture)); }
     }
-
     overlay.remove();
     if(typeof onConfirmado==='function') onConfirmado();
     pcRender(); pcUpdateBadge();
-  };
+  });
 }
 
 function pcMarcarEspera(id){
