@@ -295,7 +295,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
     </div>
     <div style="margin-bottom:14px">
       <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:5px">Usuario</label>
-      <select id="login-usuario" style="width: 100%; padding: 10px 12px; border: 1px solid rgb(209, 213, 219); border-radius: 8px; font-size: 14px; outline: none; background: white;" onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
+      <select id="login-usuario" style="width: 100%; padding: 10px 12px; border: 1px solid rgb(209, 213, 219); border-radius: 8px; font-size: 14px; outline: none; background: white;" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
         <option value="">— Selecciona usuario —</option>
         <option value="JENNIFER">Jennifer</option>
         <option value="ARIADNA">Ariadna</option>
@@ -305,7 +305,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
     </div>
     <div style="margin-bottom:20px">
       <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:5px">Contraseña</label>
-      <input type="password" id="login-password" placeholder="••••••••" style="width: 100%; padding: 10px 12px; border: 1px solid rgb(209, 213, 219); border-radius: 8px; font-size: 14px; outline: none;" onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'" onkeydown="if(event.key==='Enter')loginEntrar()">
+      <input type="password" id="login-password" placeholder="••••••••" style="width: 100%; padding: 10px 12px; border: 1px solid rgb(209, 213, 219); border-radius: 8px; font-size: 14px; outline: none;" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;" onkeydown="if(event.key===&#39;Enter&#39;)loginEntrar()">
     </div>
     <div id="login-error" style="display:none;background:#FEE2E2;color:#991b1b;font-size:12px;padding:8px 12px;border-radius:6px;margin-bottom:14px"></div>
     <button onclick="loginEntrar()" style="width:100%;padding:12px;background:#3B4A2F;color:white;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer">
@@ -333,36 +333,36 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
 
       <!-- STOCK -->
       <div class="nav-group-label">Almacén</div>
-      <div class="nav-item active" onclick="showPage('stock',this)" style="padding-left:20px"><i class="ti ti-stack-2"></i> Stock <span id="badgeStock" class="badge" style="background: rgb(238, 242, 255); color: rgb(55, 48, 163); margin-left: 4px; display: inline-block;">64</span></div>
+      <div class="nav-item active" onclick="showPage(&#39;stock&#39;,this)" style="padding-left:20px"><i class="ti ti-stack-2"></i> Stock <span id="badgeStock" class="badge" style="background: rgb(238, 242, 255); color: rgb(55, 48, 163); margin-left: 4px; display: inline-block;">64</span></div>
 
       <!-- GESTIÓN PROVEEDORES -->
-      <div class="nav-section-header" onclick="navToggle('sec-proveedores',this)">
+      <div class="nav-section-header" onclick="navToggle(&#39;sec-proveedores&#39;,this)">
         <span>Gestión Proveedores</span>
         <i class="ti ti-chevron-down chevron"></i>
       </div>
       <div class="nav-section-body" id="sec-proveedores">
 
         <!-- Colchones -->
-        <div class="nav-subsection-header" onclick="navToggle('sub-colchones',this)">
+        <div class="nav-subsection-header" onclick="navToggle(&#39;sub-colchones&#39;,this)">
           <span>Colchones</span>
           <i class="ti ti-chevron-down chevron"></i>
         </div>
         <div class="nav-subsection-body" id="sub-colchones">
-          <div class="nav-item" onclick="showPage('prov-colchones',this)"><i class="ti ti-bed"></i> Gestión pedidos</div>
-          <div class="nav-item jennifer-only" onclick="showPage('tarifas-nm',this)"><i class="ti ti-tag"></i> Tarifas NEW MATTRESS</div>
-          <div class="nav-item jennifer-only" onclick="showPage('tarifas-luso',this)"><i class="ti ti-tag"></i> Tarifas LUSOCOLCHAO</div>
+          <div class="nav-item" onclick="showPage(&#39;prov-colchones&#39;,this)"><i class="ti ti-bed"></i> Gestión pedidos</div>
+          <div class="nav-item jennifer-only" onclick="showPage(&#39;tarifas-nm&#39;,this)"><i class="ti ti-tag"></i> Tarifas NEW MATTRESS</div>
+          <div class="nav-item jennifer-only" onclick="showPage(&#39;tarifas-luso&#39;,this)"><i class="ti ti-tag"></i> Tarifas LUSOCOLCHAO</div>
         </div>
 
         <!-- POLIVAL -->
-        <div class="nav-subsection-header" onclick="navToggle('sub-polival',this)">
+        <div class="nav-subsection-header" onclick="navToggle(&#39;sub-polival&#39;,this)">
           <span>POLIVAL · Tapicería</span>
           <i class="ti ti-chevron-down chevron"></i>
         </div>
         <div class="nav-subsection-body" id="sub-polival">
-          <div class="nav-item" onclick="showPage('prov-polival',this)"><i class="ti ti-building-factory-2"></i> Ficha proveedor</div>
-          <div class="nav-item" onclick="showPage('generar',this)"><i class="ti ti-file-plus"></i> Generar pedido</div>
-          <div class="nav-item" onclick="showPage('historial',this)"><i class="ti ti-history"></i> Historial</div>
-          <div class="nav-item" onclick="showPage('diccionario',this)"><i class="ti ti-book"></i> Diccionario</div>
+          <div class="nav-item" onclick="showPage(&#39;prov-polival&#39;,this)"><i class="ti ti-building-factory-2"></i> Ficha proveedor</div>
+          <div class="nav-item" onclick="showPage(&#39;generar&#39;,this)"><i class="ti ti-file-plus"></i> Generar pedido</div>
+          <div class="nav-item" onclick="showPage(&#39;historial&#39;,this)"><i class="ti ti-history"></i> Historial</div>
+          <div class="nav-item" onclick="showPage(&#39;diccionario&#39;,this)"><i class="ti ti-book"></i> Diccionario</div>
         </div>
 
       </div>
@@ -419,24 +419,24 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
       </div>
 
       <!-- SEGURIDAD -->
-      <div class="nav-section-header" onclick="navToggle('sec-seguridad',this)">
+      <div class="nav-section-header" onclick="navToggle(&#39;sec-seguridad&#39;,this)">
         <span>Seguridad</span>
         <i class="ti ti-chevron-down chevron"></i>
       </div>
       <div class="nav-section-body" id="sec-seguridad">
-        <div class="nav-item" onclick="showPage('passwords',this)"><i class="ti ti-lock"></i> Gestor de contraseñas</div>
+        <div class="nav-item" onclick="showPage(&#39;passwords&#39;,this)"><i class="ti ti-lock"></i> Gestor de contraseñas</div>
       </div>
 
       <!-- ADMINISTRACIÓN (solo admin) -->
       <div id="nav-admin-section" style="display: block;">
-        <div class="nav-section-header" onclick="navToggle('sec-admin',this)">
+        <div class="nav-section-header" onclick="navToggle(&#39;sec-admin&#39;,this)">
           <span>Administración</span>
           <i class="ti ti-chevron-down chevron"></i>
         </div>
         <div class="nav-section-body" id="sec-admin">
-          <div class="nav-item" onclick="showPage('admin-usuarios',this)"><i class="ti ti-users"></i> Usuarios y permisos</div>
-          <div class="nav-item" onclick="showPage('admin-log',this)"><i class="ti ti-list-details"></i> Registro de actividad</div>
-          <div class="nav-item" onclick="showPage('admin-mantenimiento',this)"><i class="ti ti-tools"></i> Mantenimiento</div>
+          <div class="nav-item" onclick="showPage(&#39;admin-usuarios&#39;,this)"><i class="ti ti-users"></i> Usuarios y permisos</div>
+          <div class="nav-item" onclick="showPage(&#39;admin-log&#39;,this)"><i class="ti ti-list-details"></i> Registro de actividad</div>
+          <div class="nav-item" onclick="showPage(&#39;admin-mantenimiento&#39;,this)"><i class="ti ti-tools"></i> Mantenimiento</div>
         </div>
       </div>
 
@@ -447,13 +447,13 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
           <div style="font-size:11px;font-weight:600;color:white" id="sidebar-usuario-nombre">Jennifer</div>
           <div style="font-size:9px;color:rgba(255,255,255,0.4)" id="sidebar-usuario-rol">Administrador · Editor</div>
         </div>
-        <button onclick="loginCerrarSesion()" title="Cerrar sesión" style="background:rgba(255,255,255,0.1);border:none;border-radius:6px;padding:5px 8px;cursor:pointer;color:rgba(255,255,255,0.6);font-size:12px" onmouseover="this.style.background='rgba(255,255,255,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">
+        <button onclick="loginCerrarSesion()" title="Cerrar sesión" style="background:rgba(255,255,255,0.1);border:none;border-radius:6px;padding:5px 8px;cursor:pointer;color:rgba(255,255,255,0.6);font-size:12px" onmouseover="this.style.background=&#39;rgba(255,255,255,0.2)&#39;" onmouseout="this.style.background=&#39;rgba(255,255,255,0.1)&#39;">
           <i class="ti ti-logout"></i>
         </button>
       </div>
     </div>
     <div style="padding:10px 12px;border-top:1px solid rgba(255,255,255,0.1)">
-      <button onclick="backupAbrir()" style="width:100%;display:flex;align-items:center;gap:8px;padding:9px 12px;background:rgba(168,192,122,0.15);border:1px solid rgba(168,192,122,0.35);border-radius:8px;color:#A8C07A;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.15s" onmouseover="this.style.background='rgba(168,192,122,0.28)'" onmouseout="this.style.background='rgba(168,192,122,0.15)'">
+      <button onclick="backupAbrir()" style="width:100%;display:flex;align-items:center;gap:8px;padding:9px 12px;background:rgba(168,192,122,0.15);border:1px solid rgba(168,192,122,0.35);border-radius:8px;color:#A8C07A;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.15s" onmouseover="this.style.background=&#39;rgba(168,192,122,0.28)&#39;" onmouseout="this.style.background=&#39;rgba(168,192,122,0.15)&#39;">
         <i class="ti ti-cloud-download" style="font-size:15px"></i> Copia de seguridad
       </button>
     </div>
@@ -480,7 +480,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
         <div style="width:28px;height:28px;background:#3B4A2F;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><span style="color:white;font-size:12px;font-weight:700">1</span></div>
         <div style="font-size:14px;font-weight:600;color:#3B4A2F">Desde Excel de Ariadna</div>
       </div>
-      <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
+      <div class="upload-zone" id="uploadZone" onclick="document.getElementById(&#39;fileInput&#39;).click()">
         <i class="ti ti-file-spreadsheet"></i>
         <p>Haz clic o arrastra el Excel aquí</p>
         <span>CUADERNO_TAPICERÍA_ACTUAL.xlsx</span>
@@ -549,7 +549,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
         <div style="display:flex;align-items:center;gap:10px">
           <i class="ti ti-search" style="color:#9ca3af;font-size:16px;flex-shrink:0"></i>
           <input type="text" id="histBuscador" placeholder="Buscar por referencia (ej: 12345-A)…" oninput="histBuscarRef(this.value)" style="flex:1;border:none;outline:none;font-size:13px;color:#1a1a1a;background:transparent">
-          <button onclick="document.getElementById('histBuscador').value='';histRender()" style="background:none;border:none;cursor:pointer;color:#9ca3af;font-size:18px;line-height:1">✕</button>
+          <button onclick="document.getElementById(&#39;histBuscador&#39;).value=&#39;&#39;;histRender()" style="background:none;border:none;cursor:pointer;color:#9ca3af;font-size:18px;line-height:1">✕</button>
         </div>
       </div>
       <div id="historialContent">
@@ -635,7 +635,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
           <div style="font-size:15px;font-weight:700;color:#3B4A2F">POLIVAL</div>
           <div style="font-size:12px;color:#6b7280;margin-top:2px">Proveedor de tapicería · canapés, bases, cabeceros, almohadas</div>
         </div>
-        <button class="btn btn-primary" onclick="showPageByName('generar')"><i class="ti ti-file-plus"></i> Ir a generar pedido</button>
+        <button class="btn btn-primary" onclick="showPageByName(&#39;generar&#39;)"><i class="ti ti-file-plus"></i> Ir a generar pedido</button>
       </div>
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:4px">
         <div class="stat-card"><div class="label">Pedidos generados</div><div class="value" id="polivalTotal">8</div></div>
@@ -655,13 +655,13 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
       <!-- Selector de tarifa y comparativa -->
       <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;align-items:center">
         <div style="display:flex;gap:8px">
-          <button id="tnm-btn-actual" onclick="tnmSetVista('actual')" style="padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;background:#3B4A2F;border:1px solid #3B4A2F;color:white">
+          <button id="tnm-btn-actual" onclick="tnmSetVista(&#39;actual&#39;)" style="padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;background:#3B4A2F;border:1px solid #3B4A2F;color:white">
             <i class="ti ti-tag"></i> Tarifa actual (Mayo 2026)
           </button>
-          <button id="tnm-btn-anterior" onclick="tnmSetVista('anterior')" style="padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;background:white;border:1px solid #d1d5db;color:#6b7280">
+          <button id="tnm-btn-anterior" onclick="tnmSetVista(&#39;anterior&#39;)" style="padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;background:white;border:1px solid #d1d5db;color:#6b7280">
             <i class="ti ti-history"></i> Tarifa anterior (Abril 2026)
           </button>
-          <button id="tnm-btn-comparativa" onclick="tnmSetVista('comparativa')" style="padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;background:white;border:1px solid #d1d5db;color:#6b7280">
+          <button id="tnm-btn-comparativa" onclick="tnmSetVista(&#39;comparativa&#39;)" style="padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;background:white;border:1px solid #d1d5db;color:#6b7280">
             <i class="ti ti-arrows-diff"></i> Comparativa subidas
           </button>
         </div>
@@ -682,13 +682,13 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
 
       <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;align-items:center">
         <div style="display:flex;gap:8px">
-          <button id="tluso-btn-actual" onclick="tlusoSetVista('actual')" style="padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;background:#3B4A2F;border:1px solid #3B4A2F;color:white">
+          <button id="tluso-btn-actual" onclick="tlusoSetVista(&#39;actual&#39;)" style="padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;background:#3B4A2F;border:1px solid #3B4A2F;color:white">
             <i class="ti ti-tag"></i> Tarifa actual (Abril 2026)
           </button>
-          <button id="tluso-btn-anterior" onclick="tlusoSetVista('anterior')" style="padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;background:white;border:1px solid #d1d5db;color:#6b7280">
+          <button id="tluso-btn-anterior" onclick="tlusoSetVista(&#39;anterior&#39;)" style="padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;background:white;border:1px solid #d1d5db;color:#6b7280">
             <i class="ti ti-history"></i> Tarifa anterior (Marzo 2026)
           </button>
-          <button id="tluso-btn-comparativa" onclick="tlusoSetVista('comparativa')" style="padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;background:white;border:1px solid #d1d5db;color:#6b7280">
+          <button id="tluso-btn-comparativa" onclick="tlusoSetVista(&#39;comparativa&#39;)" style="padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;background:white;border:1px solid #d1d5db;color:#6b7280">
             <i class="ti ti-arrows-diff"></i> Comparativa subidas
           </button>
         </div>
@@ -712,28 +712,28 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
         <div style="margin-bottom:6px">
           <div style="font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:0.8px;padding:0 4px;margin-bottom:4px">Gestión pedido proveedor</div>
           <div style="display:flex;gap:0;border-bottom:2px solid #3B4A2F">
-            <button class="colch-tab active" onclick="colchTab('nuevo')"><i class="ti ti-plus"></i> Nuevo pedido</button>
-            <button class="colch-tab" onclick="colchTab('pendientes')"><i class="ti ti-clock"></i> Mercancía pendiente de recibir <span id="badgePendientes" class="badge" style="background:#FEF3C7;color:#92400e;margin-left:4px">2</span></button>
-            <button class="colch-tab" onclick="colchTab('prevision')"><i class="ti ti-truck"></i> Previsión de entrega</button>
-            <button class="colch-tab" onclick="colchTab('albaran')"><i class="ti ti-file-check"></i> Subir albarán</button>
+            <button class="colch-tab active" onclick="colchTab(&#39;nuevo&#39;)"><i class="ti ti-plus"></i> Nuevo pedido</button>
+            <button class="colch-tab" onclick="colchTab(&#39;pendientes&#39;)"><i class="ti ti-clock"></i> Mercancía pendiente de recibir <span id="badgePendientes" class="badge" style="background:#FEF3C7;color:#92400e;margin-left:4px">2</span></button>
+            <button class="colch-tab" onclick="colchTab(&#39;prevision&#39;)"><i class="ti ti-truck"></i> Previsión de entrega</button>
+            <button class="colch-tab" onclick="colchTab(&#39;albaran&#39;)"><i class="ti ti-file-check"></i> Subir albarán</button>
           </div>
         </div>
         <!-- Grupo 2: Gestión pedidos clientes -->
         <div style="margin-bottom:6px">
           <div style="font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:0.8px;padding:0 4px;margin-bottom:4px">Gestión pedidos clientes</div>
           <div style="display:flex;gap:0;border-bottom:2px solid #3730A3">
-            <button class="colch-tab" onclick="colchTab('vendidos')" style="--tab-active:#3730A3"><i class="ti ti-shopping-cart"></i> Vendidos</button>
-            <button class="colch-tab" onclick="colchTab('pedidosclientes')" style="--tab-active:#3730A3"><i class="ti ti-clipboard-list"></i> Pedidos clientes <span id="badgePedidosClientes" class="badge" style="background:#EEF2FF;color:#3730A3;margin-left:4px">123</span></button>
-            <button class="colch-tab" id="tab-btn-servir" onclick="colchTab('sepuedenservir')" style="--tab-active:#3730A3;position:relative"><i class="ti ti-truck-delivery"></i> Se pueden servir <span id="badgeSePuedenServir" class="badge" style="background:#FEF3C7;color:#92400e;margin-left:4px;display:none">0</span></button>
-            <button class="colch-tab" onclick="colchTab('stocksobrante')" style="--tab-active:#3730A3"><i class="ti ti-package"></i> Stock sobrante</button>
+            <button class="colch-tab" onclick="colchTab(&#39;vendidos&#39;)" style="--tab-active:#3730A3"><i class="ti ti-shopping-cart"></i> Vendidos</button>
+            <button class="colch-tab" onclick="colchTab(&#39;pedidosclientes&#39;)" style="--tab-active:#3730A3"><i class="ti ti-clipboard-list"></i> Pedidos clientes <span id="badgePedidosClientes" class="badge" style="background:#EEF2FF;color:#3730A3;margin-left:4px">123</span></button>
+            <button class="colch-tab" id="tab-btn-servir" onclick="colchTab(&#39;sepuedenservir&#39;)" style="--tab-active:#3730A3;position:relative"><i class="ti ti-truck-delivery"></i> Se pueden servir <span id="badgeSePuedenServir" class="badge" style="background:#FEF3C7;color:#92400e;margin-left:4px;display:none">0</span></button>
+            <button class="colch-tab" onclick="colchTab(&#39;stocksobrante&#39;)" style="--tab-active:#3730A3"><i class="ti ti-package"></i> Stock sobrante</button>
           </div>
         </div>
         <!-- Grupo 3: Historial -->
         <div>
           <div style="display:flex;gap:0;border-bottom:2px solid #e5e7eb">
-            <button class="colch-tab" onclick="colchTab('historial')"><i class="ti ti-history"></i> Historial</button>
-            <button class="colch-tab" onclick="colchTab('albaranes-recibidos')"><i class="ti ti-file-invoice"></i> Albaranes recibidos</button>
-            <button class="colch-tab" onclick="colchTab('auditoria')"><i class="ti ti-shield-check"></i> Auditoría</button>
+            <button class="colch-tab" onclick="colchTab(&#39;historial&#39;)"><i class="ti ti-history"></i> Historial</button>
+            <button class="colch-tab" onclick="colchTab(&#39;albaranes-recibidos&#39;)"><i class="ti ti-file-invoice"></i> Albaranes recibidos</button>
+            <button class="colch-tab" onclick="colchTab(&#39;auditoria&#39;)"><i class="ti ti-shield-check"></i> Auditoría</button>
           </div>
         </div>
       </div>
@@ -747,7 +747,7 @@ COLTOSD150X200
 COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;font-family:monospace;resize:vertical;line-height:1.7"></textarea>
           <div style="display:flex;gap:10px;margin-top:10px">
             <button class="btn btn-primary" onclick="colchInterpretarSKUs()"><i class="ti ti-wand"></i> Interpretar SKUs</button>
-            <button class="btn" onclick="document.getElementById('sku-input').value=''"><i class="ti ti-eraser"></i> Limpiar</button>
+            <button class="btn" onclick="document.getElementById(&#39;sku-input&#39;).value=&#39;&#39;"><i class="ti ti-eraser"></i> Limpiar</button>
           </div>
           <div class="status-box" id="sku-status" style="margin-top:10px"></div>
         </div>
@@ -757,8 +757,8 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
             <div style="font-size:15px;font-weight:700;color:#1a1a1a;margin-bottom:6px">¿A qué proveedor lo pides?</div>
             <div style="font-size:13px;color:#6b7280;margin-bottom:20px" id="modal-prov-desc"></div>
             <div style="display:flex;flex-direction:column;gap:10px">
-              <button class="btn btn-primary" style="justify-content:center" onclick="colchModalElegir('LUSOCOLCHAO')"><i class="ti ti-building-factory-2"></i> LUSOCOLCHAO</button>
-              <button class="btn" style="justify-content:center;border-color:#3B4A2F;color:#3B4A2F" onclick="colchModalElegir('NEW MATTRESS')"><i class="ti ti-building-factory-2"></i> NEW MATTRESS</button>
+              <button class="btn btn-primary" style="justify-content:center" onclick="colchModalElegir(&#39;LUSOCOLCHAO&#39;)"><i class="ti ti-building-factory-2"></i> LUSOCOLCHAO</button>
+              <button class="btn" style="justify-content:center;border-color:#3B4A2F;color:#3B4A2F" onclick="colchModalElegir(&#39;NEW MATTRESS&#39;)"><i class="ti ti-building-factory-2"></i> NEW MATTRESS</button>
               <button class="btn" style="color:#991b1b;border-color:#fecaca;justify-content:center;margin-top:4px" onclick="colchModalSaltar()"><i class="ti ti-x"></i> Saltar esta línea</button>
             </div>
           </div>
@@ -817,7 +817,7 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
             <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap">
               <div style="display:flex;align-items:center;gap:8px">
                 <label style="font-size:12px;font-weight:600;color:#6b7280;white-space:nowrap">Fecha del pedido:</label>
-                <input type="date" id="np-fecha" style="padding:7px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none" onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
+                <input type="date" id="np-fecha" style="padding:7px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
               </div>
               <span style="font-size:11px;color:#9ca3af">Por defecto hoy. Cámbiala si el pedido es de otra fecha.</span>
             </div>
@@ -846,28 +846,28 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
         </div>
         <!-- Selector de vista -->
         <div style="display:flex;gap:8px;margin-bottom:12px">
-          <button id="pend-vista-pedidos" onclick="pendSetVista('pedidos')" style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;background:#3B4A2F;border:1px solid #3B4A2F;color:white">
+          <button id="pend-vista-pedidos" onclick="pendSetVista(&#39;pedidos&#39;)" style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;background:#3B4A2F;border:1px solid #3B4A2F;color:white">
             <i class="ti ti-layout-list"></i> Por pedido y fecha
           </button>
-          <button id="pend-vista-modelo" onclick="pendSetVista('modelo')" style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;background:white;border:1px solid #d1d5db;color:#6b7280">
+          <button id="pend-vista-modelo" onclick="pendSetVista(&#39;modelo&#39;)" style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;background:white;border:1px solid #d1d5db;color:#6b7280">
             <i class="ti ti-table"></i> Por modelo y medida
           </button>
         </div>
         <!-- Filtros (solo visibles en vista modelo) -->
         <div id="pend-filtros" style="display:none;gap:10px;margin-bottom:14px;flex-wrap:wrap">
-          <select id="pend-filtro-modelo" onchange="colchRenderPendientes()" style="padding:7px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;min-width:200px;flex:1;background:white;cursor:pointer" onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
+          <select id="pend-filtro-modelo" onchange="colchRenderPendientes()" style="padding:7px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;min-width:200px;flex:1;background:white;cursor:pointer" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
             <option value="">— Todos los modelos —</option>
           </select>
-          <select id="pend-filtro-medida" onchange="colchRenderPendientes()" style="padding:7px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;min-width:160px;flex:1;background:white;cursor:pointer" onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
+          <select id="pend-filtro-medida" onchange="colchRenderPendientes()" style="padding:7px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;min-width:160px;flex:1;background:white;cursor:pointer" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
             <option value="">— Todas las medidas —</option>
           </select>
-          <select id="pend-filtro-prov" onchange="colchRenderPendientes()" style="padding:7px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;min-width:160px;flex:1;background:white;cursor:pointer" onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
+          <select id="pend-filtro-prov" onchange="colchRenderPendientes()" style="padding:7px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;min-width:160px;flex:1;background:white;cursor:pointer" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
             <option value="">— Ambos proveedores —</option>
             <option value="LUSOCOLCHAO">LUSOCOLCHAO</option>
             <option value="NEW MATTRESS">NEW MATTRESS</option>
           </select>
           <div style="position:relative;min-width:220px;flex:1" id="pend-camion-wrap">
-            <button onclick="pendToggleCamionDrop()" id="pend-camion-btn" style="width:100%;padding:7px 32px 7px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;background:white;cursor:pointer;text-align:left;position:relative;color:#6b7280" onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
+            <button onclick="pendToggleCamionDrop()" id="pend-camion-btn" style="width:100%;padding:7px 32px 7px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;background:white;cursor:pointer;text-align:left;position:relative;color:#6b7280" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
               — Todos los camiones —
               <i class="ti ti-chevron-down" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:13px"></i>
             </button>
@@ -880,10 +880,10 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
         </div>
         <!-- Filtros vista por pedido -->
         <div id="pend-filtros-pedido" style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap">
-          <select id="pend-fp-modelo" onchange="colchRenderPendientes()" style="padding:7px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;min-width:200px;flex:1;background:white;cursor:pointer" onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
+          <select id="pend-fp-modelo" onchange="colchRenderPendientes()" style="padding:7px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;min-width:200px;flex:1;background:white;cursor:pointer" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
             <option value="">— Todos los modelos —</option>
           </select>
-          <select id="pend-fp-medida" onchange="colchRenderPendientes()" style="padding:7px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;min-width:160px;flex:1;background:white;cursor:pointer" onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
+          <select id="pend-fp-medida" onchange="colchRenderPendientes()" style="padding:7px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;min-width:160px;flex:1;background:white;cursor:pointer" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
             <option value="">— Todas las medidas —</option>
           </select>
           <button onclick="pendLimpiarFiltrosPedido()" style="padding:7px 12px;border-radius:8px;font-size:12px;cursor:pointer;background:white;border:1px solid #d1d5db;color:#9ca3af;white-space:nowrap">✕ Limpiar</button>
@@ -926,8 +926,8 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
           <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;align-items:center">
             <div style="display:flex;align-items:center;gap:6px">
               <label style="font-size:12px;color:#6b7280;white-space:nowrap">Fecha camión:</label>
-              <input type="date" id="ss-filtro-fecha" onchange="ssRender()" style="padding:6px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:12px;outline:none" onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
-              <button onclick="document.getElementById('ss-filtro-fecha').value='';ssRender()" style="background:none;border:none;cursor:pointer;color:#9ca3af;font-size:13px" title="Limpiar">✕</button>
+              <input type="date" id="ss-filtro-fecha" onchange="ssRender()" style="padding:6px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:12px;outline:none" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
+              <button onclick="document.getElementById(&#39;ss-filtro-fecha&#39;).value=&#39;&#39;;ssRender()" style="background:none;border:none;cursor:pointer;color:#9ca3af;font-size:13px" title="Limpiar">✕</button>
             </div>
             <div style="display:flex;align-items:center;gap:6px">
               <label style="font-size:12px;color:#6b7280;white-space:nowrap">Proveedor:</label>
@@ -965,18 +965,18 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
         <div class="card" style="margin-bottom:16px">
           <div style="font-size:13px;font-weight:600;color:#3B4A2F;margin-bottom:4px"><i class="ti ti-shopping-cart" style="font-size:14px;vertical-align:-2px;margin-right:6px"></i>Registrar ventas</div>
           <div style="font-size:12px;color:#6b7280;margin-bottom:14px">Pega las líneas del Excel de Ariadna o SKUs sueltos (uno por línea). La app extrae el modelo y la cantidad automáticamente.</div>
-          <textarea id="vend-textarea" rows="8" placeholder="Pega aquí las filas del Excel de Ariadna o los SKUs directamente…" spellcheck="false" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;font-family:monospace;line-height:1.8;resize:vertical;outline:none" onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'"></textarea>
+          <textarea id="vend-textarea" rows="8" placeholder="Pega aquí las filas del Excel de Ariadna o los SKUs directamente…" spellcheck="false" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;font-family:monospace;line-height:1.8;resize:vertical;outline:none" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;"></textarea>
           <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
             <button onclick="vendInterpretar()" class="btn btn-primary" style="font-size:12px;padding:7px 16px"><i class="ti ti-list-check"></i> Interpretar SKUs</button>
-            <button onclick="document.getElementById('vend-textarea').value=''" class="btn" style="font-size:12px;padding:7px 12px;color:#991b1b;border-color:#fecaca"><i class="ti ti-trash"></i> Limpiar</button>
+            <button onclick="document.getElementById(&#39;vend-textarea&#39;).value=&#39;&#39;" class="btn" style="font-size:12px;padding:7px 12px;color:#991b1b;border-color:#fecaca"><i class="ti ti-trash"></i> Limpiar</button>
           </div>
           <div class="status-box" id="vend-status" style="margin-top:12px"></div>
         </div>
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px">
           <div style="font-size:13px;font-weight:600;color:#3B4A2F">Ventas registradas</div>
           <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
-            <input type="text" id="vend-filtro-texto" placeholder="Buscar cliente, ref, modelo..." style="padding:7px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:12px;width:200px;outline:none" oninput="vendRenderHistorial()" onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
-            <select id="vend-filtro-stock" onchange="vendRenderHistorial()" style="padding:7px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:12px;outline:none;background:white;cursor:pointer" onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
+            <input type="text" id="vend-filtro-texto" placeholder="Buscar cliente, ref, modelo..." style="padding:7px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:12px;width:200px;outline:none" oninput="vendRenderHistorial()" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
+            <select id="vend-filtro-stock" onchange="vendRenderHistorial()" style="padding:7px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:12px;outline:none;background:white;cursor:pointer" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
               <option value="">— Todos —</option>
               <option value="OK">✓ OK (cubiertos)</option>
               <option value="PEDIR">⚠ Pedir</option>
@@ -997,7 +997,7 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
               <div style="font-size:12px;color:#6b7280;margin-top:2px">Todos los pedidos de clientes introducidos en el sistema</div>
             </div>
             <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
-              <input type="text" id="pc-filtro" placeholder="Buscar cliente, modelo, ref..." style="padding:7px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:12px;width:200px" oninput="pcRender()" onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
+              <input type="text" id="pc-filtro" placeholder="Buscar cliente, modelo, ref..." style="padding:7px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:12px;width:200px" oninput="pcRender()" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
               <select id="pc-filtro-estado" onchange="pcRender()" style="padding:7px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:12px;outline:none">
                 <option value="PENDIENTE">Pendientes de envío (incl. en espera)</option>
                 <option value="EN ESPERA">En espera</option>
@@ -1007,8 +1007,8 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
               </select>
               <div id="pc-filtro-fecha-wrap" style="display:none;align-items:center;gap:6px">
                 <label style="font-size:12px;color:#6b7280;white-space:nowrap">Servido el:</label>
-                <input type="date" id="pc-filtro-fecha-servido" onchange="pcRender()" style="padding:6px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:12px;outline:none" onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
-                <button onclick="document.getElementById('pc-filtro-fecha-servido').value='';pcRender()" style="background:none;border:none;cursor:pointer;color:#9ca3af;font-size:13px" title="Limpiar fecha">✕</button>
+                <input type="date" id="pc-filtro-fecha-servido" onchange="pcRender()" style="padding:6px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:12px;outline:none" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
+                <button onclick="document.getElementById(&#39;pc-filtro-fecha-servido&#39;).value=&#39;&#39;;pcRender()" style="background:none;border:none;cursor:pointer;color:#9ca3af;font-size:13px" title="Limpiar fecha">✕</button>
               </div>
               <button class="btn" style="background:#1d4ed8;color:white;border-color:#1d4ed8" onclick="pcExportarAriadna()"><i class="ti ti-file-spreadsheet"></i> Exportar Ariadna (SEUR)</button>
               <button class="btn" style="background:#3B4A2F;color:white;border-color:#3B4A2F" onclick="pcExportarAlmacen()"><i class="ti ti-packages"></i> Exportar almacén</button>
@@ -1029,7 +1029,7 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
             <div>
               <div class="section-label" style="margin-top:0">Proveedor</div>
-              <select id="prev-proveedor" style="width:100%;padding:8px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;background:white;outline:none" onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
+              <select id="prev-proveedor" style="width:100%;padding:8px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;background:white;outline:none" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
                 <option value="">— Selecciona proveedor —</option>
                 <option value="LUSOCOLCHAO">LUSOCOLCHAO</option>
                 <option value="NEW MATTRESS">NEW MATTRESS</option>
@@ -1038,7 +1038,7 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
             <div>
               <div class="section-label" style="margin-top:0">Fecha estimada de entrega</div>
               <div style="display:flex;gap:8px;align-items:center">
-                <input type="date" id="prev-fecha" style="flex:1;padding:8px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none" onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
+                <input type="date" id="prev-fecha" style="flex:1;padding:8px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
                 <button onclick="prevFechaSinConfirmar()" title="Fecha sin confirmar" style="padding:7px 10px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer;background:#F4F6F1;border:1px solid #dde3d4;color:#6b7280;white-space:nowrap">
                   Sin confirmar
                 </button>
@@ -1050,7 +1050,7 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
           <!-- Textarea SKUs -->
           <div class="section-label" style="margin-top:0">SKUs y cantidades</div>
           <div style="font-size:12px;color:#6b7280;margin-bottom:8px">Pega los SKUs uno por línea. Igual que en vendidos.</div>
-          <textarea id="prev-textarea" rows="7" placeholder="Pega aquí los SKUs…" spellcheck="false" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;font-family:monospace;line-height:1.8;resize:vertical;outline:none" onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'"></textarea>
+          <textarea id="prev-textarea" rows="7" placeholder="Pega aquí los SKUs…" spellcheck="false" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;font-family:monospace;line-height:1.8;resize:vertical;outline:none" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;"></textarea>
 
           <!-- Separador o -->
           <div style="display:flex;align-items:center;gap:12px;margin:14px 0">
@@ -1060,7 +1060,7 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
           </div>
 
           <!-- Zona subida PDF -->
-          <div id="prev-pdf-zone" onclick="document.getElementById('prev-pdf-input').click()" style="border:2px dashed #A5B4FC;border-radius:8px;padding:16px;text-align:center;cursor:pointer;background:#EEF2FF;transition:background 0.15s" onmouseover="this.style.background='#E0E7FF'" onmouseout="this.style.background='#EEF2FF'">
+          <div id="prev-pdf-zone" onclick="document.getElementById(&#39;prev-pdf-input&#39;).click()" style="border:2px dashed #A5B4FC;border-radius:8px;padding:16px;text-align:center;cursor:pointer;background:#EEF2FF;transition:background 0.15s" onmouseover="this.style.background=&#39;#E0E7FF&#39;" onmouseout="this.style.background=&#39;#EEF2FF&#39;">
             <i class="ti ti-file-type-pdf" style="font-size:24px;color:#3730A3;display:block;margin-bottom:6px"></i>
             <div style="font-size:13px;font-weight:600;color:#3730A3">Haz clic para subir el PDF</div>
             <div style="font-size:11px;color:#6b7280;margin-top:2px">El PDF de NEW MATTRESS con la lista de colchones</div>
@@ -1070,7 +1070,7 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
 
           <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
             <button onclick="prevInterpretar()" class="btn btn-primary" style="font-size:12px;padding:7px 16px"><i class="ti ti-list-check"></i> Interpretar SKUs</button>
-            <button onclick="document.getElementById('prev-textarea').value='';prevResetFecha()" class="btn" style="font-size:12px;padding:7px 12px;color:#991b1b;border-color:#fecaca"><i class="ti ti-trash"></i> Limpiar</button>
+            <button onclick="document.getElementById(&#39;prev-textarea&#39;).value=&#39;&#39;;prevResetFecha()" class="btn" style="font-size:12px;padding:7px 12px;color:#991b1b;border-color:#fecaca"><i class="ti ti-trash"></i> Limpiar</button>
           </div>
           <div class="status-box" id="prev-status" style="margin-top:12px"></div>
         </div>
@@ -1196,7 +1196,7 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
         </div>
         <div class="card" style="margin-bottom:16px">
           <div class="section-label" style="margin-top:0">Selecciona el camión</div>
-          <select id="camion-selector" onchange="camionPreview()" style="width:100%;padding:9px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;background:white;outline:none;margin-bottom:16px" onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
+          <select id="camion-selector" onchange="camionPreview()" style="width:100%;padding:9px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;background:white;outline:none;margin-bottom:16px" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
             <option value="">— Selecciona un camión —</option>
           </select>
           <div class="status-box" id="camion-status"></div>
@@ -1236,7 +1236,7 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
           <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end">
             <div>
               <label style="font-size:11px;font-weight:600;color:#6b7280;display:block;margin-bottom:4px">Fecha recepción</label>
-              <input type="date" id="albhist-filtro-fecha" style="padding:7px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none" onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'" onchange="albHistRender()">
+              <input type="date" id="albhist-filtro-fecha" style="padding:7px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;" onchange="albHistRender()">
             </div>
             <div>
               <label style="font-size:11px;font-weight:600;color:#6b7280;display:block;margin-bottom:4px">Proveedor</label>
@@ -1248,7 +1248,7 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
             </div>
             <div>
               <label style="font-size:11px;font-weight:600;color:#6b7280;display:block;margin-bottom:4px">Nº albarán</label>
-              <input type="text" id="albhist-filtro-ref" placeholder="Buscar por nº…" style="padding:7px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;width:160px;outline:none" onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'" oninput="albHistRender()">
+              <input type="text" id="albhist-filtro-ref" placeholder="Buscar por nº…" style="padding:7px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;width:160px;outline:none" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;" oninput="albHistRender()">
             </div>
             <button onclick="albHistLimpiarFiltros()" class="btn" style="margin-bottom:0"><i class="ti ti-x"></i> Limpiar filtros</button>
           </div>
@@ -1271,13 +1271,13 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
 
           <!-- Zonas subida PDF -->
           <div style="display:flex;gap:10px;margin-bottom:10px;flex-wrap:wrap">
-            <div id="alb-pdf-zone" onclick="document.getElementById('alb-pdf-input').click()" style="flex:1;min-width:180px;border:2px dashed #3B4A2F;border-radius:8px;padding:10px 14px;text-align:center;cursor:pointer;background:#F4F6F1;transition:background 0.15s" onmouseover="this.style.background='#E8EDE3'" onmouseout="this.style.background='#F4F6F1'">
+            <div id="alb-pdf-zone" onclick="document.getElementById(&#39;alb-pdf-input&#39;).click()" style="flex:1;min-width:180px;border:2px dashed #3B4A2F;border-radius:8px;padding:10px 14px;text-align:center;cursor:pointer;background:#F4F6F1;transition:background 0.15s" onmouseover="this.style.background=&#39;#E8EDE3&#39;" onmouseout="this.style.background=&#39;#F4F6F1&#39;">
               <i class="ti ti-file-upload" style="font-size:18px;color:#3B4A2F;vertical-align:-3px;margin-right:6px"></i>
               <span style="font-size:12px;font-weight:600;color:#3B4A2F">Albarán LUSOCOLCHÃO</span>
             </div>
             <input type="file" id="alb-pdf-input" accept=".pdf" style="display:none" onchange="albLeerPDF(this)">
 
-            <div id="alb-nm-pdf-zone" onclick="document.getElementById('alb-nm-pdf-input').click()" style="flex:1;min-width:180px;border:2px dashed #3730A3;border-radius:8px;padding:10px 14px;text-align:center;cursor:pointer;background:#EEF2FF;transition:background 0.15s" onmouseover="this.style.background='#E0E7FF'" onmouseout="this.style.background='#EEF2FF'">
+            <div id="alb-nm-pdf-zone" onclick="document.getElementById(&#39;alb-nm-pdf-input&#39;).click()" style="flex:1;min-width:180px;border:2px dashed #3730A3;border-radius:8px;padding:10px 14px;text-align:center;cursor:pointer;background:#EEF2FF;transition:background 0.15s" onmouseover="this.style.background=&#39;#E0E7FF&#39;" onmouseout="this.style.background=&#39;#EEF2FF&#39;">
               <i class="ti ti-file-upload" style="font-size:18px;color:#3730A3;vertical-align:-3px;margin-right:6px"></i>
               <span style="font-size:12px;font-weight:600;color:#3730A3">Albarán NEW MATTRESS</span>
             </div>
@@ -1288,9 +1288,9 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
           <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;align-items:center">
             <div style="display:flex;align-items:center;gap:8px">
               <label style="font-size:12px;font-weight:600;color:#6b7280;white-space:nowrap">Fecha recepción:</label>
-              <input type="date" id="alb-fecha-recepcion" style="padding:7px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none" onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
+              <input type="date" id="alb-fecha-recepcion" style="padding:7px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
             </div>
-            <input type="text" id="alb-ref" placeholder="Nº albarán (opcional)" style="padding:8px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;flex:1;min-width:160px" onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
+            <input type="text" id="alb-ref" placeholder="Nº albarán (opcional)" style="padding:8px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;flex:1;min-width:160px" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
           </div>
           <div class="status-box" id="alb-pdf-status" style="margin-bottom:12px"></div>
 
@@ -1325,8 +1325,8 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
       </div>
 
       <div style="display:flex;gap:0;border-bottom:2px solid #3730A3;margin-bottom:20px">
-        <button class="colch-tab active" id="stock-tab-btn-actual" onclick="stockTab('actual')" style="--tab-active:#3730A3"><i class="ti ti-stack-2"></i> Stock actual</button>
-        <button class="colch-tab" id="stock-tab-btn-movimientos" onclick="stockTab('movimientos')" style="--tab-active:#3730A3"><i class="ti ti-history"></i> Movimientos</button>
+        <button class="colch-tab active" id="stock-tab-btn-actual" onclick="stockTab(&#39;actual&#39;)" style="--tab-active:#3730A3"><i class="ti ti-stack-2"></i> Stock actual</button>
+        <button class="colch-tab" id="stock-tab-btn-movimientos" onclick="stockTab(&#39;movimientos&#39;)" style="--tab-active:#3730A3"><i class="ti ti-history"></i> Movimientos</button>
       </div>
 
       <!-- STOCK ACTUAL -->
@@ -1366,7 +1366,7 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
           <td style="text-align:center;font-family:monospace">135x200</td>
           <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">1</span></td>
           <td style="text-align:center">
-            <button onclick="stockAbrirSalida('4D','135x200',1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+            <button onclick="stockAbrirSalida(&#39;4D&#39;,&#39;135x200&#39;,1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
               <i class="ti ti-minus"></i> Salida
             </button>
           </td>
@@ -1375,7 +1375,7 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
           <td style="text-align:center;font-family:monospace">150x190</td>
           <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">2</span></td>
           <td style="text-align:center">
-            <button onclick="stockAbrirSalida('4D','150x190',2)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+            <button onclick="stockAbrirSalida(&#39;4D&#39;,&#39;150x190&#39;,2)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
               <i class="ti ti-minus"></i> Salida
             </button>
           </td>
@@ -1384,7 +1384,7 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
           <td style="text-align:center;font-family:monospace">150x200</td>
           <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">2</span></td>
           <td style="text-align:center">
-            <button onclick="stockAbrirSalida('4D','150x200',2)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+            <button onclick="stockAbrirSalida(&#39;4D&#39;,&#39;150x200&#39;,2)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
               <i class="ti ti-minus"></i> Salida
             </button>
           </td>
@@ -1393,7 +1393,7 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
           <td style="text-align:center;font-family:monospace">90x200</td>
           <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">2</span></td>
           <td style="text-align:center">
-            <button onclick="stockAbrirSalida('4D','90x200',2)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+            <button onclick="stockAbrirSalida(&#39;4D&#39;,&#39;90x200&#39;,2)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
               <i class="ti ti-minus"></i> Salida
             </button>
           </td>
@@ -1402,7 +1402,7 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
           <td style="text-align:center;font-family:monospace">80x180</td>
           <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">1</span></td>
           <td style="text-align:center">
-            <button onclick="stockAbrirSalida('BAMBOO DELUXE','80x180',1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+            <button onclick="stockAbrirSalida(&#39;BAMBOO DELUXE&#39;,&#39;80x180&#39;,1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
               <i class="ti ti-minus"></i> Salida
             </button>
           </td>
@@ -1411,7 +1411,7 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
           <td style="text-align:center;font-family:monospace">80x190</td>
           <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">1</span></td>
           <td style="text-align:center">
-            <button onclick="stockAbrirSalida('BAMBOO DELUXE','80x190',1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+            <button onclick="stockAbrirSalida(&#39;BAMBOO DELUXE&#39;,&#39;80x190&#39;,1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
               <i class="ti ti-minus"></i> Salida
             </button>
           </td>
@@ -1420,7 +1420,7 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
           <td style="text-align:center;font-family:monospace">105x180</td>
           <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">1</span></td>
           <td style="text-align:center">
-            <button onclick="stockAbrirSalida('BELLAGIO DELUXE','105x180',1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+            <button onclick="stockAbrirSalida(&#39;BELLAGIO DELUXE&#39;,&#39;105x180&#39;,1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
               <i class="ti ti-minus"></i> Salida
             </button>
           </td>
@@ -1429,7 +1429,7 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
           <td style="text-align:center;font-family:monospace">120x200</td>
           <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">1</span></td>
           <td style="text-align:center">
-            <button onclick="stockAbrirSalida('BELLAGIO DELUXE','120x200',1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+            <button onclick="stockAbrirSalida(&#39;BELLAGIO DELUXE&#39;,&#39;120x200&#39;,1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
               <i class="ti ti-minus"></i> Salida
             </button>
           </td>
@@ -1438,7 +1438,7 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
           <td style="text-align:center;font-family:monospace">140x190</td>
           <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">2</span></td>
           <td style="text-align:center">
-            <button onclick="stockAbrirSalida('BELLAGIO DELUXE','140x190',2)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+            <button onclick="stockAbrirSalida(&#39;BELLAGIO DELUXE&#39;,&#39;140x190&#39;,2)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
               <i class="ti ti-minus"></i> Salida
             </button>
           </td>
@@ -1447,7 +1447,7 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
           <td style="text-align:center;font-family:monospace">150x190</td>
           <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">1</span></td>
           <td style="text-align:center">
-            <button onclick="stockAbrirSalida('BELLAGIO DELUXE','150x190',1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+            <button onclick="stockAbrirSalida(&#39;BELLAGIO DELUXE&#39;,&#39;150x190&#39;,1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
               <i class="ti ti-minus"></i> Salida
             </button>
           </td>
@@ -1456,7 +1456,7 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
           <td style="text-align:center;font-family:monospace">90x190</td>
           <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">1</span></td>
           <td style="text-align:center">
-            <button onclick="stockAbrirSalida('BELLAGIO DELUXE','90x190',1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+            <button onclick="stockAbrirSalida(&#39;BELLAGIO DELUXE&#39;,&#39;90x190&#39;,1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
               <i class="ti ti-minus"></i> Salida
             </button>
           </td>
@@ -1465,7 +1465,7 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
           <td style="text-align:center;font-family:monospace">105x180</td>
           <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">1</span></td>
           <td style="text-align:center">
-            <button onclick="stockAbrirSalida('ERGO RELAX','105x180',1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+            <button onclick="stockAbrirSalida(&#39;ERGO RELAX&#39;,&#39;105x180&#39;,1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
               <i class="ti ti-minus"></i> Salida
             </button>
           </td>
@@ -1474,7 +1474,7 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
           <td style="text-align:center;font-family:monospace">135x180</td>
           <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">2</span></td>
           <td style="text-align:center">
-            <button onclick="stockAbrirSalida('ERGO RELAX','135x180',2)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+            <button onclick="stockAbrirSalida(&#39;ERGO RELAX&#39;,&#39;135x180&#39;,2)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
               <i class="ti ti-minus"></i> Salida
             </button>
           </td>
@@ -1483,7 +1483,7 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
           <td style="text-align:center;font-family:monospace">135x190</td>
           <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">2</span></td>
           <td style="text-align:center">
-            <button onclick="stockAbrirSalida('ERGO RELAX','135x190',2)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+            <button onclick="stockAbrirSalida(&#39;ERGO RELAX&#39;,&#39;135x190&#39;,2)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
               <i class="ti ti-minus"></i> Salida
             </button>
           </td>
@@ -1492,7 +1492,7 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
           <td style="text-align:center;font-family:monospace">140x190</td>
           <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">1</span></td>
           <td style="text-align:center">
-            <button onclick="stockAbrirSalida('ERGO RELAX','140x190',1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+            <button onclick="stockAbrirSalida(&#39;ERGO RELAX&#39;,&#39;140x190&#39;,1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
               <i class="ti ti-minus"></i> Salida
             </button>
           </td>
@@ -1501,7 +1501,7 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
           <td style="text-align:center;font-family:monospace">140x200</td>
           <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">3</span></td>
           <td style="text-align:center">
-            <button onclick="stockAbrirSalida('ERGO RELAX','140x200',3)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+            <button onclick="stockAbrirSalida(&#39;ERGO RELAX&#39;,&#39;140x200&#39;,3)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
               <i class="ti ti-minus"></i> Salida
             </button>
           </td>
@@ -1510,7 +1510,7 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
           <td style="text-align:center;font-family:monospace">150x190</td>
           <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">2</span></td>
           <td style="text-align:center">
-            <button onclick="stockAbrirSalida('ERGO RELAX','150x190',2)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+            <button onclick="stockAbrirSalida(&#39;ERGO RELAX&#39;,&#39;150x190&#39;,2)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
               <i class="ti ti-minus"></i> Salida
             </button>
           </td>
@@ -1519,7 +1519,7 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
           <td style="text-align:center;font-family:monospace">135x190</td>
           <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">1</span></td>
           <td style="text-align:center">
-            <button onclick="stockAbrirSalida('FITNESS SPORT','135x190',1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+            <button onclick="stockAbrirSalida(&#39;FITNESS SPORT&#39;,&#39;135x190&#39;,1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
               <i class="ti ti-minus"></i> Salida
             </button>
           </td>
@@ -1528,7 +1528,7 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
           <td style="text-align:center;font-family:monospace">135x200</td>
           <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">1</span></td>
           <td style="text-align:center">
-            <button onclick="stockAbrirSalida('FITNESS SPORT','135x200',1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+            <button onclick="stockAbrirSalida(&#39;FITNESS SPORT&#39;,&#39;135x200&#39;,1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
               <i class="ti ti-minus"></i> Salida
             </button>
           </td>
@@ -1537,7 +1537,7 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
           <td style="text-align:center;font-family:monospace">140x190</td>
           <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">1</span></td>
           <td style="text-align:center">
-            <button onclick="stockAbrirSalida('FITNESS SPORT','140x190',1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+            <button onclick="stockAbrirSalida(&#39;FITNESS SPORT&#39;,&#39;140x190&#39;,1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
               <i class="ti ti-minus"></i> Salida
             </button>
           </td>
@@ -1546,7 +1546,7 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
           <td style="text-align:center;font-family:monospace">150x200</td>
           <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">2</span></td>
           <td style="text-align:center">
-            <button onclick="stockAbrirSalida('FITNESS SPORT','150x200',2)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+            <button onclick="stockAbrirSalida(&#39;FITNESS SPORT&#39;,&#39;150x200&#39;,2)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
               <i class="ti ti-minus"></i> Salida
             </button>
           </td>
@@ -1555,7 +1555,7 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
           <td style="text-align:center;font-family:monospace">180x190</td>
           <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">1</span></td>
           <td style="text-align:center">
-            <button onclick="stockAbrirSalida('FITNESS SPORT','180x190',1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+            <button onclick="stockAbrirSalida(&#39;FITNESS SPORT&#39;,&#39;180x190&#39;,1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
               <i class="ti ti-minus"></i> Salida
             </button>
           </td>
@@ -1564,7 +1564,7 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
           <td style="text-align:center;font-family:monospace">135x190</td>
           <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">2</span></td>
           <td style="text-align:center">
-            <button onclick="stockAbrirSalida('LATEX GEL','135x190',2)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+            <button onclick="stockAbrirSalida(&#39;LATEX GEL&#39;,&#39;135x190&#39;,2)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
               <i class="ti ti-minus"></i> Salida
             </button>
           </td>
@@ -1573,7 +1573,7 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
           <td style="text-align:center;font-family:monospace">140x190</td>
           <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">7</span></td>
           <td style="text-align:center">
-            <button onclick="stockAbrirSalida('LATEX GEL','140x190',7)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+            <button onclick="stockAbrirSalida(&#39;LATEX GEL&#39;,&#39;140x190&#39;,7)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
               <i class="ti ti-minus"></i> Salida
             </button>
           </td>
@@ -1582,7 +1582,7 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
           <td style="text-align:center;font-family:monospace">90x180</td>
           <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">2</span></td>
           <td style="text-align:center">
-            <button onclick="stockAbrirSalida('LATEX GEL','90x180',2)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+            <button onclick="stockAbrirSalida(&#39;LATEX GEL&#39;,&#39;90x180&#39;,2)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
               <i class="ti ti-minus"></i> Salida
             </button>
           </td>
@@ -1591,7 +1591,7 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
           <td style="text-align:center;font-family:monospace">135x190</td>
           <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">3</span></td>
           <td style="text-align:center">
-            <button onclick="stockAbrirSalida('MURANO','135x190',3)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+            <button onclick="stockAbrirSalida(&#39;MURANO&#39;,&#39;135x190&#39;,3)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
               <i class="ti ti-minus"></i> Salida
             </button>
           </td>
@@ -1600,7 +1600,7 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
           <td style="text-align:center;font-family:monospace">135x200</td>
           <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">1</span></td>
           <td style="text-align:center">
-            <button onclick="stockAbrirSalida('MURANO','135x200',1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+            <button onclick="stockAbrirSalida(&#39;MURANO&#39;,&#39;135x200&#39;,1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
               <i class="ti ti-minus"></i> Salida
             </button>
           </td>
@@ -1609,7 +1609,7 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
           <td style="text-align:center;font-family:monospace">160x190</td>
           <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">1</span></td>
           <td style="text-align:center">
-            <button onclick="stockAbrirSalida('MURANO','160x190',1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+            <button onclick="stockAbrirSalida(&#39;MURANO&#39;,&#39;160x190&#39;,1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
               <i class="ti ti-minus"></i> Salida
             </button>
           </td>
@@ -1618,7 +1618,7 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
           <td style="text-align:center;font-family:monospace">160x200</td>
           <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">2</span></td>
           <td style="text-align:center">
-            <button onclick="stockAbrirSalida('MURANO','160x200',2)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+            <button onclick="stockAbrirSalida(&#39;MURANO&#39;,&#39;160x200&#39;,2)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
               <i class="ti ti-minus"></i> Salida
             </button>
           </td>
@@ -1627,7 +1627,7 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
           <td style="text-align:center;font-family:monospace">90x190</td>
           <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">1</span></td>
           <td style="text-align:center">
-            <button onclick="stockAbrirSalida('MURANO','90x190',1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+            <button onclick="stockAbrirSalida(&#39;MURANO&#39;,&#39;90x190&#39;,1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
               <i class="ti ti-minus"></i> Salida
             </button>
           </td>
@@ -1636,7 +1636,7 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
           <td style="text-align:center;font-family:monospace">90x200</td>
           <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">1</span></td>
           <td style="text-align:center">
-            <button onclick="stockAbrirSalida('MURANO','90x200',1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+            <button onclick="stockAbrirSalida(&#39;MURANO&#39;,&#39;90x200&#39;,1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
               <i class="ti ti-minus"></i> Salida
             </button>
           </td>
@@ -1645,7 +1645,7 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
           <td style="text-align:center;font-family:monospace">80x200</td>
           <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">2</span></td>
           <td style="text-align:center">
-            <button onclick="stockAbrirSalida('PHARMATHERAPY SOJA','80x200',2)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+            <button onclick="stockAbrirSalida(&#39;PHARMATHERAPY SOJA&#39;,&#39;80x200&#39;,2)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
               <i class="ti ti-minus"></i> Salida
             </button>
           </td>
@@ -1654,7 +1654,7 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
           <td style="text-align:center;font-family:monospace">80x180</td>
           <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">1</span></td>
           <td style="text-align:center">
-            <button onclick="stockAbrirSalida('PHARMATHERAPY SOJA SLIM','80x180',1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+            <button onclick="stockAbrirSalida(&#39;PHARMATHERAPY SOJA SLIM&#39;,&#39;80x180&#39;,1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
               <i class="ti ti-minus"></i> Salida
             </button>
           </td>
@@ -1663,7 +1663,7 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
           <td style="text-align:center;font-family:monospace">80x190</td>
           <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">2</span></td>
           <td style="text-align:center">
-            <button onclick="stockAbrirSalida('PHARMATHERAPY SOJA SLIM','80x190',2)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+            <button onclick="stockAbrirSalida(&#39;PHARMATHERAPY SOJA SLIM&#39;,&#39;80x190&#39;,2)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
               <i class="ti ti-minus"></i> Salida
             </button>
           </td>
@@ -1672,7 +1672,7 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
           <td style="text-align:center;font-family:monospace">80x200</td>
           <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">2</span></td>
           <td style="text-align:center">
-            <button onclick="stockAbrirSalida('PHARMATHERAPY SOJA SLIM','80x200',2)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+            <button onclick="stockAbrirSalida(&#39;PHARMATHERAPY SOJA SLIM&#39;,&#39;80x200&#39;,2)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
               <i class="ti ti-minus"></i> Salida
             </button>
           </td>
@@ -1681,7 +1681,7 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
           <td style="text-align:center;font-family:monospace">90x180</td>
           <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">1</span></td>
           <td style="text-align:center">
-            <button onclick="stockAbrirSalida('PHARMATHERAPY SOJA SLIM','90x180',1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+            <button onclick="stockAbrirSalida(&#39;PHARMATHERAPY SOJA SLIM&#39;,&#39;90x180&#39;,1)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
               <i class="ti ti-minus"></i> Salida
             </button>
           </td>
@@ -1690,7 +1690,7 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
           <td style="text-align:center;font-family:monospace">90x190</td>
           <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">2</span></td>
           <td style="text-align:center">
-            <button onclick="stockAbrirSalida('PHARMATHERAPY SOJA SLIM','90x190',2)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+            <button onclick="stockAbrirSalida(&#39;PHARMATHERAPY SOJA SLIM&#39;,&#39;90x190&#39;,2)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
               <i class="ti ti-minus"></i> Salida
             </button>
           </td>
@@ -1699,7 +1699,7 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
           <td style="text-align:center;font-family:monospace">90x200</td>
           <td style="text-align:center"><span style="background:#EEF2FF;color:#3730A3;font-weight:700;padding:3px 12px;border-radius:10px">2</span></td>
           <td style="text-align:center">
-            <button onclick="stockAbrirSalida('PHARMATHERAPY SOJA SLIM','90x200',2)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
+            <button onclick="stockAbrirSalida(&#39;PHARMATHERAPY SOJA SLIM&#39;,&#39;90x200&#39;,2)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#FEF2F2;border:1px solid #fecaca;color:#991b1b">
               <i class="ti ti-minus"></i> Salida
             </button>
           </td>
@@ -1908,7 +1908,7 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
 
         <!-- Campo dirección -->
         <div class="section-label" style="margin-top:0">Dirección de envío</div>
-        <textarea id="nacex-direccion" rows="3" placeholder="Nombre destinatario, Calle, Nº, CP, Ciudad, Provincia…" oninput="nacexActualizarPreview()" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;font-family:inherit;resize:vertical;line-height:1.6;outline:none;transition:border-color 0.15s" onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'"></textarea>
+        <textarea id="nacex-direccion" rows="3" placeholder="Nombre destinatario, Calle, Nº, CP, Ciudad, Provincia…" oninput="nacexActualizarPreview()" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;font-family:inherit;resize:vertical;line-height:1.6;outline:none;transition:border-color 0.15s" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;"></textarea>
 
         <div class="status-box" id="nacex-status" style="margin-top:12px"></div>
 
@@ -1940,11 +1940,11 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
           <div>
             <div class="section-label" style="margin-top:0">Desde</div>
-            <input type="date" id="nacex-exp-desde" oninput="nacexExpPreview()" style="width:100%;padding:8px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none" onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
+            <input type="date" id="nacex-exp-desde" oninput="nacexExpPreview()" style="width:100%;padding:8px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
           </div>
           <div>
             <div class="section-label" style="margin-top:0">Hasta</div>
-            <input type="date" id="nacex-exp-hasta" oninput="nacexExpPreview()" style="width:100%;padding:8px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none" onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
+            <input type="date" id="nacex-exp-hasta" oninput="nacexExpPreview()" style="width:100%;padding:8px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
           </div>
         </div>
 
@@ -2198,8 +2198,8 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
           <div style="background:#FEF2F2;border-radius:8px;padding:12px;text-align:center;border:1px solid #fecaca">
             <div style="font-size:18px;margin-bottom:4px">🔴</div>
             <div style="font-weight:700;color:#991b1b">Peligro</div>
-            <div style="color:#6b7280;margin-top:4px">% Ads > 23%</div>
-            <div style="color:#6b7280">ROAS < 4,35</div>
+            <div style="color:#6b7280;margin-top:4px">% Ads &gt; 23%</div>
+            <div style="color:#6b7280">ROAS &lt; 4,35</div>
           </div>
           <div style="background:#FEF3C7;border-radius:8px;padding:12px;text-align:center;border:1px solid #fcd34d">
             <div style="font-size:18px;margin-bottom:4px">🟡</div>
@@ -2210,8 +2210,8 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
           <div style="background:#F0FDF4;border-radius:8px;padding:12px;text-align:center;border:1px solid #bbf7d0">
             <div style="font-size:18px;margin-bottom:4px">🟢</div>
             <div style="font-weight:700;color:#166534">Óptimo</div>
-            <div style="color:#6b7280;margin-top:4px">% Ads < 21%</div>
-            <div style="color:#6b7280">ROAS > 4,76</div>
+            <div style="color:#6b7280;margin-top:4px">% Ads &lt; 21%</div>
+            <div style="color:#6b7280">ROAS &gt; 4,76</div>
           </div>
         </div>
       </div>
@@ -2241,8 +2241,8 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
           <div style="font-size:15px;font-weight:700;color:#1a1a1a;margin-bottom:4px" id="pw-lock-title">Introduce tu clave maestra</div>
           <div style="font-size:12px;color:#6b7280;margin-bottom:20px">Las contraseñas están cifradas. Necesitas tu clave para acceder.</div>
           <div style="position:relative;margin-bottom:12px">
-            <input type="password" id="pw-master-input" placeholder="Clave maestra…" style="width:100%;padding:10px 40px 10px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;outline:none;text-align:center;letter-spacing:2px" onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'" onkeydown="if(event.key==='Enter')pwDesbloquear()">
-            <button onclick="pwToggleInput('pw-master-input',this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#9ca3af;font-size:18px"><i class="ti ti-eye"></i></button>
+            <input type="password" id="pw-master-input" placeholder="Clave maestra…" style="width:100%;padding:10px 40px 10px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;outline:none;text-align:center;letter-spacing:2px" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;" onkeydown="if(event.key===&#39;Enter&#39;)pwDesbloquear()">
+            <button onclick="pwToggleInput(&#39;pw-master-input&#39;,this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#9ca3af;font-size:18px"><i class="ti ti-eye"></i></button>
           </div>
           <button onclick="pwDesbloquear()" style="width:100%;padding:10px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;background:#3B4A2F;border:none;color:white;margin-bottom:8px">
             <i class="ti ti-unlock"></i> Desbloquear
@@ -2251,8 +2251,8 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
           <div id="pw-crear-wrap" style="display:none;margin-top:16px;padding-top:16px;border-top:1px solid #f3f4f6">
             <div style="font-size:12px;color:#6b7280;margin-bottom:8px">Primera vez — elige tu clave maestra</div>
             <div style="position:relative;margin-bottom:8px">
-              <input type="password" id="pw-master-confirm" placeholder="Confirma la clave maestra…" style="width:100%;padding:10px 40px 10px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;outline:none;text-align:center;letter-spacing:2px" onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
-              <button onclick="pwToggleInput('pw-master-confirm',this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#9ca3af;font-size:18px"><i class="ti ti-eye"></i></button>
+              <input type="password" id="pw-master-confirm" placeholder="Confirma la clave maestra…" style="width:100%;padding:10px 40px 10px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;outline:none;text-align:center;letter-spacing:2px" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
+              <button onclick="pwToggleInput(&#39;pw-master-confirm&#39;,this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#9ca3af;font-size:18px"><i class="ti ti-eye"></i></button>
             </div>
             <button onclick="pwCrearMaestra()" style="width:100%;padding:10px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;background:#1a56db;border:none;color:white">
               Crear clave maestra y acceder
@@ -2269,7 +2269,7 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
             <span style="font-size:11px;color:#9ca3af"><i class="ti ti-lock" style="font-size:11px"></i> Sesión activa</span>
           </div>
           <div style="display:flex;gap:8px;flex-wrap:wrap">
-            <input type="text" id="pw-search" placeholder="Buscar servicio…" oninput="pwRender()" style="padding:7px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;width:180px" onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
+            <input type="text" id="pw-search" placeholder="Buscar servicio…" oninput="pwRender()" style="padding:7px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;width:180px" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
             <button onclick="pwAbrirModal()" style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;background:#3B4A2F;border:none;color:white"><i class="ti ti-plus"></i> Nueva</button>
             <button onclick="pwBloquear()" style="display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:8px;font-size:13px;cursor:pointer;background:white;border:1px solid #d1d5db;color:#6b7280" title="Bloquear"><i class="ti ti-lock"></i></button>
           </div>
@@ -2359,11 +2359,11 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
       <div style="display:grid;grid-template-columns:1fr 90px;gap:14px;margin-bottom:20px">
         <div>
           <div class="section-label" style="margin-top:0">Medida</div>
-          <input type="text" id="colch-edit-medida" placeholder="ej. 150x200" style="width:100%;padding:8px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none" onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
+          <input type="text" id="colch-edit-medida" placeholder="ej. 150x200" style="width:100%;padding:8px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
         </div>
         <div>
           <div class="section-label" style="margin-top:0">Cantidad</div>
-          <input type="number" id="colch-edit-cantidad" min="1" value="1" style="width:100%;padding:8px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none" onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
+          <input type="number" id="colch-edit-cantidad" min="1" value="1" style="width:100%;padding:8px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
         </div>
       </div>
       <div style="display:flex;gap:10px">
@@ -2385,22 +2385,22 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
       <input type="hidden" id="pw-modal-id">
       <div style="margin-bottom:12px">
         <div class="section-label" style="margin-top:0">Servicio</div>
-        <input type="text" id="pw-modal-servicio" placeholder="ej. Gmail, Amazon, POLIVAL…" style="width:100%;padding:8px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none" onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
+        <input type="text" id="pw-modal-servicio" placeholder="ej. Gmail, Amazon, POLIVAL…" style="width:100%;padding:8px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
       </div>
       <div style="margin-bottom:12px">
         <div class="section-label" style="margin-top:0">Usuario / Email</div>
-        <input type="text" id="pw-modal-usuario" placeholder="usuario@email.com" style="width:100%;padding:8px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none" onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
+        <input type="text" id="pw-modal-usuario" placeholder="usuario@email.com" style="width:100%;padding:8px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
       </div>
       <div style="margin-bottom:12px">
         <div class="section-label" style="margin-top:0">Contraseña</div>
         <div style="position:relative">
-          <input type="password" id="pw-modal-pass" placeholder="Contraseña" style="width:100%;padding:8px 36px 8px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;font-family:monospace" onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
-          <button onclick="pwToggleInput('pw-modal-pass',this)" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#9ca3af;font-size:16px"><i class="ti ti-eye"></i></button>
+          <input type="password" id="pw-modal-pass" placeholder="Contraseña" style="width:100%;padding:8px 36px 8px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;font-family:monospace" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
+          <button onclick="pwToggleInput(&#39;pw-modal-pass&#39;,this)" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#9ca3af;font-size:16px"><i class="ti ti-eye"></i></button>
         </div>
       </div>
       <div style="margin-bottom:20px">
         <div class="section-label" style="margin-top:0">URL (opcional)</div>
-        <input type="text" id="pw-modal-url" placeholder="https://…" style="width:100%;padding:8px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none" onfocus="this.style.borderColor='#3B4A2F'" onblur="this.style.borderColor='#d1d5db'">
+        <input type="text" id="pw-modal-url" placeholder="https://…" style="width:100%;padding:8px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none" onfocus="this.style.borderColor=&#39;#3B4A2F&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
       </div>
       <div class="status-box" id="pw-modal-status" style="margin-bottom:12px"></div>
       <div style="display:flex;gap:10px">
@@ -6169,7 +6169,7 @@ function furniRender() {
     // Nota del cliente
     const notaHtml = `<div style="margin-top:10px;padding-top:10px;border-top:1px solid #e5e7eb">
       <div style="font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;margin-bottom:6px">Nota cliente</div>
-      <input type="text" value="${(x.nota||'').replace(/"/g,'"')}" placeholder="Ej: No servir hasta aviso · Entregar el 15/07..." onchange="furniGuardarNota('${x.id}',this.value)"
+      <input type="text" value="${(x.nota||'').replace(/"/g,'&quot;')}" placeholder="Ej: No servir hasta aviso · Entregar el 15/07..." onchange="furniGuardarNota('${x.id}',this.value)"
         style="width:100%;padding:7px 10px;border:1px solid #e5e7eb;border-radius:7px;font-size:12px;outline:none;background:${est==='CANCELADO'?'#f9fafb':'white'}"
         onfocus="this.style.borderColor='#7c3aed'" onblur="this.style.borderColor='#e5e7eb'" ${est==='CANCELADO'?'disabled':''}>
     </div>`;
@@ -6244,14 +6244,14 @@ function furniRender() {
         ${(x.notaInterna||'').trim()?`
         <div style="background:#FEF3C7;border-top:2px solid #F59E0B;border-bottom:2px solid #F59E0B;padding:8px 12px;display:flex;align-items:center;gap:8px;margin:6px -12px">
           <i class="ti ti-alert-triangle" style="color:#92400e;font-size:16px;flex-shrink:0"></i>
-          <input type="text" value="${(x.notaInterna||'').replace(/"/g,'"')}" onchange="furniGuardarNotaInterna('${x.id}',this.value)"
+          <input type="text" value="${(x.notaInterna||'').replace(/"/g,'&quot;')}" onchange="furniGuardarNotaInterna('${x.id}',this.value)"
             style="flex:1;padding:4px 8px;border:1px solid #FCD34D;border-radius:6px;font-size:13px;font-weight:700;color:#92400e;outline:none;background:transparent"
             onfocus="this.style.background='white'" onblur="this.style.background='transparent'" ${est==='CANCELADO'?'disabled':''}>
         </div>`:`
         <input type="text" value="" placeholder="📌 Añadir aviso interno..." onchange="furniGuardarNotaInterna('${x.id}',this.value)"
           style="width:100%;padding:3px 8px;border:1px dashed #FCD34D;border-radius:6px;font-size:11px;outline:none;background:transparent;color:#92400e;margin-top:4px"
           onfocus="this.style.borderStyle='solid';this.style.background='#FFFBEB'" onblur="this.style.borderStyle='dashed';this.style.background='transparent'" ${est==='CANCELADO'?'disabled':''}>`}
-        <input type="text" value="${(x.nota||'').replace(/"/g,'"')}" placeholder="📝 Nota cliente..." onchange="furniGuardarNota('${x.id}',this.value)"
+        <input type="text" value="${(x.nota||'').replace(/"/g,'&quot;')}" placeholder="📝 Nota cliente..." onchange="furniGuardarNota('${x.id}',this.value)"
           style="width:100%;padding:4px 8px;border:1px solid #e5e7eb;border-radius:6px;font-size:11px;outline:none;background:${est==='CANCELADO'?'#f9fafb':'white'};margin-top:4px"
           onfocus="this.style.borderColor='#7c3aed'" onblur="this.style.borderColor='#e5e7eb'" ${est==='CANCELADO'?'disabled':''}>
       </div>
@@ -8648,52 +8648,14 @@ function pcMarcarServido(id, onConfirmado){
 function pcMarcarServidoFecha(id, onConfirmado){
   const hoy=new Date();
   const hoyISO=`${hoy.getFullYear()}-${String(hoy.getMonth()+1).padStart(2,'0')}-${String(hoy.getDate()).padStart(2,'0')}`;
-  const ventas=JSON.parse(localStorage.getItem('colch_ventas')||'[]');
-  const venta=ventas.find(v=>String(v.id)===String(id));
-
   const overlay=document.createElement('div');
   overlay.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:9999;display:flex;align-items:center;justify-content:center';
   overlay.innerHTML=`
-    <div style="background:white;border-radius:14px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,0.25);width:400px;max-width:95vw">
-      <div style="font-size:14px;font-weight:700;color:#3B4A2F;margin-bottom:6px;text-align:center">¿En qué fecha se sirve?</div>
-      <div style="font-size:12px;color:#6b7280;margin-bottom:16px;text-align:center">Por defecto hoy. Cámbiala si es necesario.</div>
+    <div style="background:white;border-radius:14px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,0.25);min-width:280px;text-align:center">
+      <div style="font-size:14px;font-weight:700;color:#3B4A2F;margin-bottom:6px">¿En qué fecha se sirve?</div>
+      <div style="font-size:12px;color:#6b7280;margin-bottom:16px">Por defecto hoy. Cámbiala si es necesario.</div>
       <input type="date" id="pc-fecha-servido" value="${hoyISO}"
         style="padding:9px 14px;border:2px solid #3B4A2F;border-radius:8px;font-size:14px;outline:none;width:100%;margin-bottom:16px">
-
-      <div style="margin-bottom:14px;padding:14px;background:#F9FAFB;border-radius:10px;border:1px solid #e5e7eb">
-        <div style="font-size:12px;font-weight:700;color:#374151;margin-bottom:10px">¿Se sirve el modelo pedido?</div>
-        <div style="display:flex;gap:8px;margin-bottom:10px">
-          <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;font-weight:600;color:#374151">
-            <input type="radio" name="pc-cambio-tipo" value="no" checked style="accent-color:#16A34A;width:14px;height:14px">
-            <i class="ti ti-check" style="color:#16A34A"></i> Sí, modelo pedido
-          </label>
-          <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;font-weight:600;color:#374151">
-            <input type="radio" name="pc-cambio-tipo" value="si" style="accent-color:#d97706;width:14px;height:14px">
-            <i class="ti ti-arrows-exchange" style="color:#d97706"></i> No, cambio de modelo
-          </label>
-        </div>
-        <div id="pc-cambio-wrap" style="display:none">
-          <div style="font-size:11px;color:#92400e;background:#FEF3C7;border-radius:6px;padding:7px 10px;margin-bottom:10px">
-            ⚠️ El modelo servido se descontará del stock
-          </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
-            <div>
-              <label style="font-size:11px;font-weight:600;color:#374151;display:block;margin-bottom:4px">Modelo servido</label>
-              <input type="text" id="pc-cambio-modelo" placeholder="Ej: COLZNIR" style="width:100%;padding:8px 10px;border:1.5px solid #d97706;border-radius:7px;font-size:13px;outline:none;text-transform:uppercase">
-            </div>
-            <div>
-              <label style="font-size:11px;font-weight:600;color:#374151;display:block;margin-bottom:4px">Medida</label>
-              <input type="text" id="pc-cambio-medida" placeholder="Ej: 150x190" style="width:100%;padding:8px 10px;border:1.5px solid #d97706;border-radius:7px;font-size:13px;outline:none">
-            </div>
-          </div>
-          <div>
-            <label style="font-size:11px;font-weight:600;color:#374151;display:block;margin-bottom:4px">Nota <span style="font-weight:400;color:#9ca3af">(opcional)</span></label>
-            <textarea id="pc-cambio-nota" rows="2" placeholder="Ej: Cliente acepta cambio a Zenith por falta de stock..."
-              style="width:100%;padding:8px 10px;border:1.5px solid #d1d5db;border-radius:7px;font-size:12px;resize:vertical;outline:none;line-height:1.4"></textarea>
-          </div>
-        </div>
-      </div>
-
       <div style="display:flex;gap:8px">
         <button id="pc-btn-confirmar-servido" style="flex:1;padding:10px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;background:#16A34A;border:none;color:white">
           <i class="ti ti-check"></i> Confirmar
@@ -8704,52 +8666,21 @@ function pcMarcarServidoFecha(id, onConfirmado){
       </div>
     </div>`;
   document.body.appendChild(overlay);
-
-  overlay.querySelectorAll('input[name="pc-cambio-tipo"]').forEach(r=>{
-    r.addEventListener('change',()=>{
-      const esCambio=overlay.querySelector('input[name="pc-cambio-tipo"]:checked').value==='si';
-      document.getElementById('pc-cambio-wrap').style.display=esCambio?'block':'none';
-    });
-  });
-  document.getElementById('pc-cambio-modelo').addEventListener('input',function(){ this.value=this.value.toUpperCase(); });
   document.getElementById('pc-btn-cancelar-servido').addEventListener('click',()=>overlay.remove());
   overlay.addEventListener('click',(e)=>{if(e.target===overlay)overlay.remove();});
-
   document.getElementById('pc-btn-confirmar-servido').addEventListener('click',()=>{
     const fechaISO=document.getElementById('pc-fecha-servido').value;
     const[y,m,d]=fechaISO.split('-');
     const fechaStr=`${d}/${m}/${y}`;
-    const esCambio=overlay.querySelector('input[name="pc-cambio-tipo"]:checked').value==='si';
-
-    if(esCambio){
-      const modeloCambio=(document.getElementById('pc-cambio-modelo').value||'').trim().toUpperCase();
-      const medidaCambio=(document.getElementById('pc-cambio-medida').value||'').trim();
-      if(!modeloCambio||!medidaCambio){ alert('Indica el modelo y medida del colchón servido.'); return; }
-      const stockActual=stockGetActual();
-      const udsPedido=venta?parseInt(venta.unidades)||1:1;
-      const disponible=stockActual.get(`${modeloCambio}||${medidaCambio}`)||0;
-      if(udsPedido>disponible){
-        if(!confirm(`Solo hay ${disponible} uds de ${modeloCambio} ${medidaCambio} en stock (se necesitan ${udsPedido}). ¿Continuar igualmente?`)) return;
-      }
-      const notaCambio=(document.getElementById('pc-cambio-nota').value||'').trim();
-      const refSalida=`Cambio de modelo · Pedido ${venta?venta.ref||id:id}${notaCambio?' · '+notaCambio:''}`;
-      stockRegistrarMovimiento('SALIDA', modeloCambio, medidaCambio, udsPedido, refSalida);
-      const obsMap=JSON.parse(localStorage.getItem('colch_ventas_obs')||'{}');
-      const notaGuardar=`[CAMBIO MODELO] Servido: ${modeloCambio} ${medidaCambio}${notaCambio?' · '+notaCambio:''}`;
-      obsMap[String(id)]=(obsMap[String(id)]?obsMap[String(id)]+'
-':'')+notaGuardar;
-      localStorage.setItem('colch_ventas_obs',JSON.stringify(obsMap));
-      authRegistrarAccion('Cambio de modelo al servir',`Pedido ${venta?venta.ref||id:id} -> ${modeloCambio} ${medidaCambio} descontado de stock`);
-    }
-
     const est=JSON.parse(localStorage.getItem('colch_ventas_estado')||'{}');
-    auditGuardar(id,'Estado',est[String(id)]||'PENDIENTE','SERVIDO · '+fechaStr+(esCambio?' (cambio modelo)':''));
+    auditGuardar(id,'Estado',est[String(id)]||'PENDIENTE','SERVIDO · '+fechaStr);
     est[String(id)]='SERVIDO';
     localStorage.setItem('colch_ventas_estado',JSON.stringify(est));
     const fechas=JSON.parse(localStorage.getItem('colch_ventas_fecha_servido')||'{}');
     fechas[String(id)]=fechaStr;
     localStorage.setItem('colch_ventas_fecha_servido',JSON.stringify(fechas));
-
+    const ventas=JSON.parse(localStorage.getItem('colch_ventas')||'[]');
+    const venta=ventas.find(v=>String(v.id)===String(id));
     if(venta && (venta.ref||'').toUpperCase().startsWith('FUR')) {
       const refFurni=(venta.ref||'').substring(3);
       let furniture=JSON.parse(localStorage.getItem('furni_pedidos')||'[]');
@@ -8758,7 +8689,7 @@ function pcMarcarServidoFecha(id, onConfirmado){
     }
     overlay.remove();
     if(typeof onConfirmado==='function') onConfirmado();
-    pcRender(); pcUpdateBadge(); stockBadgeUpdate();
+    pcRender(); pcUpdateBadge();
   });
 }
 
@@ -10099,8 +10030,8 @@ function pwRender(){
           <div style="font-size:12px;color:#6b7280;margin-bottom:8px">${e.usuario}</div>
           <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
             <span id="pw-pass-${e.id}" style="font-size:13px;font-family:monospace;color:#1a1a1a">••••••••</span>
-            <button onclick="pwToggleVer('pw-pass-${e.id}',this,'${e.pass.replace(/'/g,"'")}')" style="background:none;border:none;cursor:pointer;color:#9ca3af;font-size:14px;padding:2px" title="Ver contraseña"><i class="ti ti-eye"></i></button>
-            <button onclick="pwCopiar('${e.pass.replace(/'/g,"'")}',this)" style="background:none;border:none;cursor:pointer;color:#9ca3af;font-size:14px;padding:2px" title="Copiar contraseña"><i class="ti ti-copy"></i></button>
+            <button onclick="pwToggleVer('pw-pass-${e.id}',this,'${e.pass.replace(/'/g,"&#39;")}')" style="background:none;border:none;cursor:pointer;color:#9ca3af;font-size:14px;padding:2px" title="Ver contraseña"><i class="ti ti-eye"></i></button>
+            <button onclick="pwCopiar('${e.pass.replace(/'/g,"&#39;")}',this)" style="background:none;border:none;cursor:pointer;color:#9ca3af;font-size:14px;padding:2px" title="Copiar contraseña"><i class="ti ti-copy"></i></button>
           </div>
         </div>
         <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0;align-items:flex-end">
@@ -11349,14 +11280,14 @@ function albHistRender(){
     // ── Visor PDF (si hay base64) ──
     const pdfViewerId=`albpdf-${idx}`;
     const pdfBtnHTML=a.pdfB64
-      ? `<button onclick="albHistVerPDF('${pdfViewerId}')" style="display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;background:${provColor};border:none;color:white"><i class="ti ti-file-type-pdf"></i> Ver PDF</button>`
+      ? `<button onclick="albHistVerPDF(&#39;${pdfViewerId}&#39;)" style="display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;background:${provColor};border:none;color:white"><i class="ti ti-file-type-pdf"></i> Ver PDF</button>`
       : `<span style="font-size:11px;color:#d1d5db;font-style:italic">Sin PDF adjunto</span>`;
 
     const pdfViewerHTML=a.pdfB64
       ? `<div id="${pdfViewerId}" style="display:none;margin-top:12px;border:1px solid #e2e6dc;border-radius:8px;overflow:hidden">
           <div style="background:#f9fafb;padding:8px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #e2e6dc">
             <span style="font-size:12px;font-weight:600;color:#374151"><i class="ti ti-file-type-pdf"></i> Documento PDF</span>
-            <button onclick="document.getElementById('${pdfViewerId}').style.display='none'" style="background:none;border:none;font-size:18px;cursor:pointer;color:#9ca3af;padding:0 4px">✕</button>
+            <button onclick="document.getElementById(&#39;${pdfViewerId}&#39;).style.display=&#39;none&#39;" style="background:none;border:none;font-size:18px;cursor:pointer;color:#9ca3af;padding:0 4px">✕</button>
           </div>
           <iframe src="./index_files/saved_resource.html" style="width:100%;height:600px;border:none" title="Albarán PDF"></iframe>
         </div>`
@@ -11425,7 +11356,7 @@ function albHistLimpiarFiltros(){
     <div id="modal-stock-alta-modelo" style="font-size:13px;color:#6b7280;margin-bottom:20px"></div>
     <div style="margin-bottom:16px">
       <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:6px">Unidades a dar de alta</label>
-      <input type="number" id="modal-stock-alta-cant" min="1" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:18px;font-weight:700;text-align:center;outline:none" onfocus="this.style.borderColor='#3730A3'" onblur="this.style.borderColor='#d1d5db'">
+      <input type="number" id="modal-stock-alta-cant" min="1" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:18px;font-weight:700;text-align:center;outline:none" onfocus="this.style.borderColor=&#39;#3730A3&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
     </div>
     <div style="display:flex;gap:10px">
       <button onclick="stockAltaConfirmar()" style="flex:1;padding:10px;background:#3730A3;color:white;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer"><i class="ti ti-check"></i> Confirmar alta</button>
@@ -11441,10 +11372,10 @@ function albHistLimpiarFiltros(){
 
     <!-- Selector Entrada / Salida -->
     <div style="display:flex;gap:0;border:1px solid #d1d5db;border-radius:8px;overflow:hidden;margin-bottom:20px">
-      <button id="modal-entrada-btn-entrada" onclick="stockEntradaSetTipo('ENTRADA')" style="flex: 1 1 0%; padding: 9px; font-size: 13px; font-weight: 600; cursor: pointer; border-width: medium 1px medium medium; border-style: none solid none none; border-color: currentcolor rgb(209, 213, 219) currentcolor currentcolor; border-image: initial; background: rgb(209, 250, 229); color: rgb(6, 95, 70);">
+      <button id="modal-entrada-btn-entrada" onclick="stockEntradaSetTipo(&#39;ENTRADA&#39;)" style="flex: 1 1 0%; padding: 9px; font-size: 13px; font-weight: 600; cursor: pointer; border-width: medium 1px medium medium; border-style: none solid none none; border-color: currentcolor rgb(209, 213, 219) currentcolor currentcolor; border-image: initial; background: rgb(209, 250, 229); color: rgb(6, 95, 70);">
         <i class="ti ti-plus"></i> Entrada
       </button>
-      <button id="modal-entrada-btn-salida" onclick="stockEntradaSetTipo('SALIDA')" style="flex: 1 1 0%; padding: 9px; font-size: 13px; font-weight: 600; cursor: pointer; border-width: medium; border-style: none; border-color: currentcolor; border-image: initial; background: rgb(249, 250, 251); color: rgb(107, 114, 128);">
+      <button id="modal-entrada-btn-salida" onclick="stockEntradaSetTipo(&#39;SALIDA&#39;)" style="flex: 1 1 0%; padding: 9px; font-size: 13px; font-weight: 600; cursor: pointer; border-width: medium; border-style: none; border-color: currentcolor; border-image: initial; background: rgb(249, 250, 251); color: rgb(107, 114, 128);">
         <i class="ti ti-minus"></i> Salida
       </button>
     </div>
@@ -11454,7 +11385,7 @@ function albHistLimpiarFiltros(){
       <!-- Motivo (solo entradas) -->
       <div id="modal-entrada-motivo-wrap" style="display: block;">
         <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:5px">Motivo de entrada</label>
-        <select id="modal-entrada-motivo" onchange="stockEntradaMotivoCambio()" style="width: 100%; padding: 8px 12px; border: 1px solid rgb(209, 213, 219); border-radius: 8px; font-size: 13px; outline: none; background: white;" onfocus="this.style.borderColor='#065F46'" onblur="this.style.borderColor='#d1d5db'">
+        <select id="modal-entrada-motivo" onchange="stockEntradaMotivoCambio()" style="width: 100%; padding: 8px 12px; border: 1px solid rgb(209, 213, 219); border-radius: 8px; font-size: 13px; outline: none; background: white;" onfocus="this.style.borderColor=&#39;#065F46&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
           <option value="">— Selecciona motivo —</option>
           <option value="RECUENTO">Recuento de stock</option>
           <option value="RECEPCION_CAMION">Recepción camión</option>
@@ -11465,7 +11396,7 @@ function albHistLimpiarFiltros(){
       <!-- Sub-tipo devolución (solo si motivo = DEVOLUCION_CLIENTE) -->
       <div id="modal-entrada-subtipo-wrap" style="display: block;">
         <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:5px">Tipo de devolución</label>
-        <select id="modal-entrada-subtipo" onchange="stockSubtipoCambio()" style="width: 100%; padding: 8px 12px; border: 1px solid rgb(209, 213, 219); border-radius: 8px; font-size: 13px; outline: none; background: white;" onfocus="this.style.borderColor='#065F46'" onblur="this.style.borderColor='#d1d5db'">
+        <select id="modal-entrada-subtipo" onchange="stockSubtipoCambio()" style="width: 100%; padding: 8px 12px; border: 1px solid rgb(209, 213, 219); border-radius: 8px; font-size: 13px; outline: none; background: white;" onfocus="this.style.borderColor=&#39;#065F46&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
           <option value="">— Selecciona tipo —</option>
           <option value="Devolución personal">Devolución personal</option>
           <option value="Devolución por agencia de su elección">Devolución por agencia de su elección</option>
@@ -11476,40 +11407,40 @@ function albHistLimpiarFiltros(){
         <!-- Referencia envío SEUR (paquete no entregado) -->
         <div id="modal-seur-ref-wrap" style="display: none; margin-top: 10px;">
           <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:5px">Referencia del envío SEUR <span style="color:#991b1b">*</span></label>
-          <input type="text" id="modal-seur-ref" placeholder="Nº expedición o referencia SEUR…" style="width:100%;padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;box-sizing:border-box" onfocus="this.style.borderColor='#065F46'" onblur="this.style.borderColor='#d1d5db'">
+          <input type="text" id="modal-seur-ref" placeholder="Nº expedición o referencia SEUR…" style="width:100%;padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;box-sizing:border-box" onfocus="this.style.borderColor=&#39;#065F46&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
         </div>
 
         <!-- Número de recogida SEUR (recogido por nosotros) -->
         <div id="modal-seur-recogida-wrap" style="display: block; margin-top: 10px;">
           <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:5px">Número de recogida SEUR <span style="color:#991b1b">*</span></label>
-          <input type="text" id="modal-seur-recogida" placeholder="Nº de recogida solicitada…" style="width:100%;padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;box-sizing:border-box" onfocus="this.style.borderColor='#065F46'" onblur="this.style.borderColor='#d1d5db'">
+          <input type="text" id="modal-seur-recogida" placeholder="Nº de recogida solicitada…" style="width:100%;padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;box-sizing:border-box" onfocus="this.style.borderColor=&#39;#065F46&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
         </div>
       </div>
 
       <!-- Fecha recepción camión (solo si motivo = RECEPCION_CAMION) -->
       <div id="modal-entrada-fecha-wrap" style="display:none">
         <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:5px">Fecha de recepción <span style="color:#991b1b">*</span></label>
-        <input type="date" id="modal-entrada-fecha" style="width:100%;padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;box-sizing:border-box" onfocus="this.style.borderColor='#065F46'" onblur="this.style.borderColor='#d1d5db'">
+        <input type="date" id="modal-entrada-fecha" style="width:100%;padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;box-sizing:border-box" onfocus="this.style.borderColor=&#39;#065F46&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
       </div>
 
       <!-- Modelo con autocomplete -->
       <div style="position:relative">
         <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:5px">Modelo</label>
-        <input type="text" id="modal-entrada-modelo" placeholder="Escribe para buscar…" autocomplete="off" oninput="stockAutocomplete('modelo')" onblur="setTimeout(()=>document.getElementById('ac-modelo').style.display='none',200)" style="width:100%;padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;box-sizing:border-box" onfocus="this.style.borderColor='#3730A3';stockAutocomplete('modelo')">
+        <input type="text" id="modal-entrada-modelo" placeholder="Escribe para buscar…" autocomplete="off" oninput="stockAutocomplete(&#39;modelo&#39;)" onblur="setTimeout(()=>document.getElementById(&#39;ac-modelo&#39;).style.display=&#39;none&#39;,200)" style="width:100%;padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;box-sizing:border-box" onfocus="this.style.borderColor=&#39;#3730A3&#39;;stockAutocomplete(&#39;modelo&#39;)">
         <div id="ac-modelo" style="display:none;position:absolute;top:100%;left:0;right:0;background:white;border:1px solid #d1d5db;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.1);z-index:100;max-height:180px;overflow-y:auto"></div>
       </div>
 
       <!-- Medida con autocomplete -->
       <div style="position:relative">
         <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:5px">Medida</label>
-        <input type="text" id="modal-entrada-medida" placeholder="Ej: 150x200" autocomplete="off" oninput="stockAutocomplete('medida')" onblur="setTimeout(()=>document.getElementById('ac-medida').style.display='none',200)" style="width:100%;padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;box-sizing:border-box" onfocus="this.style.borderColor='#3730A3';stockAutocomplete('medida')">
+        <input type="text" id="modal-entrada-medida" placeholder="Ej: 150x200" autocomplete="off" oninput="stockAutocomplete(&#39;medida&#39;)" onblur="setTimeout(()=>document.getElementById(&#39;ac-medida&#39;).style.display=&#39;none&#39;,200)" style="width:100%;padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;box-sizing:border-box" onfocus="this.style.borderColor=&#39;#3730A3&#39;;stockAutocomplete(&#39;medida&#39;)">
         <div id="ac-medida" style="display:none;position:absolute;top:100%;left:0;right:0;background:white;border:1px solid #d1d5db;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.1);z-index:100;max-height:180px;overflow-y:auto"></div>
       </div>
 
       <!-- Cantidad -->
       <div>
         <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:5px">Unidades</label>
-        <input type="number" id="modal-entrada-cant" min="1" value="1" style="width:100%;padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;box-sizing:border-box" onfocus="this.style.borderColor='#3730A3'" onblur="this.style.borderColor='#d1d5db'">
+        <input type="number" id="modal-entrada-cant" min="1" value="1" style="width:100%;padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;box-sizing:border-box" onfocus="this.style.borderColor=&#39;#3730A3&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
       </div>
 
       <!-- Referencia -->
@@ -11517,14 +11448,14 @@ function albHistLimpiarFiltros(){
         <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:5px">
           Referencia / Cliente <span id="modal-entrada-ref-obligatorio" style="color: rgb(153, 27, 27); display: none;">*</span>
         </label>
-        <input type="text" id="modal-entrada-ref" placeholder="Nº pedido, nombre cliente…" style="width:100%;padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;box-sizing:border-box" onfocus="this.style.borderColor='#3730A3'" onblur="this.style.borderColor='#d1d5db'">
+        <input type="text" id="modal-entrada-ref" placeholder="Nº pedido, nombre cliente…" style="width:100%;padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;box-sizing:border-box" onfocus="this.style.borderColor=&#39;#3730A3&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
         <div id="modal-entrada-ref-nota" style="font-size: 11px; color: rgb(156, 163, 175); margin-top: 4px; display: none;">Obligatorio en salidas</div>
       </div>
     </div>
 
     <div style="display:flex;gap:10px">
       <button id="modal-entrada-confirmar" onclick="stockEntradaConfirmar()" style="flex: 1 1 0%; padding: 10px; background: rgb(6, 95, 70); color: white; border-width: medium; border-style: none; border-color: currentcolor; border-image: initial; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer;"><i class="ti ti-check"></i> Registrar entrada</button>
-      <button onclick="document.getElementById('modal-stock-entrada').style.display='none';document.body.style.overflow=''" style="padding:10px 16px;background:white;border:1px solid #d1d5db;border-radius:8px;font-size:14px;cursor:pointer;color:#6b7280">Cancelar</button>
+      <button onclick="document.getElementById(&#39;modal-stock-entrada&#39;).style.display=&#39;none&#39;;document.body.style.overflow=&#39;&#39;" style="padding:10px 16px;background:white;border:1px solid #d1d5db;border-radius:8px;font-size:14px;cursor:pointer;color:#6b7280">Cancelar</button>
     </div>
   </div>
 </div>
@@ -11537,17 +11468,17 @@ function albHistLimpiarFiltros(){
     <div style="display:grid;gap:14px;margin-bottom:20px">
       <div>
         <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:5px">Unidades que salen</label>
-        <input type="number" id="modal-salida-cant" min="1" value="1" style="width:100%;padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none" onfocus="this.style.borderColor='#991b1b'" onblur="this.style.borderColor='#d1d5db'" max="1">
+        <input type="number" id="modal-salida-cant" min="1" value="1" style="width:100%;padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none" onfocus="this.style.borderColor=&#39;#991b1b&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;" max="1">
       </div>
       <div>
         <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:5px">Referencia cliente <span style="color:#991b1b">*</span></label>
-        <input type="text" id="modal-salida-ref" placeholder="Nº pedido, nombre cliente…" style="width:100%;padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none" onfocus="this.style.borderColor='#991b1b'" onblur="this.style.borderColor='#d1d5db'">
+        <input type="text" id="modal-salida-ref" placeholder="Nº pedido, nombre cliente…" style="width:100%;padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none" onfocus="this.style.borderColor=&#39;#991b1b&#39;" onblur="this.style.borderColor=&#39;#d1d5db&#39;">
         <div style="font-size:11px;color:#9ca3af;margin-top:4px">Obligatorio — identifica a quién van destinadas las unidades</div>
       </div>
     </div>
     <div style="display:flex;gap:10px">
       <button onclick="stockSalidaConfirmar()" style="flex:1;padding:10px;background:#991b1b;color:white;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer"><i class="ti ti-check"></i> Confirmar salida</button>
-      <button onclick="document.getElementById('modal-stock-salida').style.display='none';document.body.style.overflow=''" style="padding:10px 16px;background:white;border:1px solid #d1d5db;border-radius:8px;font-size:14px;cursor:pointer;color:#6b7280">Cancelar</button>
+      <button onclick="document.getElementById(&#39;modal-stock-salida&#39;).style.display=&#39;none&#39;;document.body.style.overflow=&#39;&#39;" style="padding:10px 16px;background:white;border:1px solid #d1d5db;border-radius:8px;font-size:14px;cursor:pointer;color:#6b7280">Cancelar</button>
     </div>
   </div>
 </div>
