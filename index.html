@@ -8852,7 +8852,7 @@ function pcEliminar(id){
 
       <div style="margin-bottom:14px">
         <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:5px">Motivo del borrado</label>
-        <select id="pcElim-motivo" onchange="pcEliminarMotivoChange()"
+        <select id="pcElim-motivo"
           style="width:100%;padding:9px 12px;border:1.5px solid #d1d5db;border-radius:8px;font-size:13px;outline:none">
           <option value="">— Selecciona motivo —</option>
           <option value="CANCELA">CLIENTE CANCELA EL PEDIDO</option>
@@ -8882,6 +8882,7 @@ function pcEliminar(id){
   overlay.id='pcElim-overlay';
   overlay.addEventListener('click',e=>{if(e.target===overlay) overlay.remove();});
   document.body.appendChild(overlay);
+  document.getElementById('pcElim-motivo').addEventListener('change', pcEliminarMotivoChange);
 }
 
 function pcEliminarMotivoChange(){
