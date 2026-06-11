@@ -72,6 +72,33 @@ function _scheduleFlush() {
   _syncTimer = setTimeout(_flushWrites, 2000);
 }
 
+// Test de diagnóstico — prueba GET y POST al Worker
+window._testSync = async function() {
+  const out = (msg, color='#374151') => {
+    const el = document.getElementById('_sync_indicator');
+    if (el) { el.innerHTML = msg; el.style.color = color; }
+    console.log(msg);
+  };
+  out('🔍 Probando GET...', '#1d4ed8');
+  try {
+    const r1 = await fetch(WORKER_URL + '/api/export');
+    out('✅ GET ok (' + r1.status + ') — probando POST...', '#166534');
+    const r2 = await fetch(WORKER_URL + '/api/set-many', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({data: {_test: new Date().toISOString()}})
+    });
+    const txt = await r2.text();
+    if (r2.ok) {
+      out('✅ POST ok (' + r2.status + ') — Worker funciona correctamente', '#166534');
+    } else {
+      out('❌ POST falló: HTTP ' + r2.status + ' — ' + txt.slice(0,80), '#991b1b');
+    }
+  } catch(e) {
+    out('❌ Error: ' + e.message, '#991b1b');
+  }
+};
+
 // Guardar referencia al localStorage real antes de sobreescribirlo
 window._localStorage_real = window.localStorage;
 
@@ -494,6 +521,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F2F4F0;color:#1a1a1
       <div id="_sync_indicator" style="display:flex;align-items:center;gap:6px;font-size:11px;padding:6px 8px;border-radius:6px;transition:all 0.3s;color:#6b7280;margin-bottom:6px">
         <i class="ti ti-cloud"></i> En la nube
       </div>
+      <button onclick="window._testSync()" style="width:100%;padding:4px 8px;border-radius:6px;font-size:10px;cursor:pointer;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.6);margin-bottom:4px">🔍 Test conexión</button>
       v2.0 · Happy Deal SL
     </div>
     <div id="_notif_sync" style="display: none; position: fixed; bottom: 20px; right: 20px; z-index: 9999; background: rgb(30, 64, 175); color: white; padding: 10px 16px; border-radius: 10px; font-size: 13px; font-weight: 500; box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 16px;">🔄 2 cambios de otros usuarios</div>
