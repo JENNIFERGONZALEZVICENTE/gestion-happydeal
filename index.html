@@ -13,18 +13,23 @@ const WORKER_URL = 'https://globalhappydealgestion.jennifer-747.workers.dev';
 const _cache = {};
 let _syncTimer = null;
 let _pendingWrites = {};
-let _cargandoNube = true;
+let _cargandoNube = true; // bloquea flush hasta que los datos reales estén cargados
+let _flushEnCurso = false;
 
 function _showSyncIndicator(estado) {
   const el = document.getElementById('_sync_indicator');
   if (!el) return;
+  el.style.cssText = 'display:flex;align-items:center;gap:6px;font-size:11px;padding:6px 8px;border-radius:6px;transition:all 0.3s;margin-bottom:6px;';
   if (estado === 'saving') {
     el.innerHTML = '<i class="ti ti-cloud-upload" style="animation:spin 1s linear infinite;display:inline-block"></i> Guardando...';
     el.style.cssText += 'color:#92400e;background:#FEF3C7;';
   } else if (estado === 'ok') {
     el.innerHTML = '<i class="ti ti-cloud-check"></i> Sincronizado';
     el.style.cssText += 'color:#166534;background:#F0FDF4;';
-    setTimeout(() => { el.innerHTML = '<i class="ti ti-cloud"></i> En la nube'; el.style.color='#6b7280'; el.style.background='transparent'; }, 2500);
+    setTimeout(() => {
+      const el2 = document.getElementById('_sync_indicator');
+      if (el2) { el2.innerHTML = '<i class="ti ti-cloud"></i> En la nube'; el2.style.color='#6b7280'; el2.style.background='transparent'; }
+    }, 2500);
   } else if (estado === 'error') {
     el.innerHTML = '<i class="ti ti-cloud-off"></i> Sin conexión';
     el.style.cssText += 'color:#991b1b;background:#FEF2F2;';
@@ -32,7 +37,10 @@ function _showSyncIndicator(estado) {
 }
 
 async function _flushWrites() {
+  if (_cargandoNube) return;
+  if (_flushEnCurso) return;
   if (Object.keys(_pendingWrites).length === 0) return;
+  _flushEnCurso = true;
   const toWrite = {..._pendingWrites};
   _pendingWrites = {};
   _showSyncIndicator('saving');
@@ -42,18 +50,26 @@ async function _flushWrites() {
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({data: toWrite})
     });
-    if (res.ok) _showSyncIndicator('ok');
-    else throw new Error('Error del servidor');
+    if (res.ok) {
+      _showSyncIndicator('ok');
+    } else {
+      throw new Error('HTTP ' + res.status);
+    }
   } catch(e) {
+    // Reencolar los datos para reintentar — no perderlos
+    _pendingWrites = {...toWrite, ..._pendingWrites};
     _showSyncIndicator('error');
-    Object.entries(toWrite).forEach(([k,v]) => { try { window._localStorage_real.setItem(k,v); } catch(e){} });
+    console.warn('⚠️ Flush fallido, reintentando en 15s:', e.message);
+    setTimeout(_flushWrites, 15000);
+  } finally {
+    _flushEnCurso = false;
   }
 }
 
 function _scheduleFlush() {
   if (_cargandoNube) return;
   clearTimeout(_syncTimer);
-  _syncTimer = setTimeout(_flushWrites, 5000);
+  _syncTimer = setTimeout(_flushWrites, 2000);
 }
 
 // Guardar referencia al localStorage real antes de sobreescribirlo
@@ -83,7 +99,7 @@ Object.defineProperty(window, 'localStorage', { get: () => _proxy, configurable:
 
 
 // ── DATOS INICIALES FURNITURE ──
-// Solo inicializa si la clave no existe (nunca sobreescribe datos reales de la nube)
+// Solo si no existen ya — escribe directo sin tocar el proxy ni disparar sync
 (function() {
   if (!window._localStorage_real.getItem('furni_pedidos'))
     window._localStorage_real.setItem('furni_pedidos', '[]');
@@ -110,10 +126,14 @@ async function _cargarDesdeLaNube() {
         try { window._localStorage_real.setItem(k, v); } catch(e){}
       }
     });
-    console.log(`✅ ${Object.keys(datos).length} claves cargadas desde la nube`);
+    console.log('✅ ' + Object.keys(datos).length + ' claves cargadas desde la nube');
+    _cargandoNube = false;
+    _pendingWrites = {};
     _showSyncIndicator('ok');
   } catch(e) {
     console.warn('⚠️ Usando datos locales:', e.message);
+    _cargandoNube = false;
+    _pendingWrites = {};
     _showSyncIndicator('error');
     for (let i = 0; i < window._localStorage_real.length; i++) {
       const k = window._localStorage_real.key(i);
@@ -144,9 +164,14 @@ function _iniciarSyncPeriodico() {
       if (!res.ok) { _syncEnCurso = false; return; }
       const datos = await res.json();
       if (Object.keys(_pendingWrites).length > 0) { _syncEnCurso = false; return; }
+      // Solo actualizar claves que NO estén pendientes de subir (evita machacar cambios locales)
       let cambios = 0;
       Object.entries(datos).forEach(([k,v]) => {
-        if (v !== null && _cache[k] !== v) { _cache[k] = v; try { window._localStorage_real.setItem(k,v); } catch(e){} cambios++; }
+        if (v !== null && _cache[k] !== v && !_pendingWrites[k]) {
+          _cache[k] = v;
+          try { window._localStorage_real.setItem(k,v); } catch(e){}
+          cambios++;
+        }
       });
       if (cambios > 0) _mostrarNotifSync(cambios);
     } catch(e) {}
@@ -171,8 +196,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (loading) loading.style.display = 'flex';
   }
   await _cargarDesdeLaNube();
-  _cargandoNube = false;
-  _pendingWrites = {};
+  // _cargandoNube=false y _pendingWrites={} ya se hacen dentro de _cargarDesdeLaNube
   // Ocultar pantalla de carga
   const loading = document.getElementById('_loading_screen');
   if (loading) loading.style.display = 'none';
