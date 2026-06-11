@@ -13,7 +13,7 @@ const WORKER_URL = 'https://globalhappydealgestion.jennifer-747.workers.dev';
 const _cache = {};
 let _syncTimer = null;
 let _pendingWrites = {};
-let _cargandoNube = true; // bloquea el flush hasta que los datos reales estén cargados
+let _cargandoNube = true;
 
 function _showSyncIndicator(estado) {
   const el = document.getElementById('_sync_indicator');
@@ -51,7 +51,7 @@ async function _flushWrites() {
 }
 
 function _scheduleFlush() {
-  if (_cargandoNube) return; // no enviar nada hasta que la nube esté cargada
+  if (_cargandoNube) return;
   clearTimeout(_syncTimer);
   _syncTimer = setTimeout(_flushWrites, 5000);
 }
@@ -111,8 +111,10 @@ async function _cargarDesdeLaNube() {
       }
     });
     console.log(`✅ ${Object.keys(datos).length} claves cargadas desde la nube`);
+    _showSyncIndicator('ok');
   } catch(e) {
     console.warn('⚠️ Usando datos locales:', e.message);
+    _showSyncIndicator('error');
     for (let i = 0; i < window._localStorage_real.length; i++) {
       const k = window._localStorage_real.key(i);
       if (k) _cache[k] = window._localStorage_real.getItem(k);
@@ -169,8 +171,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (loading) loading.style.display = 'flex';
   }
   await _cargarDesdeLaNube();
-  _cargandoNube = false; // datos reales cargados, ya se puede sincronizar
-  _pendingWrites = {};   // descartar cualquier write que se haya colado antes
+  _cargandoNube = false;
+  _pendingWrites = {};
   // Ocultar pantalla de carga
   const loading = document.getElementById('_loading_screen');
   if (loading) loading.style.display = 'none';
