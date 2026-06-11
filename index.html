@@ -982,6 +982,7 @@ COLPARIS135X190" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;bo
               <option value="PEDIR">⚠ Pedir</option>
             </select>
             <button onclick="vendLimpiarFiltros()" style="padding:7px 10px;border-radius:8px;font-size:12px;cursor:pointer;background:white;border:1px solid #d1d5db;color:#9ca3af">✕</button>
+            <button id="vend-btn-exportar-prov" onclick="vendExportarPedidoProv()" style="padding:7px 14px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;background:#92400e;border:1px solid #92400e;color:white;display:none"><i class="ti ti-file-spreadsheet"></i> Pedir por proveedor</button>
           </div>
         </div>
         <div id="vend-historial">
@@ -3971,26 +3972,26 @@ const SKU_MAP = [
   {sku:'COLCHAO ZEN NIRVANA',       modelo:'ZEN NIRVANA',        prov:'LUSOCOLCHAO'},
   {sku:'COLCHÃO GENERACIÓN Z',      modelo:'GENERACIÓN Z',       prov:'LUSOCOLCHAO'},
   {sku:'COLCHAO GENERACION Z',      modelo:'GENERACIÓN Z',       prov:'LUSOCOLCHAO'},
-  {sku:'COLCHÃO LATEX GEL',         modelo:'LATEX GEL',          prov:null},
-  {sku:'COLCHAO LATEX GEL',         modelo:'LATEX GEL',          prov:null},
+  {sku:'COLCHÃO LATEX GEL',         modelo:'LATEX GEL',          prov:'NEW MATTRESS'},
+  {sku:'COLCHAO LATEX GEL',         modelo:'LATEX GEL',          prov:'NEW MATTRESS'},
   {sku:'COLCHÃO SPRING ZEN',        modelo:'SPRING ZEN',         prov:'LUSOCOLCHAO'},
   {sku:'COLCHAO SPRING ZEN',        modelo:'SPRING ZEN',         prov:'LUSOCOLCHAO'},
-  {sku:'COLCHÃO FITNESS SPORT',     modelo:'FITNESS SPORT',      prov:null},
-  {sku:'COLCHAO FITNESS SPORT',     modelo:'FITNESS SPORT',      prov:null},
+  {sku:'COLCHÃO FITNESS SPORT',     modelo:'FITNESS SPORT',      prov:'NEW MATTRESS'},
+  {sku:'COLCHAO FITNESS SPORT',     modelo:'FITNESS SPORT',      prov:'NEW MATTRESS'},
   {sku:'COLCHÃO ZEN NATURAL',       modelo:'ZEN NATURAL',        prov:'LUSOCOLCHAO'},
   {sku:'COLCHAO ZEN NATURAL',       modelo:'ZEN NATURAL',        prov:'LUSOCOLCHAO'},
-  {sku:'COLCHÃO TOSCANA DELUXE',    modelo:'TOSCANA DELUXE',     prov:null},
-  {sku:'COLCHAO TOSCANA DELUXE',    modelo:'TOSCANA DELUXE',     prov:null},
+  {sku:'COLCHÃO TOSCANA DELUXE',    modelo:'TOSCANA DELUXE',     prov:'NEW MATTRESS'},
+  {sku:'COLCHAO TOSCANA DELUXE',    modelo:'TOSCANA DELUXE',     prov:'NEW MATTRESS'},
   {sku:'COLCHÃO ORIGIN ZEN',        modelo:'ORIGIN ZEN',         prov:'LUSOCOLCHAO'},
   {sku:'COLCHAO ORIGIN ZEN',        modelo:'ORIGIN ZEN',         prov:'LUSOCOLCHAO'},
   {sku:'COLCHÃO ZEN MANDALA',       modelo:'ZEN MANDALA',        prov:'LUSOCOLCHAO'},
   {sku:'COLCHAO ZEN MANDALA',       modelo:'ZEN MANDALA',        prov:'LUSOCOLCHAO'},
   {sku:'COLCHÃO PARIS MUELLE ENSAC',modelo:'PARÍS',              prov:'LUSOCOLCHAO'},
   {sku:'COLCHAO PARIS MUELLE ENSAC',modelo:'PARÍS',              prov:'LUSOCOLCHAO'},
-  {sku:'COLCHÃO ERGO RELAX',        modelo:'ERGO RELAX',         prov:null},
-  {sku:'COLCHAO ERGO RELAX',        modelo:'ERGO RELAX',         prov:null},
-  {sku:'COLCHÃO BELLAGIO DELUXE',   modelo:'BELLAGIO DELUXE',    prov:null},
-  {sku:'COLCHAO BELLAGIO DELUXE',   modelo:'BELLAGIO DELUXE',    prov:null},
+  {sku:'COLCHÃO ERGO RELAX',        modelo:'ERGO RELAX',         prov:'NEW MATTRESS'},
+  {sku:'COLCHAO ERGO RELAX',        modelo:'ERGO RELAX',         prov:'NEW MATTRESS'},
+  {sku:'COLCHÃO BELLAGIO DELUXE',   modelo:'BELLAGIO DELUXE',    prov:'NEW MATTRESS'},
+  {sku:'COLCHAO BELLAGIO DELUXE',   modelo:'BELLAGIO DELUXE',    prov:'NEW MATTRESS'},
   {sku:'COLCHÃO SUPREME ZEN',       modelo:'SUPREME ZEN',        prov:'LUSOCOLCHAO'},
   {sku:'COLCHAO SUPREME ZEN',       modelo:'SUPREME ZEN',        prov:'LUSOCOLCHAO'},
   // ── SKUs cortos estándar ──
@@ -4004,26 +4005,26 @@ const SKU_MAP = [
   {sku:'COLORIGIN',  modelo:'ORIGIN ZEN',         prov:'LUSOCOLCHAO'},
   {sku:'COLPARIS',   modelo:'PARÍS',              prov:'LUSOCOLCHAO'},
   {sku:'COLPAR',     modelo:'PARÍS',              prov:'LUSOCOLCHAO'},
-  {sku:'COLLOU',     modelo:'ERGO RELAX',         prov:null},
-  {sku:'COLLAT',     modelo:'LATEX GEL',          prov:null},
-  {sku:'COLMUR',     modelo:'MURANO',             prov:null},
-  {sku:'COLTOSD',    modelo:'TOSCANA DELUXE',     prov:null},
-  {sku:'COLBELD',    modelo:'BELLAGIO DELUXE',    prov:null},
-  {sku:'COLBEL',     modelo:'BELLAGIO DELUXE',    prov:null},
-  {sku:'COLBAMDL',   modelo:'BAMBOO DELUXE',      prov:null},
-  {sku:'COLDELUXE4D',modelo:'4D',                 prov:null},
-  {sku:'COLFITSPORT',modelo:'FITNESS SPORT',       prov:null},
-  {sku:'COLFIT',     modelo:'FITNESS SPORT',       prov:null},
+  {sku:'COLLOU',     modelo:'ERGO RELAX',         prov:'NEW MATTRESS'},
+  {sku:'COLLAT',     modelo:'LATEX GEL',          prov:'NEW MATTRESS'},
+  {sku:'COLMUR',     modelo:'MURANO',             prov:'NEW MATTRESS'},
+  {sku:'COLTOSD',    modelo:'TOSCANA DELUXE',     prov:'NEW MATTRESS'},
+  {sku:'COLBELD',    modelo:'BELLAGIO DELUXE',    prov:'NEW MATTRESS'},
+  {sku:'COLBEL',     modelo:'BELLAGIO DELUXE',    prov:'NEW MATTRESS'},
+  {sku:'COLBAMDL',   modelo:'BAMBOO DELUXE',      prov:'NEW MATTRESS'},
+  {sku:'COLDELUXE4D',modelo:'4D',                 prov:'NEW MATTRESS'},
+  {sku:'COLFITSPORT',modelo:'FITNESS SPORT',       prov:'NEW MATTRESS'},
+  {sku:'COLFIT',     modelo:'FITNESS SPORT',       prov:'NEW MATTRESS'},
   // ── PHARMATHERAPY SOJA SLIM (prefijos más largos PRIMERO) ──
-  {sku:'PHARMATHERAPY SLIM',modelo:'PHARMATHERAPY SOJA SLIM',prov:null},
-  {sku:'PHARMASLIM',       modelo:'PHARMATHERAPY SOJA SLIM', prov:null},
-  {sku:'PHARMA SLIM',      modelo:'PHARMATHERAPY SOJA SLIM', prov:null},
-  {sku:'COLPHARS',         modelo:'PHARMATHERAPY SOJA SLIM', prov:null},
+  {sku:'PHARMATHERAPY SLIM',modelo:'PHARMATHERAPY SOJA SLIM',prov:'NEW MATTRESS'},
+  {sku:'PHARMASLIM',       modelo:'PHARMATHERAPY SOJA SLIM', prov:'NEW MATTRESS'},
+  {sku:'PHARMA SLIM',      modelo:'PHARMATHERAPY SOJA SLIM', prov:'NEW MATTRESS'},
+  {sku:'COLPHARS',         modelo:'PHARMATHERAPY SOJA SLIM', prov:'NEW MATTRESS'},
   // ── PHARMATHERAPY SOJA (prefijos más largos PRIMERO) ──
-  {sku:'PHARMATHERAPY',    modelo:'PHARMATHERAPY SOJA',      prov:null},
-  {sku:'COLPHARM',         modelo:'PHARMATHERAPY SOJA',      prov:null},
-  {sku:'COLPHA',           modelo:'PHARMATHERAPY SOJA',      prov:null},
-  {sku:'PHARM',            modelo:'PHARMATHERAPY SOJA',      prov:null},
+  {sku:'PHARMATHERAPY',    modelo:'PHARMATHERAPY SOJA',      prov:'NEW MATTRESS'},
+  {sku:'COLPHARM',         modelo:'PHARMATHERAPY SOJA',      prov:'NEW MATTRESS'},
+  {sku:'COLPHA',           modelo:'PHARMATHERAPY SOJA',      prov:'NEW MATTRESS'},
+  {sku:'PHARM',            modelo:'PHARMATHERAPY SOJA',      prov:'NEW MATTRESS'},
 ];
 
 // SKUs ordenados de más largo a más corto para evitar matches parciales
@@ -7272,6 +7273,143 @@ function vendRenderHistorial(){
       }).join('')}</tbody>
     </table>
   </div>`;
+
+  // Mostrar botón "Pedir por proveedor" solo cuando el filtro está en PEDIR y hay filas
+  const btnProv=document.getElementById('vend-btn-exportar-prov');
+  if(btnProv){
+    const hayPedir=ventas.some(v=>{
+      if((estadosV[String(v.id)]||'')!=='CANCELADO'){
+        const k=`${v.modelo}||${nmMed(v.medida)}`;
+        const totalPed=sgH.get(k)||0;
+        const consumoAntes=consumoAntesH.get(String(v.id))||0;
+        const sinCob=Math.max(0,(consumoAntes+v.unidades)-totalPed);
+        return sinCob>0||totalPed===0;
+      }
+      return false;
+    });
+    btnProv.style.display=hayPedir?'inline-flex':'none';
+  }
+}
+
+function vendExportarPedidoProv(){
+  const normTxt=s=>s.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^A-Z0-9]/g,'');
+
+  // Mapa fijo modelo→proveedor (fuente de verdad absoluta)
+  const PROV_FIJO={
+    'PHARMATHERAPYSOJA':'NEW MATTRESS',
+    'PHARMATHERAPYSOJASLIM':'NEW MATTRESS',
+    'BAMBOODELUXE':'NEW MATTRESS',
+    'BELLAGIODELUXE':'NEW MATTRESS',
+    'TOSCANADELUXE':'NEW MATTRESS',
+    'ERGORELAX':'NEW MATTRESS',
+    'FITNESSSPORT':'NEW MATTRESS',
+    '4D':'NEW MATTRESS',
+    'MURANO':'NEW MATTRESS',
+    'LATEXGEL':'NEW MATTRESS',
+    'ZENNATURAL':'LUSOCOLCHAO',
+    'ZENNIRVANA':'LUSOCOLCHAO',
+    'SPRINGZEN':'LUSOCOLCHAO',
+    'GENERACIONZ':'LUSOCOLCHAO',
+    'ORIGINZEN':'LUSOCOLCHAO',
+    'ZENMANDALA':'LUSOCOLCHAO',
+    'PARIS':'LUSOCOLCHAO',
+    'SUPREMEZEN':'LUSOCOLCHAO',
+  };
+
+  // Construir mapa: primero SKU_MAP, luego sobreescribir con PROV_FIJO (tiene prioridad máxima)
+  const mapModeloProv=new Map();
+  (window.SKU_MAP||[]).forEach(e=>{
+    if(e.prov&&!mapModeloProv.has(normTxt(e.modelo)))
+      mapModeloProv.set(normTxt(e.modelo),e.prov);
+  });
+  // PROV_FIJO siempre gana — sobreescribe cualquier cosa del SKU_MAP o colchPedidos
+  Object.entries(PROV_FIJO).forEach(([k,v])=>mapModeloProv.set(k,v));
+
+  const ventas=JSON.parse(localStorage.getItem('colch_ventas')||'[]');
+  const estadosV=JSON.parse(localStorage.getItem('colch_ventas_estado')||'{}');
+
+  // Calcular stock pedido por modelo+medida
+  const sgX=new Map();
+  colchPedidos.forEach(p=>p.lineas.forEach(l=>{
+    const k=`${normTxt(l.modelo)}||${nmMed(l.medida)}`;
+    sgX.set(k,(sgX.get(k)||0)+l.cantidad);
+  }));
+
+  // Calcular consumo FIFO
+  const ventasOrd=[...ventas]
+    .filter(v=>estadosV[String(v.id)]!=='CANCELADO')
+    .sort((a,b)=>{
+      const pf=s=>{if(!s)return 0;const p=s.split('/');return p.length===3?new Date(p[2],p[1]-1,p[0]).getTime():0;};
+      return pf(a.fechaVenta||a.fecha)-pf(b.fechaVenta||b.fecha);
+    });
+  const consumoAntesX=new Map();
+  const acumX=new Map();
+  ventasOrd.forEach(v=>{
+    const k=`${normTxt(v.modelo)}||${nmMed(v.medida)}`;
+    const antes=acumX.get(k)||0;
+    consumoAntesX.set(String(v.id),antes);
+    acumX.set(k,antes+v.unidades);
+  });
+
+  // Agrupar unidades a pedir por proveedor → modelo → medida
+  // pedirMap: prov → Map(modelo+medida → {modelo,medida,uds})
+  const pedirMap=new Map();
+  ventas.forEach(v=>{
+    if(estadosV[String(v.id)]==='CANCELADO') return;
+    const kStock=`${normTxt(v.modelo)}||${nmMed(v.medida)}`;
+    const totalPed=sgX.get(kStock)||0;
+    const consumoAntes=consumoAntesX.get(String(v.id))||0;
+    const sinCob=Math.max(0,(consumoAntes+v.unidades)-totalPed);
+    if(sinCob<=0&&totalPed>0) return; // este pedido está cubierto
+
+    const udsAPedir=totalPed===0?v.unidades:sinCob;
+    const prov=mapModeloProv.get(normTxt(v.modelo))||'SIN PROVEEDOR';
+    if(!pedirMap.has(prov)) pedirMap.set(prov,new Map());
+    const provMap=pedirMap.get(prov);
+    const kLinea=`${v.modelo}||${nmMed(v.medida)}`;
+    const actual=provMap.get(kLinea)||{modelo:v.modelo,medida:nmMed(v.medida),uds:0};
+    actual.uds+=udsAPedir;
+    provMap.set(kLinea,actual);
+  });
+
+  if(pedirMap.size===0){
+    alert('No hay colchones que pedir en este momento.');
+    return;
+  }
+
+  // Generar Excel con SheetJS (una hoja por proveedor)
+  const script=document.createElement('script');
+  script.src='https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js';
+  script.onload=()=>{
+    const wb=XLSX.utils.book_new();
+    const hoy=new Date().toLocaleDateString('es-ES');
+
+    pedirMap.forEach((provMap,prov)=>{
+      const filas=[['Modelo','Medida','Uds. a pedir']];
+      // Ordenar por modelo luego medida
+      [...provMap.values()]
+        .sort((a,b)=>a.modelo.localeCompare(b.modelo)||a.medida.localeCompare(b.medida))
+        .forEach(l=>filas.push([l.modelo,l.medida,l.uds]));
+      filas.push([]);
+      filas.push(['Generado el',hoy,'']);
+
+      const ws=XLSX.utils.aoa_to_sheet(filas);
+      // Anchos de columna
+      ws['!cols']=[{wch:28},{wch:12},{wch:14}];
+      // Nombre de hoja: abreviar si hace falta (máx 31 chars)
+      const nombreHoja=prov.substring(0,31);
+      XLSX.utils.book_append_sheet(wb,ws,nombreHoja);
+    });
+
+    const fechaFich=new Date().toISOString().slice(0,10);
+    XLSX.writeFile(wb,`pedido_proveedores_${fechaFich}.xlsx`);
+  };
+  if(typeof XLSX!=='undefined'){
+    // SheetJS ya cargado
+    script.onload();
+  } else {
+    document.head.appendChild(script);
+  }
 }
 
 function vendVerAviso(id){
@@ -8287,37 +8425,35 @@ function pcUpdateBadge(){
 }
 
 function pcRender(){
-  // ── Leer localStorage UNA sola vez al inicio ──────────────────
-  const _obsMap=JSON.parse(localStorage.getItem('colch_ventas_obs')||'{}');
-  const _esperaMap=JSON.parse(localStorage.getItem('colch_ventas_espera')||'{}');
-  const _estadosMap=JSON.parse(localStorage.getItem('colch_ventas_estado')||'{}');
-
   // Auto-reactivar ventas EN ESPERA cuya fecha programada ya llegó
-  // (reutiliza los mapas ya leídos, solo escribe si hay cambios)
   (()=>{
     const hoyISO=new Date().toISOString().slice(0,10);
+    const est=JSON.parse(localStorage.getItem('colch_ventas_estado')||'{}');
+    const espDatos=JSON.parse(localStorage.getItem('colch_ventas_espera')||'{}');
     let cambio=false;
-    Object.entries(_esperaMap).forEach(([id,d])=>{
-      if(_estadosMap[id]==='EN ESPERA'&&d.motivo==='FECHA'&&d.fecha&&d.fecha<=hoyISO){
+    const obs=JSON.parse(localStorage.getItem('colch_ventas_obs')||'{}');
+    Object.entries(espDatos).forEach(([id,d])=>{
+      if(est[id]==='EN ESPERA'&&d.motivo==='FECHA'&&d.fecha&&d.fecha<=hoyISO){
+        // Traspasar nota a observaciones antes de borrar
         if(d.nota){
           const fechaLeg=d.fecha.split('-').reverse().join('/');
           const prefijo=`[En espera hasta ${fechaLeg}] `;
-          _obsMap[id]=(_obsMap[id]?_obsMap[id]+' · ':'')+prefijo+d.nota;
+          const obsActual=obs[id]||'';
+          obs[id]=(obsActual?obsActual+' · ':'')+prefijo+d.nota;
         }
-        delete _estadosMap[id];
-        delete _esperaMap[id];
+        delete est[id];
+        delete espDatos[id];
         cambio=true;
       }
     });
+    if(cambio) localStorage.setItem('colch_ventas_obs',JSON.stringify(obs));
     if(cambio){
-      localStorage.setItem('colch_ventas_obs',JSON.stringify(_obsMap));
-      localStorage.setItem('colch_ventas_estado',JSON.stringify(_estadosMap));
-      localStorage.setItem('colch_ventas_espera',JSON.stringify(_esperaMap));
+      localStorage.setItem('colch_ventas_estado',JSON.stringify(est));
+      localStorage.setItem('colch_ventas_espera',JSON.stringify(espDatos));
     }
   })();
-
   const todasVentas=JSON.parse(localStorage.getItem('colch_ventas')||'[]');
-  const estados=_estadosMap;
+  const estados=JSON.parse(localStorage.getItem('colch_ventas_estado')||'{}');
   const q=(document.getElementById('pc-filtro')?.value||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
   const filtroEstado=document.getElementById('pc-filtro-estado')?.value||'PENDIENTE';
 
@@ -8326,17 +8462,20 @@ function pcRender(){
   if(wrapFecha) wrapFecha.style.display=filtroEstado==='SERVIDO'||filtroEstado==='TODOS'?'flex':'none';
 
   const filtroFechaServido=document.getElementById('pc-filtro-fecha-servido')?.value||'';
-  const _fechasServido=JSON.parse(localStorage.getItem('colch_ventas_fecha_servido')||'{}');
+  const fechasServido=JSON.parse(localStorage.getItem('colch_ventas_fecha_servido')||'{}')
   const norm=s=>(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
 
   let ventas=todasVentas.filter(v=>{
     const est=estados[String(v.id)]||'PENDIENTE';
     if(filtroEstado!=='TODOS'){
+      // PENDIENTE incluye también EN ESPERA
       if(filtroEstado==='PENDIENTE'&&est!=='PENDIENTE'&&est!=='EN ESPERA') return false;
       else if(filtroEstado!=='PENDIENTE'&&est!==filtroEstado) return false;
     }
+    // Filtro de fecha de servido
     if(filtroFechaServido&&est==='SERVIDO'){
-      const fechaServ=_fechasServido[String(v.id)]||'';
+      const fechaServ=fechasServido[String(v.id)]||'';
+      // Convertir DD/MM/YYYY a YYYY-MM-DD para comparar
       if(fechaServ){
         const[d,m,y]=fechaServ.split('/');
         const fechaISO=`${y}-${m}-${d}`;
@@ -8368,57 +8507,52 @@ function pcRender(){
 
   const normTxt=s=>s.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^A-Z0-9]/g,'');
   const prevs=JSON.parse(localStorage.getItem('colch_prevision')||'[]');
-  const provCorto=p=>p==='LUSOCOLCHAO'?'LUSO':p==='NEW MATTRESS'?'NEW M.':p||'';
 
-  // ── Pre-calcular mapas de pedidos y previsión indexados por "modelo||medida" ──
-  // Esto evita recorrer colchPedidos entero por cada venta (O(n²) → O(n))
-  const _mapPedidoConRecep=new Map(); // key → {pedido,prov,recibido,fechaRecepcion}
-  const _mapPedidoSinRecep=new Map(); // key → {pedido,prov,recibido,fechaRecepcion}
-  colchPedidos.forEach(ped=>{
-    ped.lineas.forEach(l=>{
-      const k=`${normTxt(l.modelo)}||${nmMed(l.medida)}`;
-      if((l.recibido||0)>0&&!_mapPedidoConRecep.has(k))
-        _mapPedidoConRecep.set(k,{pedido:true,prov:ped.proveedor,recibido:l.recibido,fechaRecepcion:l.fechaRecepcion||''});
-      if(!_mapPedidoSinRecep.has(k))
-        _mapPedidoSinRecep.set(k,{pedido:true,prov:ped.proveedor,recibido:0,fechaRecepcion:''});
-    });
-  });
   const pcInfoPedido=(modelo,medida)=>{
-    const k=`${normTxt(modelo)}||${nmMed(medida)}`;
-    return _mapPedidoConRecep.get(k)||_mapPedidoSinRecep.get(k)||{pedido:false};
+    for(const ped of colchPedidos){
+      for(const l of ped.lineas){
+        if(normTxt(l.modelo)===normTxt(modelo)&&nmMed(l.medida)===nmMed(medida)&&(l.recibido||0)>0)
+          return {pedido:true,prov:ped.proveedor,recibido:l.recibido,fechaRecepcion:l.fechaRecepcion||''};
+      }
+    }
+    // Buscar si al menos está pedido aunque no recibido
+    for(const ped of colchPedidos){
+      for(const l of ped.lineas){
+        if(normTxt(l.modelo)===normTxt(modelo)&&nmMed(l.medida)===nmMed(medida))
+          return {pedido:true,prov:ped.proveedor,recibido:0,fechaRecepcion:''};
+      }
+    }
+    return {pedido:false};
   };
 
-  const _mapPrevision=new Map(); // key → mejor previsión
-  prevs.forEach(p=>{
-    const k=`${normTxt(p.modelo)}||${nmMed(p.medida)}`;
-    const prev=_mapPrevision.get(k);
-    const tieneF=p.fechaEntrega&&p.fechaEntrega!=='Sin confirmar';
-    if(!prev) { _mapPrevision.set(k,p); return; }
-    const prevTieneF=prev.fechaEntrega&&prev.fechaEntrega!=='Sin confirmar';
-    if(tieneF&&!prevTieneF) { _mapPrevision.set(k,p); return; }
-    if(tieneF&&prevTieneF){
-      const toT=s=>new Date(s.split('/').reverse().join('-')).getTime();
-      if(toT(p.fechaEntrega)<toT(prev.fechaEntrega)) _mapPrevision.set(k,p);
-    }
-  });
-  const pcInfoPrevision=(modelo,medida)=>_mapPrevision.get(`${normTxt(modelo)}||${nmMed(medida)}`)||null;
+  const pcInfoPrevision=(modelo,medida)=>{
+    const coin=prevs.filter(p=>normTxt(p.modelo)===normTxt(modelo)&&nmMed(p.medida)===nmMed(medida));
+    if(!coin.length) return null;
+    const cf=coin.filter(p=>p.fechaEntrega&&p.fechaEntrega!=='Sin confirmar')
+      .sort((a,b)=>new Date(a.fechaEntrega.split('/').reverse().join('-'))-new Date(b.fechaEntrega.split('/').reverse().join('-')));
+    return cf[0]||coin[0];
+  };
 
   // Calcular stock libre global por modelo+medida para mostrar alertas en tiempo real
+  // Reutilizar todasVentas y estados ya parseados al inicio de pcRender (evita re-lectura de localStorage)
+  const estadosVentasPC=estados;
+  const todasVentasPC=todasVentas;
   const stockGlobal=new Map(); // key → {totalPedido, totalVendido}
   colchPedidos.forEach(p=>p.lineas.forEach(l=>{
     const k=`${l.modelo}||${nmMed(l.medida)}`;
     if(!stockGlobal.has(k)) stockGlobal.set(k,{totalPedido:0,totalVendido:0});
     stockGlobal.get(k).totalPedido+=l.cantidad;
   }));
-  todasVentas.filter(v=>estados[String(v.id)]!=='CANCELADO').forEach(v=>{
+  todasVentasPC.filter(v=>estadosVentasPC[String(v.id)]!=='CANCELADO').forEach(v=>{
     const k=`${v.modelo}||${nmMed(v.medida)}`;
     if(!stockGlobal.has(k)) stockGlobal.set(k,{totalPedido:0,totalVendido:0});
     stockGlobal.get(k).totalVendido+=v.unidades;
   });
 
   // Precalcular consumo acumulado FIFO sobre TODAS las ventas ordenadas por fecha de venta
-  const ventasOrdenadas=[...todasVentas]
-    .filter(v=>estados[String(v.id)]!=='CANCELADO')
+  // para que el filtro activo no afecte al cálculo
+  const ventasOrdenadas=[...todasVentasPC]
+    .filter(v=>estadosVentasPC[String(v.id)]!=='CANCELADO')
     .sort((a,b)=>{
       const pf=s=>{if(!s)return 0;const p=s.split('/');return p.length===3?new Date(p[2],p[1]-1,p[0]).getTime():0;};
       return pf(a.fechaVenta||a.fecha)-pf(b.fechaVenta||b.fecha);
@@ -8434,10 +8568,15 @@ function pcRender(){
   });
 
   const _sinRecepMap=JSON.parse(localStorage.getItem('colch_sin_recepcion')||'{}');
-  // _fechasServido, _esperaMap, _obsMap ya leídos al inicio de pcRender
+  const _fechasServido=JSON.parse(localStorage.getItem('colch_ventas_fecha_servido')||'{}');
+  const _esperaMap=JSON.parse(localStorage.getItem('colch_ventas_espera')||'{}');
   const _excluidas=new Set(JSON.parse(localStorage.getItem('colch_sps_excluidas')||'[]').map(String));
+  const _auditMap=JSON.parse(localStorage.getItem('colch_ventas_audit')||'{}');
   const _auditArr=JSON.parse(localStorage.getItem('colch_ventas_audit')||'[]');
+  // Pre-cargar obs y agencias UNA sola vez (evita N lecturas de localStorage en el .map)
+  const _obsMap=JSON.parse(localStorage.getItem('colch_ventas_obs')||'{}');
   const _agenciaMap=JSON.parse(localStorage.getItem('colch_ventas_agencia')||'{}');
+  const provCorto=p=>p==='LUSOCOLCHAO'?'LUSO':p==='NEW MATTRESS'?'NEW M.':p||'';
   content.innerHTML=ventas.map(v=>{
     const obs=_obsMap[String(v.id)]||'';
     const _agRaw=_agenciaMap[String(v.id)];
